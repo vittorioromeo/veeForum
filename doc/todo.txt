@@ -1,0 +1,18 @@
+* Explain docker and github usage for development
+* Documentation divided in two part: part for non-techical readers, technical part
+* Thread user E/R diagram generalization/specialization
+* Privileges in separate table with booleans
+* Organize code in folders properly
+* Show folder structure in documentation
+* Show code (with comments) in documentation
+* Show tables in documentation with commented fields
+* Use LATEX
+* Show workflow and what was learned in documentation
+* Show installation process in documentation
+* Settings table with forum-wide settings
+* Calculate or bitset permissions with SQL
+* LICENSE in all code files 
+
+// Copyright (c) 2013-2015 Vittorio Romeo
+// License: Academic Free License ("AFL") v. 3.0
+// AFL License page: http://opensource.org/licenses/AFL-3.0
