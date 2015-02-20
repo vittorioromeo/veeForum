@@ -143,6 +143,23 @@ class ControlBase
 		return $this;
 	}
 
+	public function &inBSPanelWithHeader($mHeader)
+	{
+		$panel = $this->inDiv(['class' => 'panel panel-default'])
+			->inDiv(['class' => 'panel-heading'])
+				->inHTMLCtrl('h4', ['class' => 'panel-title'])
+					->literal($mHeader)
+					->out()
+				->out();
+	
+		return $panel->inDiv(['class' => 'panel-body']);
+	}			
+	
+	public function &inBSTable($mID)
+	{
+		return $this->inHTMLCtrl('table', ['id' => $mID, 'class' => 'table table-bordered table-striped']);
+	}
+
 	public function &inBSFormTextbox($mID, $mCaption)
 	{
 		$res = $this->inDiv(['class' => 'form-group']);
