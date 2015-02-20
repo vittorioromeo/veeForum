@@ -5,8 +5,8 @@
 	(new Container())
 		->h(1, 'Sections')
 		->hr()
-		->span(['id' => 'sectionsPage'])
-		->printRoot();
+		->inSpan(['id' => 'sectionsPage'])
+	->printRoot();
 
 	require_once("$root/php/core/content/sections/modalNewThread.php"); 
 

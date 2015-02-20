@@ -1,16 +1,17 @@
 <?php
 	$root = realpath($_SERVER["DOCUMENT_ROOT"]);
 	require_once("$root/php/lib/lib.php");
+	
+	$tid = Session::get(SK::$threadID);
+	$sid = TBS::$thread->findByID($tid)['id_section'];
 
 	(new Container())
 		->h(1, 'Thread')
-		->span(['id' => 'threadName'])
+		->inSpan(['id' => 'threadName'])
+			->out()
 		->hr()
-		->printRoot();
+	->printRoot();
 
-	$tid = Session::get(SK::$threadID);
-	$sid = TBS::$thread->findByID($tid)['id_section'];
-	
 	if(Creds::canCUPost($sid))
 		Gen::LinkBtn('btnNewPost', 'glyphicon-plus', 'New post'); 
 	
@@ -22,11 +23,11 @@
 
 	(new Container())
 		->hr()
-		->span(['id' => 'threadPage'])
-		->printRoot();
+		->inSpan(['id' => 'threadPage'])
+	->printRoot();
 
 	require_once("$root/php/core/content/sections/modalNewPost.php"); 
-	
+
 	Gen::JS_PostAction('refreshThread()', 'refreshThread', [], '$("#threadName").html(mOut);', 'showModalInfo("Error", mErr);'); 
 	Gen::JS_PostAction('refreshPosts()', 'refreshPosts', [], '$("#threadPage").html(mOut);', 'showModalInfo("Error", mErr);');
 

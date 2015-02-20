@@ -7,5 +7,5 @@
 	(new Container())
 		->br()
 		->strong($msg)
-		->printRoot();
+	->printRoot();
 ?>

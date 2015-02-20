@@ -7,19 +7,19 @@
 	(new Container())
 		->h(1, 'Administration')
 		->hr()
-		->div(['class' => 'row'])
+		->inDiv(['class' => 'row'])
 			->file("$rootAP/panelDebug.php")
 			->file("$rootAP/panelGroups.php")
-		->back()
+			->out()
 		->hr()
-		->div(['class' => 'row'])
+		->inDiv(['class' => 'row'])
 			->file("$rootAP/panelGSPerms.php")
 			->file("$rootAP/panelSections.php")
-		->back()
+			->out()
 		->hr()
-		->div(['class' => 'row'])
+		->inDiv(['class' => 'row'])
 			->file("$rootAP/panelUsers.php")
-		->printRoot();
+	->printRoot();
 
 	require_once("$rootAP/modalUserActions.php"); 
 	require_once("$rootAP/modalUserEdit.php"); 

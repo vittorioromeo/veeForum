@@ -1,37 +1,22 @@
-<div class="modal fade" id="modalNewThread">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true"></span>
-				</button>
-				<h4 class="modal-title">New thread</h4>
-				<div class="sectionIdDiv"></div>
-			</div>
-			<div class="modal-body">
-				<?php Gen::Textbox("tbThreadTitle", "Title"); ?>
-			</div>
-			<div class="modal-footer">
-				<div class="btn-group pull-right">
-					<?php Gen::LinkBtn('btnNewThreadOk', 'glyphicon-ok', '', '', true); ?>
-					<?php Gen::BtnCloseModal(); ?>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
 <?php
+	$modal = new BSModal('modalNewThread', 'New thread');
+	$modal->inHeader()->inDiv(['class' => 'sectionIdDiv']);
+	$modal->inBody()->bsFormTextbox('tbThreadTitle', 'Title');	
+	$modal->inFooterBtns()
+		->inBSLinkBtn('btnNewThreadOk')
+			->bsLinkBtnAddDismissModal()
+			->bsIcon('ok');
+	$modal->printRoot();
 
-Gen::JS_PostAction('newThread()', 'newThread',
-			[
-				'sectionId' => 'sectionId',
-				'title' => '$("#tbThreadTitle").val()'
-			],
-			'showModalInfo("New thread", mOut); refreshAll();',
-			'showModalInfo("New thread - error", mErr);');
+	Gen::JS_PostAction('newThread()', 'newThread',
+				[
+					'sectionId' => 'sectionId',
+					'title' => '$("#tbThreadTitle").val()'
+				],
+				'showModalInfo("New thread", mOut); refreshAll();',
+				'showModalInfo("New thread - error", mErr);');
 
-Gen::JS_OnBtnClick('btnNewThreadOk', 'newThread(); ');
+	Gen::JS_OnBtnClick('btnNewThreadOk', 'newThread(); ');
 ?>
 
 <script>
