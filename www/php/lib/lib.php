@@ -18,6 +18,7 @@ require_once("$rootLib/utils/utils.php");
 require_once("$rootLib/gen/gen.php");
 require_once("$rootLib/creds/creds.php");
 require_once("$rootLib/tbl/tbl.php");
+require_once("$rootLib/sprocs/sprocs.php");
 
 Session::init();
 
