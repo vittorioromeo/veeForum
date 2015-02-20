@@ -1,62 +1,42 @@
 <?php
 	$root = realpath($_SERVER["DOCUMENT_ROOT"]);
 	require_once("$root/php/lib/lib.php");
-?>
 
-<h1>Administration</h1>
-<hr>
+	$rootAP = "$root/php/core/content/adminPanel";
 
-<div class="row">
-	<?php require_once("$root/php/core/content/adminPanel/panelDebug.php"); ?>
-	<?php require_once("$root/php/core/content/adminPanel/panelGroups.php"); ?>
-</div>
+	(new Container())
+		->h(1, 'Administration')
+		->hr()
+		->div(['class' => 'row'])
+			->file("$rootAP/panelDebug.php")
+			->file("$rootAP/panelGroups.php")
+		->back()
+		->hr()
+		->div(['class' => 'row'])
+			->file("$rootAP/panelGSPerms.php")
+			->file("$rootAP/panelSections.php")
+		->back()
+		->hr()
+		->div(['class' => 'row'])
+			->file("$rootAP/panelUsers.php")
+		->printRoot();
 
-<hr>
+	require_once("$rootAP/modalUserActions.php"); 
+	require_once("$rootAP/modalUserEdit.php"); 
+	require_once("$rootAP/modalGSPerms.php"); 
 
-<div class="row">
-	<?php require_once("$root/php/core/content/adminPanel/panelGSPerms.php"); ?>
-	<?php require_once("$root/php/core/content/adminPanel/panelSections.php"); ?>
-</div>
-
-<hr>
-
-<div class="row">
-	<?php require_once("$root/php/core/content/adminPanel/panelUsers.php"); ?>
-</div>
-
-<hr>
-
-<?php require_once("$root/php/core/content/adminPanel/modalUserActions.php"); ?>
-<?php require_once("$root/php/core/content/adminPanel/modalUserEdit.php"); ?>
-<?php require_once("$root/php/core/content/adminPanel/modalGSPerms.php"); ?>
-
-<?php
 	Gen::JS_PostAction('setDebugEnabled(mX)', 'setDebugEnabled', [ 'enabled' => 'mX' ]);
-
 	Gen::JS_PostAction('refreshDebugLo()', 'refreshDebugLo', [], '$("#debugLo").html(mOut);');
 
-
-
 	Gen::JS_PostAction('refreshSectionHierarchy()', 'getSectionHierarchyStr', [], '$("#divScHierarchy").html(mOut);');
-
 	Gen::JS_PostAction('refreshSections(mTarget, mNullRow)', 'getSectionOptions',
 		[ 'nullRow' => 'mNullRow' ],
 		'$(mTarget).html(mOut);');
 
-	
-
-
-
-
 	Gen::JS_PostAction('refreshGroupHierarchy()', 'getGroupHierarchyStr', [], '$("#divGrHierarchy").html(mOut);');
-
 	Gen::JS_PostAction('refreshGroups(mTarget, mNullRow)', 'getGroupOptions',
 		[ 'nullRow' => 'mNullRow' ],
 		'$(mTarget).html(mOut);');
-
-	
-
-
 
 	Gen::JS_PostAction('refreshUsers()', 'getTblUsers',
 		[],
@@ -65,54 +45,48 @@
 
 
 	Gen::JS_PostAction('usAdd()', 'usAdd',
-			[
-				'id' => 'usEditModalId',
-				'username' => '$("#tbUsAddUsername").val()',
-				'password' => '$("#tbUsAddPassword").val()',
-				'email' => '$("#tbUsAddEmail").val()',
-				'firstname' => '$("#tbUsAddFirstname").val()',
-				'lastname' => '$("#tbUsAddLastname").val()',
-				'birthdate' => '$("#dateUsAddBirth").val()',
-				'groupId' => '$("#slUsAddGroup").val()'
-			],
-			'showAPModal("Add/edit", mOut);',
-			'showAPModal("Add/edit - error", mErr);');
+		[
+			'id' => 'usEditModalId',
+			'username' => '$("#tbUsAddUsername").val()',
+			'password' => '$("#tbUsAddPassword").val()',
+			'email' => '$("#tbUsAddEmail").val()',
+			'firstname' => '$("#tbUsAddFirstname").val()',
+			'lastname' => '$("#tbUsAddLastname").val()',
+			'birthdate' => '$("#dateUsAddBirth").val()',
+			'groupId' => '$("#slUsAddGroup").val()'
+		],
+		'showAPModal("Add/edit", mOut);',
+		'showAPModal("Add/edit - error", mErr);');
 
 	Gen::JS_PostAction('usDel(mID)', 'usDel',
-			[ 'id' => 'mID' ],
-			'showAPModal("Delete", mOut);',
-			'showAPModal("Delete - error", mErr);');
+		[ 'id' => 'mID' ],
+		'showAPModal("Delete", mOut);',
+		'showAPModal("Delete - error", mErr);');
 
 	Gen::JS_PostAction('usGetData(mID)', 'usGetData',
-			[ 'id' => 'mID' ],
-			'fillUsEditModal(mID, mOut);',
-			'showAPModal("Get data - error", mErr);');
-
+		[ 'id' => 'mID' ],
+		'fillUsEditModal(mID, mOut);',
+		'showAPModal("Get data - error", mErr);');
 
 	Gen::JS_PostAction('startGSPEdit(mIDGroup, mIDSection)', 'getGSPData',
-			[ 'idgroup' => 'mIDGroup', 'idsection' => 'mIDSection' ],
-			'fillGSPModal(mOut); showGSPModal(mIDGroup, mIDSection);',
-			'showAPModal("Get data - error", mErr);');
+		[ 'idgroup' => 'mIDGroup', 'idsection' => 'mIDSection' ],
+		'fillGSPModal(mOut); showGSPModal(mIDGroup, mIDSection);',
+		'showAPModal("Get data - error", mErr);');
 
 	Gen::JS_PostAction('endGSPEdit(mIDGroup, mIDSection, mA0, mA1, mA2, mA3, mA4, mA5)', 'setGSPData',
-			[
-				'idgroup' => 'mIDGroup',
-				'idsection' => 'mIDSection',
+		[
+			'idgroup' => 'mIDGroup',
+			'idsection' => 'mIDSection',
 
-				'cpost' => 'mA0',
-				'cview' => 'mA1',
-				'ccreatethread' => 'mA2',
-				'cdeletepost' => 'mA3',
-				'cdeletethread' => 'mA4',
-				'cdeletesection' => 'mA5'
-			],
-			'',
-			'showAPModal("Get data - error", mErr);');
-
-
-
-
-
+			'cpost' => 'mA0',
+			'cview' => 'mA1',
+			'ccreatethread' => 'mA2',
+			'cdeletepost' => 'mA3',
+			'cdeletethread' => 'mA4',
+			'cdeletesection' => 'mA5'
+		],
+		'',
+		'showAPModal("Get data - error", mErr);');
 
 	Gen::JS_OnBtnClickDynamic('btnUsAdd',		'showUsEditModal(-1);');
 

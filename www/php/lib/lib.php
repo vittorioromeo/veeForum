@@ -1,7 +1,7 @@
 <?php
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-$rootLib = "$root/php/lib/";
+$rootLib = "$root/php/lib";
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

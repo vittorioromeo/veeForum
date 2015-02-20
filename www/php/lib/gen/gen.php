@@ -1,5 +1,7 @@
 <?php
 
+require_once("$rootLib/gen/impl/controlBase.php");
+
 class Gen
 {
 	public static function LinkBtnActive($mID, $mIcon, $mJS, $mText = '', $mCSS = '', $mDismissModal = false)

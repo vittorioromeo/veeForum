@@ -1,17 +1,14 @@
-<body>
-	<?php	
-		require_once("$root/php/core/body/modalInfo.php");
-		require_once("$root/php/core/body/navbar.php");
-	?>
-	<div class="container" id="pageContainer">
-		<span id="page"></span>
-		<?php 
-			require_once("$root/php/core/body/footer.php"); 
-		?>
-	</div>
-</body>
+<?php	
+	require_once("$root/php/core/body/modalInfo.php");
+	require_once("$root/php/core/body/navbar.php");
 
-<?php 
+	(new HTMLControl('body'))
+		->div(['class' => 'container', 'id' => 'pageContainer'])
+			->span(['id' => 'page'])
+		->back()
+			->file("$root/php/core/body/footer.php")
+		->printRoot();
+
 	Gen::JS_PostAction('reloadPage()', 'getCurrentPage', [], 'reloadPageImpl(mOut);');
 ?>
 
