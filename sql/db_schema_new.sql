@@ -530,40 +530,40 @@ end$
 create procedure mk_notification_user
 (
 	in v_id_receiver int,
-	in v_id_user int
+	in v_id_subscription_user int
 )
 begin
 	call mk_notification_base(v_id_receiver, @out_id_base);
 
 	insert into tbl_notification_user
-		(id_base, id_user)
-		values(@out_id_base, v_id_user);
+		(id_base, id_subscription_user)
+		values(@out_id_base, v_id_subscription_user);
 end$
 
 create procedure mk_notification_thread
 (
 	in v_id_receiver int,
-	in v_id_thread int
+	in v_id_subscription_thread int
 )
 begin
 	call mk_notification_base(v_id_receiver, @out_id_base);
 
 	insert into tbl_notification_thread
-		(id_base, id_thread)
-		values(@out_id_base, v_id_thread);
+		(id_base, id_subscription_thread)
+		values(@out_id_base, v_id_subscription_thread);
 end$
 
 create procedure mk_notification_tag
 (
 	in v_id_receiver int,
-	in v_id_tag int
+	in v_id_subscription_tag int
 )
 begin
 	call mk_notification_base(v_id_receiver, @out_id_base);
 
 	insert into tbl_notification_tag
-		(id_base, id_tag)
-		values(@out_id_base, v_id_tag);
+		(id_base, id_subscription_tag)
+		values(@out_id_base, v_id_subscription_tag);
 end$
 
 
@@ -585,8 +585,8 @@ end$
 create procedure generate_notifications_user()
 begin
 	declare loop_done int default false;
-	declare var_id_sub_base, var_id_sub_tracked_user, current_id_subscriptor int;
-	declare itr cursor for select id_base, id_user from tbl_subscription_user;
+	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_user, current_id_subscriptor int;
+	declare itr cursor for select id, id_base, id_user from tbl_subscription_user;
 	declare continue handler for not found set loop_done = true;
 
 	open itr;
@@ -599,17 +599,15 @@ begin
 
 	label_loop:
 	loop
-		fetch itr into var_id_sub_base, var_id_sub_tracked_user;
+		fetch itr into var_id_sub, var_id_sub_base, var_id_sub_tracked_user;
 
 		if loop_done then
 			leave label_loop;
 		end if;
 
 		if var_id_sub_tracked_user = @last_content_author then
-			start transaction;
-				call get_subscriptor(var_id_sub_base, current_id_subscriptor);
-				call mk_notification_user(current_id_subscriptor, @last_content_author);
-			commit;
+			call get_subscriptor(var_id_sub_base, current_id_subscriptor);
+			call mk_notification_user(current_id_subscriptor, var_id_sub);
 		end if;
 	end loop;
 
@@ -619,8 +617,8 @@ end$
 create procedure generate_notifications_thread()
 begin
 	declare loop_done int default false;
-	declare var_id_sub_base, var_id_sub_tracked_thread, current_id_subscriptor int;
-	declare itr cursor for select id_base, id_thread from tbl_subscription_thread;
+	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_thread, current_id_subscriptor int;
+	declare itr cursor for select id, id_base, id_thread from tbl_subscription_thread;
 	declare continue handler for not found set loop_done = true;
 
 	open itr;
@@ -633,17 +631,15 @@ begin
 
 	label_loop:
 	loop
-		fetch itr into var_id_sub_base, var_id_sub_tracked_thread;
+		fetch itr into var_id_sub, var_id_sub_base, var_id_sub_tracked_thread;
 
 		if loop_done then
 			leave label_loop;
 		end if;
 
 		if var_id_sub_tracked_thread = @last_post_thread then
-			start transaction;
-				call get_subscriptor(var_id_sub_base, current_id_subscriptor);
-				call mk_notification_thread(current_id_subscriptor, @last_post_thread);
-			commit;
+			call get_subscriptor(var_id_sub_base, current_id_subscriptor);
+			call mk_notification_thread(current_id_subscriptor, var_id_sub);
 		end if;
 	end loop;
 
@@ -653,8 +649,8 @@ end$
 create procedure generate_notifications_tag()
 begin
 	declare loop_done int default false;
-	declare var_id_sub_base, var_id_sub_tracked_tag, current_id_subscriptor int;
-	declare itr cursor for select id_base, id_tag from tbl_subscription_tag;
+	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_tag, current_id_subscriptor int;
+	declare itr cursor for select id, id_base, id_tag from tbl_subscription_tag;
 	declare continue handler for not found set loop_done = true;
 
 	open itr;
@@ -667,17 +663,15 @@ begin
 
 	label_loop:
 	loop
-		fetch itr into var_id_sub_base, var_id_sub_tracked_tag;
+		fetch itr into var_id_sub, var_id_sub_base, var_id_sub_tracked_tag;
 
 		if loop_done then
 			leave label_loop;
 		end if;
 
 		if var_id_sub_tracked_tag = @last_tc_tag then
-			start transaction;
-				call get_subscriptor(var_id_sub_base, current_id_subscriptor);
-				call mk_notification_tag(current_id_subscriptor, @last_tc_tag);
-			commit;
+			call get_subscriptor(var_id_sub_base, current_id_subscriptor);
+			call mk_notification_tag(current_id_subscriptor, var_id_sub);
 		end if;
 	end loop;
 
@@ -740,3 +734,5 @@ insert into tbl_user
 insert into tbl_section
 	(id_parent, name)
 	values(null, 'section1')$
+
+call mk_subscription_user(2, 3)$
