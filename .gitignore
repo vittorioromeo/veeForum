@@ -26,3 +26,11 @@
 *.exe
 *.out
 *.app
+/latex/_minted-test/492C602488A0B92C213557029B4E52D2BCFFDEDB86FA6635C19488AA696F1A36.pygtex
+/latex/_minted-test/9ACA7EFEFD953C48A8CB3916E8FCDEE26A123FB6DA8C25840E0294796B00C45A.pygtex
+/latex/_minted-test/default.pygstyle
+/latex/test.aux
+/latex/test.dvi
+/latex/test.log
+/latex/test.pdf
+/latex/X.tex
