@@ -2,16 +2,12 @@
 
 class TblGroup extends Tbl
 {
-	public function mkGroup($mIDParent, $mName, $mPrivs, &$mMsg)
+	public function mkGroup($mIDParent, $mName, ...$mPrivs)
 	{
-		if(!Utils::checkEmptyStr($mName, $mMsg)) return false;
-
-		$parentId = Utils::getInsertParent($this, $mIDParent, $mMsg);
+		$parentId = Utils::getInsertParent($this, $mIDParent);
 		if(!$parentId) return false;
 
-		$this->insert($parentId, $mName, DB::v($mPrivs->toStr()));
-		$mMsg = "Group created successfully.";
-		return true;
+		return $this->insertValues($parentId, $mName, ...$mPrivs);
 	}
 
 	public function getHierarchyStr()
@@ -24,7 +20,7 @@ class TblGroup extends Tbl
 
 			$id = $mRow['id'];
 			$name = $mRow['name'];
-			$privileges = $mRow['privileges'];
+			$privileges = PrivSet::fromGroup($mRow)->toStr();
 
 			$res .= $indent . "($id) $name [$privileges]\n";
 		});

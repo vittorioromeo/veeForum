@@ -26,7 +26,7 @@ class Pages
 }
 
 Pages::add("php/core/content/sections.php", new PrivSet());
-Pages::add("php/core/content/adminPanel.php", new PrivSet(Privs::$superAdmin));
+Pages::add("php/core/content/adminPanel.php", new PrivSet(Privs::isSuperAdmin));
 Pages::add("php/core/content/threadView.php", new PrivSet());
 
 ?>

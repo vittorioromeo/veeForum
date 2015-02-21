@@ -1,0 +1,152 @@
+<body><div class="modal fade" id="modalInfo">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true"></span>
+				</button>
+				<h4 class="modal-title" id="modalInfoHeader"></h4>
+			</div>	
+			<div class="modal-body">
+				<p id="modalInfoText"></p>
+			</div>
+			<div class="modal-footer">
+				
+		<a role="button" class="btn btn-default" data-dismiss="modal">
+			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		</a>   
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+function showModalInfo(mHeader, mText)
+{
+	$("#modalInfoHeader").text(mHeader);
+	$("#modalInfoText").html(mText);
+	$("#modalInfo").modal('show');
+}
+</script><nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">
+				testForum			</a>
+		</div>
+		<span id="navCont">	
+<div class="navbar-form navbar-right">
+	 
+		<div class="form-group">
+			<input type="text" id="tbUser" placeholder="Username" class="form-control">
+		</div>	 
+		<div class="form-group">
+			<input type="password" id="tbPass" placeholder="Password" class="form-control">
+		</div>
+	
+		<a class="btn btn-default " onclick="signIn()" href="#" role="button" id="btnSignIn">
+			<span class="glyphicon " aria-hidden="true"></span>
+			Sign in
+		</a>	
+		<a class="btn btn-default " onclick="register()" href="#" role="button" id="btnRegister">
+			<span class="glyphicon " aria-hidden="true"></span>
+			Register
+		</a></div>
+
+<script>
+
+function signIn()
+{
+	trySignIn($("#tbUser").val(), $("#tbPass").val());
+}
+function register()
+{
+	$('#modalLgRegister').modal('show');
+}
+
+</script>
+
+<div class="modal fade" id="modalLgRegister"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">Register</h4><a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></a></div><div class="modal-body"><div class="form-group"><label for="tbLgUsername">Username</label><input type="text" class="form-control" id="tbLgUsername" placeholder="Username"></div><div class="form-group" type="password"><label for="tbLgPassword">Password</label><input type="text" class="form-control" id="tbLgPassword" placeholder="Password"></div><div class="form-group"><label for="tbLgEmail">Email</label><input type="text" class="form-control" id="tbLgEmail" placeholder="Email"></div><div class="form-group"><label for="tbLgFirstname">First name</label><input type="text" class="form-control" id="tbLgFirstname" placeholder="First name"></div><div class="form-group"><label for="tbLgLastname">Last name</label><input type="text" class="form-control" id="tbLgLastname" placeholder="Last name"></div><div class="form-group">
+					<label for="dateLgBirth">Birth date</label>
+					<input class="form-control" type="date" id="dateLgBirth">
+				</div></div><div class="modal-footer"><div class="btn-group pull-right"><a class="btn btn-default" id="btnLgOK" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span></a><a class="btn btn-default" id="" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a></div></div></div></div></div><script>
+			function tryRegister()
+			{
+				var url = "php/core/content/actions.php";
+				var sentData = 
+				{ 
+					action: "tryRegister", username: $("#tbLgUsername").val(), password: $("#tbLgPassword").val(), email: $("#tbLgEmail").val(), firstname: $("#tbLgFirstname").val(), lastname: $("#tbLgLastname").val(), birthdate: $("#dateLgBirth").val()
+				};
+
+				$.post(url, sentData, 
+					function(mOut, mTS, mJQXHR){showAPModal("Add/edit", mOut);})
+				.fail(
+					function(mJQXHR, mTS, mErr){showAPModal("Add/edit - error", mErr);});
+			}
+		</script><script>
+		$("#btnLgOK").click(function(e)
+		{
+			e.preventDefault();
+			tryRegister();
+		});
+		</script><script>
+			function trySignIn(mUser, mPass)
+			{
+				var url = "php/core/content/actions.php";
+				var sentData = 
+				{ 
+					action: "trySignIn", user: mUser, pass: mPass
+				};
+
+				$.post(url, sentData, 
+					function(mOut, mTS, mJQXHR){reloadNavbar(); reloadPage();})
+				.fail(
+					function(mJQXHR, mTS, mErr){});
+			}
+		</script></span>
+	</div>
+</nav>
+
+<script>
+$(document).ready(function()
+{
+	reloadNavbar();
+});
+
+function reloadNavbar()
+{
+	$("#navCont").load("php/core/body/navbarContents.php");
+}
+</script><div class="container" id="pageContainer" style="display: block;"><span id="page">	<br><strong>User not logged in.</strong></span><footer><hr><a href="http://vittorioromeo.info">http://vittorioromeo.info</a></footer></div><script>
+			function reloadPage()
+			{
+				var url = "php/core/content/actions.php";
+				var sentData = 
+				{ 
+					action: "getCurrentPage"
+				};
+
+				$.post(url, sentData, 
+					function(mOut, mTS, mJQXHR){reloadPageImpl(mOut);})
+				.fail(
+					function(mJQXHR, mTS, mErr){});
+			}
+		</script>
+<script>
+function reloadPageImpl(mX)
+{
+	$("#pageContainer").fadeOut('fast', function()
+	{
+		$("#page").load(mX);
+		$("#pageContainer").fadeIn('fast');
+	});
+}
+
+$(document).ready(function()
+{ 
+	reloadPage(); 
+});
+</script>
+<div id="debugLo">
+	</div>
+
+</body>

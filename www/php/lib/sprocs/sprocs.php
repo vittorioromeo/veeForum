@@ -17,7 +17,7 @@ class SProc
 		{
 			$err = "Error: count of passed values does not match count of sproc parameters.";
 			Debug::lo($err);
-			return $err;	
+			return false;	
 		}
 
 		$argsStr = '';
@@ -27,12 +27,17 @@ class SProc
 			if($i < count($mArgs) - 1) $argsStr .= ', ';
 		}
 
-		if(!DB::query('call '.$this->procedureName.'('.$argsStr.');')) 
+		$queryStr = 'call '.$this->procedureName.'('.$argsStr.');';		
+		$res = DB::query($queryStr);
+
+		if(!$res) 
 		{
 			$err = 'Error: call to '.$this->procedureName.' failed: '.DB::$lastError;
 			Debug::lo($err);
-			return $err;
+			return false;
 		}
+
+		return $res;
 	}
 }
 

@@ -1,11 +1,15 @@
 <?php
 
-class TblThread extends Tbl
+class TblCntThread extends Tbl
 {
-	public function mkThreadAndCData($mIDSection, $mTitle)
+	public function mk(...$mArgs)
 	{
-		$cdID = TBS::$cdata->createCDataAndGetID();
-		return $this->insertValues($cdID, $mIDSection, $mTitle);
+		return SPRCS::$mkContentThread->call(...$mArgs);
+	}
+
+	public function mkCU(...$mArgs)
+	{
+		return $this->mk(Creds::getCUID(), ...$mArgs);
 	}
 }
 

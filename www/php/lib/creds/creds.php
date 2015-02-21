@@ -45,11 +45,11 @@ class Creds
 		$groupID = Creds::getCURow()['id_group'];
 		$group = TBS::$group->findByID($groupID);		
 
-		$calcPset = PrivSet::fromStr($group['privileges']);
+		$calcPset = PrivSet::fromGroup($group);
 
 		TBS::$group->forParent(function(&$mRow, $mDepth) use (&$calcPset)
 		{
-			$calcPset = $calcPset->getOrWith(PrivSet::fromStr($mRow['privileges']));
+			$calcPset = $calcPset->getOrWith(PrivSet::fromGroup($mRow));
 		}, $groupID);
 
 		return $calcPset;

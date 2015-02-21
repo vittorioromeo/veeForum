@@ -1,21 +1,23 @@
-<div class="modal fade" id="modalInfo">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true"></span>
-				</button>
-				<h4 class="modal-title" id="modalInfoHeader"></h4>
-			</div>	
-			<div class="modal-body">
-				<p id="modalInfoText"></p>
-			</div>
-			<div class="modal-footer">
-				<?php Gen::BtnCloseModal(); ?>   
-			</div>
-		</div>
-	</div>
-</div>
+<?php
+	$modal = new BSModal('modalInfo', '');
+	$modal->inHeader()->inHTMLCtrl('h4', ['class' => 'modal-title', 'id' => 'modalInfoHeader']);
+	$modal->inBody()->inHTMLCtrl('p', ['id' => 'modalInfoText']);
+	$modal->printRoot();
+
+	Gen::JS_PostAction('tryRegister()', 'tryRegister',
+		[		
+			'username' => '$("#tbLgUsername").val()',
+			'password' => '$("#tbLgPassword").val()',
+			'email' => '$("#tbLgEmail").val()',
+			'firstname' => '$("#tbLgFirstname").val()',
+			'lastname' => '$("#tbLgLastname").val()',
+			'birthdate' => '$("#dateLgBirth").val()',		
+		],
+		'showAPModal("Add/edit", mOut);',
+		'showAPModal("Add/edit - error", mErr);');
+
+	Gen::JS_OnBtnClick('btnLgOK', 'tryRegister();');
+?>
 
 <script>
 function showModalInfo(mHeader, mText)

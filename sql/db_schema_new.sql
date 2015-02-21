@@ -29,7 +29,7 @@ create table tbl_tag
 	id int auto_increment primary key,
 
 	# Name
-	value varchar(32) not null
+	value varchar(32) not null unique
 )$
 
 # Is base of:
@@ -731,6 +731,8 @@ begin
 
 	close itr;
 end$
+
+
 
 
 # Trigger that creates a notification when a tracked user has created content

@@ -1,11 +1,28 @@
 <?php
 
-class TblPost extends Tbl
+class TblCntPost extends Tbl
 {
-	public function mkPostAndCData($mIDThread, $mContents)
+	public function mk(...$mArgs)
 	{
-		$cdID = TBS::$cdata->createCDataAndGetID();
-		return $this->insertValues($cdID, $mIDThread, $mContents);
+		return SPRCS::$mkContentPost->call(...$mArgs);
+	}
+
+	public function mkCU(...$mArgs)
+	{
+		return $this->mk(Creds::getCUID(), ...$mArgs);
+	}
+}
+
+class TblCntAttachment extends Tbl
+{
+	public function mk(...$mArgs)
+	{
+		return SPRCS::$mkContentAttachment->call(...$mArgs);
+	}
+
+	public function mkCU(...$mArgs)
+	{
+		return $this->mk(Creds::getCUID(), ...$mArgs);
 	}
 }
 

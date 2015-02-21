@@ -2,9 +2,13 @@
 
 class Privs
 {
-	public static $count = 1;
+	const count = 5;
 
-	public static $superAdmin = 0;
+	const isSuperAdmin = 0;
+	const canManageSections = 1;
+	const canManageUsers = 2;
+	const canManageGroups = 3;
+	const canManagePermissions = 4;
 }
 
 ?>

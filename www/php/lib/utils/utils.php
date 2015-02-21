@@ -31,13 +31,12 @@ class Utils
 		return true;
 	}
 
-	public static function getInsertParent(&$mTbl, $mIDParent, &$mMsg)
+	public static function getInsertParent(&$mTbl, $mIDParent)
 	{
 		if($mIDParent == -1) return 'null';
 		
 		if(!$mTbl->hasID($mIDParent))
 		{
-			$mMsg = "Invalid parent ID: $mIDParent";
 			return false;
 		}
 

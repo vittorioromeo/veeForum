@@ -27,9 +27,9 @@ class SectionData
 			print('<div class="panel-body">');
 				print('<strong>'.$mRow['title'].'</strong><br/>');
 
-				$rowCD = TBS::$cdata->findByID($mRow['id_creation_data']);
+				$rowCD = TBS::$cntBase->findByID($mRow['id_base']);
 				$authorName = TBS::$user->findByID($rowCD['id_author'])['username'];
-				$date = $rowCD['creation_date'];
+				$date = $rowCD['creation_timestamp'];
 				print("By: $authorName<br/>");
 				print("On: $date");
 
@@ -84,7 +84,7 @@ class SectionData
 
 			$this->printSubsections();					
 		
-		TBS::$thread->forWhere(function($mRow)
+		TBS::$cntThread->forWhere(function($mRow)
 		{
 			$this->printThread($mRow);
 		}, "id_section = $id");
@@ -138,12 +138,11 @@ class ActionUtils
 
 	public static function printPost($mRow)
 	{
-		$id = $mRow['id'];
-		$idCD = $mRow['id_creation_data'];
+		$id = $mRow['id'];	
 
-		$rowCD = TBS::$cdata->findByID($idCD);
+		$rowCD = TBS::$cntBase->findByID($mRow['id_base']);
 		$authorName = TBS::$user->findByID($rowCD['id_author'])['username'];
-		$postDate = $rowCD['creation_date'];
+		$postDate = $rowCD['creation_timestamp'];
 
 		print('<div class="panel panel-default">');
 			print('<div class="panel-body">');
@@ -168,12 +167,12 @@ class Actions
 	public static function refreshThread()
 	{
 		$idThread = Session::get(SK::$threadID);
-		$tr = TBS::$thread->findByID($idThread);
+		$tr = TBS::$cntThread->findByID($idThread);
 		$title = $tr['title'];
 
-		$rowCD = TBS::$cdata->findByID($tr['id_creation_data']);
+		$rowCD = TBS::$cntBase->findByID($tr['id_base']);
 		$authorName = TBS::$user->findByID($rowCD['id_author'])['username'];
-		$date = $rowCD['creation_date'];
+		$date = $rowCD['creation_timestamp'];
 
 		print("<h2>$title</h2>");
 		print("<strong>");
@@ -183,16 +182,62 @@ class Actions
 		print("</strong>");
 	}
 
+	public static function refreshThreadCtrls()
+	{
+		$tid = Session::get(SK::$threadID);
+		$sid = TBS::$cntThread->findByID($tid)['id_section'];
+
+		if(Creds::canCUPost($sid))
+			Gen::LinkBtn('btnNewPost', 'glyphicon-plus', 'New post'); 
+
+		// TODO: if(TODO)
+
+		if(!TBS::$subThread->has(Creds::getCUID(), $tid))
+		{
+			Gen::LinkBtn('btnSubThread', 'glyphicon-star', 'Subscribe'); 
+		}
+		else
+		{
+			Gen::LinkBtn('btnUnsubThread', 'glyphicon-star-empty', 'Unsubscribe'); 
+		}
+		
+		if(Creds::canCUDeletePost($sid))
+			Gen::LinkBtn('btnDelPosts', 'glyphicon-remove', 'Delete all posts'); 
+
+		if(Creds::canCUDeleteThread($sid))
+			Gen::LinkBtn('btnDelThread', 'glyphicon-remove', 'Delete thread'); 
+	}
+
 	public static function deleteCurrentPosts()
 	{
 		$idThread = Session::get(SK::$threadID);
 		TBS::$post->deleteWhere("id_thread = $idThread");
 	}
 
+	public static function subCurrentThread()
+	{
+		$idThread = Session::get(SK::$threadID);
+		$res = TBS::$subThread->mkCU($idThread);
+
+		header("Content-type: application/json; charset=ISO-8859-1");
+		if(!$res) print('false');
+		else print('true');
+	}
+
+	public static function unsubCurrentThread()
+	{
+		$idThread = Session::get(SK::$threadID);
+		$res = TBS::$subThread->delCU($idThread);
+
+		header("Content-type: application/json; charset=ISO-8859-1");
+		if(!$res) print('false');
+		else print('true');
+	}
+
 	public static function deleteCurrentThread()
 	{
 		$idThread = Session::get(SK::$threadID);
-		$res = TBS::$thread->deleteByID($idThread);
+		$res = TBS::$cntThread->deleteByID($idThread);
 
 		header("Content-type: application/json; charset=ISO-8859-1");
 		if(!$res) print('false');
@@ -218,7 +263,7 @@ class Actions
 	{
 		$idThread = Session::get(SK::$threadID);
 
-		TBS::$post->forWhere(function($mRow)
+		TBS::$cntPost->forWhere(function($mRow)
 		{
 			ActionUtils::printPost($mRow);		
 		}, "id_thread = $idThread");
@@ -233,7 +278,7 @@ class Actions
 	public static function newPost()
 	{		
 		$contents = $_POST["contents"];			
-		$res = TBS::$post->mkPostAndCData(Session::get(SK::$threadID), $contents);
+		$res = TBS::$cntPost->mkCU(Session::get(SK::$threadID), $contents);
 
 		ActionUtils::printQuerySuccess($res);
 	}
@@ -242,7 +287,7 @@ class Actions
 	{
 		$sectionId = $_POST["sectionId"];
 		$title = $_POST["title"];		
-		$res = TBS::$thread->mkThreadAndCData($sectionId, $title);
+		$res = TBS::$cntThread->mkCU($sectionId, $title);
 
 		ActionUtils::printQuerySuccess($res);
 	}
@@ -364,9 +409,8 @@ class Actions
 		$pset = new PrivSet();
 		if($privileges) foreach($privileges as $x) $pset->add($x);
 
-		TBS::$group->mkGroup($idParent, DB::v($name), $pset, $msg);
-
-		print($msg);	
+		$res = TBS::$group->mkGroup($idParent, DB::v($name), $pset);
+		print($res ? "Success." : DB::$lastError);	
 	}
 
 	public static function grDel()

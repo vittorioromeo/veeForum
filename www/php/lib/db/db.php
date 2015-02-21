@@ -13,7 +13,7 @@ class DB
 
 	public static function connect()
 	{
-		DB::$conn = new mysqli("localhost", "root", "root", "db_forum");
+		DB::$conn = new mysqli("localhost", "root", "root", "db_forum_new");
 
 		if(DB::$conn->connect_errno) 
 		{

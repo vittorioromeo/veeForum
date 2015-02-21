@@ -1,42 +1,47 @@
-<ul class="nav navbar-nav">
-	<li><a id="btnNavSections" href="#">Sections</a></li>
-	<?php
-		if(Creds::hasCUPrivilege(Privs::$superAdmin))
-		{
-			print('<li><a id="btnNavAdministration" href="#">Administration</a></li>');
-		}
-	?>   
-</ul>
-
-<ul class="nav navbar-nav navbar-right">
-	<li>
-		<a href="#">
-			Logged in as: 
-			<strong> <?php print(Creds::getCURow()['username']); ?> </strong>
-		</a>
-	</li>   
-	<li>
-		<div class="navbar-form">
-			<?= Gen::LinkBtnActive('btnSignOut', '', 'trySignOut()', 'Sign out'); ?>
-		</div>
-	</li>   		
-</ul>
-
 <?php
+	$navLeft = (new Container())->inHTMLCtrl('ul', ['class' => 'nav navbar-nav']);
+	
+	$navLeft
+		->inHTMLCtrl('li')
+			->inHTMLCtrl('a', ['id' => 'btnNavSections', 'href' => '#'])
+				->literal('Sections');
 
-Gen::JS_PostAction('trySignOut()', 'trySignOut',
-			[],
-			'reloadNavbar(); reloadPage();');
+	if(Creds::hasCUPrivilege(Privs::isSuperAdmin))
+	{
+		$navLeft
+			->inHTMLCtrl('li')
+				->inHTMLCtrl('a', ['id' => 'btnNavAdministration', 'href' => '#'])
+					->literal('Administration');
+	}
 
-Gen::JS_PostAction('changeCurrentPage(mX)', 'changeCurrentPage',
-			[ 'idpage' => 'mX' ],
-			'reloadNavbar(); reloadPage();');
+	$navRight = (new Container())->inHTMLCtrl('ul', ['class' => 'nav navbar-nav navbar-right']);
+	$navRight
+		->inHTMLCtrl('li')
+			->inHTMLCtrl('a')
+				->literal('Logged in as:')
+				->inHTMLCtrl('strong')
+					->literal(Creds::getCURow()['username']);					
+	$navRight
+		->inHTMLCtrl('li')
+			->inDiv(['class' => 'navbar-form'])
+				->inBSLinkBtnActive('btnSignOut', 'trySignOut()')
+					->literal('Sign out');
 
-Gen::JS_PostAction('gotoThread(mX)', 'gotoThread',
-			[ 'idThread' => 'mX' ],
-			'changeCurrentPage('.PK::$threadView.');');
+	$navLeft->printRoot();
+	$navRight->printRoot();
 
-Gen::JS_OnBtnClick('btnNavSections', 'changeCurrentPage('.PK::$sections.'); ');
-Gen::JS_OnBtnClick('btnNavAdministration', 'changeCurrentPage('.PK::$administration.'); ');
+	Gen::JS_PostAction('trySignOut()', 'trySignOut',
+				[],
+				'reloadNavbar(); reloadPage();');
 
+	Gen::JS_PostAction('changeCurrentPage(mX)', 'changeCurrentPage',
+				[ 'idpage' => 'mX' ],
+				'reloadNavbar(); reloadPage();');
+
+	Gen::JS_PostAction('gotoThread(mX)', 'gotoThread',
+				[ 'idThread' => 'mX' ],
+				'changeCurrentPage('.PK::$threadView.');');
+
+	Gen::JS_OnBtnClick('btnNavSections', 'changeCurrentPage('.PK::$sections.'); ');
+	Gen::JS_OnBtnClick('btnNavAdministration', 'changeCurrentPage('.PK::$administration.'); ');
 ?>
