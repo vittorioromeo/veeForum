@@ -265,31 +265,6 @@ create table tbl_content_post
 
 
 #########################################################################################
-# Copyright (c) 2013-2015 Vittorio Romeo
-# License: Academic Free License ("AFL") v. 3.0
-# AFL License page: http://opensource.org/licenses/AFL-3.0
-#########################################################################################
-# http://vittorioromeo.info
-# vittorio.romeo@outlook.com
-#########################################################################################
-
-#########################################################################################
-# veeForum forum framework initialization and creation script
-#########################################################################################
-
-#########################################################################################
-# This script is meant to be run once to create and initialize
-# from scratch the whole MySQL veeForum backend.
-# Therefore, we drop the database if exists and re-create it.
-drop database if exists db_forum_new$
-create database db_forum_new$
-use db_forum_new$
-#########################################################################################
-
-
-
-
-#########################################################################################
 # TABLE
 # * This table deals with attachments, a type of content.
 #########################################################################################
@@ -614,28 +589,6 @@ create table tbl_tag_content
 		references tbl_content_base(id)
 		on update cascade
 		on delete cascade
-)$
-#########################################################################################
-
-
-
-#########################################################################################
-# TABLE
-# * This table deals with log messages.
-#########################################################################################
-create table tbl_log
-(
-	# Primary key
-	id int auto_increment primary key,
-
-	# Log type
-	type int not null default 0,
-
-	# Entry timestamp
-	creation_timestamp timestamp not null,
-
-	# Name
-	value varchar(512) not null
 )$
 #########################################################################################
 
@@ -1023,7 +976,6 @@ end$
 
 
 
-
 #########################################################################################
 # PROCEDURE
 # * Generate notifications for every subscriber to the author of the
@@ -1032,7 +984,8 @@ end$
 create procedure generate_notifications_user()
 begin
 	declare loop_done int default false;
-	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_user, current_id_subscriptor int;
+	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_user, 
+	        current_id_subscriptor int;
 	declare itr cursor for select id, id_base, id_user from tbl_subscription_user;
 	declare continue handler for not found set loop_done = true;
 
@@ -1072,7 +1025,8 @@ end$
 create procedure generate_notifications_thread()
 begin
 	declare loop_done int default false;
-	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_thread, current_id_subscriptor int;
+	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_thread, 
+	        current_id_subscriptor int;
 	declare itr cursor for select id, id_base, id_thread from tbl_subscription_thread;
 	declare continue handler for not found set loop_done = true;
 
@@ -1093,10 +1047,13 @@ begin
 		end if;
 
 		if var_id_sub_tracked_thread = @last_post_thread then
-			call get_subscriptor(var_id_sub_base, var_id_sub_tracked_thread, current_id_subscriptor);
+			call get_subscriptor(var_id_sub_base, var_id_sub_tracked_thread, 
+				                 current_id_subscriptor);
 
-			# Check if an unseen notification for this thread exists
-			call check_notification_unseen_existance_thread(current_id_subscriptor, @already_exists);
+			# Check if an unseen notification for this thread exists 
+			# (TODO: should this be done at all?)
+			call check_notification_unseen_existance_thread(current_id_subscriptor, 
+				                                            @already_exists);
 			if @already_exists = true then
 				leave label_loop;
 			end if;
@@ -1119,7 +1076,8 @@ end$
 create procedure generate_notifications_tag()
 begin
 	declare loop_done int default false;
-	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_tag, current_id_subscriptor int;
+	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_tag, 
+	        current_id_subscriptor int;
 	declare itr cursor for select id, id_base, id_tag from tbl_subscription_tag;
 	declare continue handler for not found set loop_done = true;
 
@@ -1206,18 +1164,22 @@ create procedure initialize_veeForum()
 begin
 	# Create Superadmin group (ID: 1)
 	insert into tbl_group
-		(id_parent, name, is_superadmin, can_manage_sections, can_manage_users, can_manage_groups, can_manage_permissions)
+		(id_parent, name, is_superadmin, can_manage_sections, can_manage_users, 
+			 can_manage_groups, can_manage_permissions)
 		values(null, 'Superadmin', true, true, true, true, true);
 
 	# Create Basic group (ID: 2) (default registration group)
 	insert into tbl_group
-		(id_parent, name, is_superadmin, can_manage_sections, can_manage_users, can_manage_groups, can_manage_permissions)
+		(id_parent, name, is_superadmin, can_manage_sections, can_manage_users, 
+			can_manage_groups, can_manage_permissions)
 		values(null, 'Basic', false, false, false, false, false);
 
 	# Create SuperAdmin user (ID: 1) with (admin, admin) credentials
 	insert into tbl_user
-		(id_group, username, password_hash, email, registration_date, firstname, lastname, birth_date)
-		values(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'vittorio.romeo@outlook.com', curdate(), 'Vittorio', 'Romeo', curdate());
+		(id_group, username, password_hash, email, registration_date, firstname, 
+			lastname, birth_date)
+		values(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 
+			'vittorio.romeo@outlook.com', curdate(), 'Vittorio', 'Romeo', curdate());
 
 	# Insert log message with the date of the forum framework installation
 	insert into tbl_log
@@ -1248,7 +1210,8 @@ begin
 		values(null, 'section1');
 
 	insert into tbl_group_section_permission
-		(id_group, id_section, can_view, can_post, can_create_thread, can_delete_post, can_delete_thread, can_delete_section)
+		(id_group, id_section, can_view, can_post, can_create_thread, can_delete_post, 
+			can_delete_thread, can_delete_section)
 		values(1, 1, true, true, true, true, true, true);
 
 	call mk_subscription_user(2, 3);
@@ -1274,225 +1237,6 @@ call create_test_data()$
 #########################################################################################
 # http://vittorioromeo.info
 # vittorio.romeo@outlook.com
-#########################################################################################
-
-
-
-#########################################################################################
-# TABLE
-# * This table deals with tag archetypes.
-#########################################################################################
-create table tbl_tag
-(
-	# Primary key
-	id int auto_increment primary key,
-
-	# Name
-	value varchar(32) not null unique
-)$
-#########################################################################################
-
-
-
-#########################################################################################
-# TABLE
-# * This table deals with groups.
-# * Every group row also contains its forum-wide privileges.
-#########################################################################################
-create table tbl_group
-(
-	# Primary key
-	id int auto_increment primary key,
-
-	# Parent group (null is allowed)
-	id_parent int,
-
-	# Name,
-	name varchar(255) not null,
-
-	# Privs
-	is_superadmin boolean not null default false,
-	can_manage_sections boolean not null default false,
-	can_manage_users boolean not null default false,
-	can_manage_groups boolean not null default false,
-	can_manage_permissions boolean not null default false,
-
-	foreign key (id_parent)
-		references tbl_group(id)
-		on update cascade
-		on delete cascade
-)$
-#########################################################################################
-
-
-
-#########################################################################################
-# TABLE
-# * This table deals with users. 
-#########################################################################################
-create table tbl_user
-(
-	# Primary key
-	id int auto_increment primary key,
-
-	# Group of the user
-	id_group int not null,
-
-	# Credentials
-	username varchar(255) not null,
-	password_hash varchar(255) not null,
-	email varchar(255) not null,
-	registration_date date not null,
-
-	# Personal info
-	firstname varchar(255),
-	lastname varchar(255),
-	birth_date date,
-
-	foreign key (id_group)
-		references tbl_group(id)
-		on update cascade
-		on delete cascade
-)$
-#########################################################################################
-
-
-
-#########################################################################################
-# TABLE
-# * This table deals with sections.
-#########################################################################################
-create table tbl_section
-(
-	# Primary key
-	id int auto_increment primary key,
-
-	# Parent section (null is allowed)
-	id_parent int,
-
-	# Data
-	name varchar(255) not null,
-
-	foreign key (id_parent)
-		references tbl_section(id)
-		on update no action
-		on delete no action
-)$
-#########################################################################################
-
-
-
-#########################################################################################
-# TABLE
-# * This table deals with binary file data.
-# * Used for attachments.
-#########################################################################################
-create table tbl_file_data
-(
-	# Primary key
-	id int auto_increment primary key,
-
-	# Data
-	filename varchar(255) not null,
-	data blob not null
-)$
-#########################################################################################
-
-
-
-#########################################################################################
-# TABLE
-# * This table deals with content shared data.
-#########################################################################################
-# HIERARCHY
-# * Is base of: tbl_content_thread, tbl_content_post, 
-#               tbl_content_attachment
-#########################################################################################
-create table tbl_content_base
-(
-	# Primary key
-	id int auto_increment primary key,
-
-	# Data
-	creation_timestamp timestamp not null,
-	id_author int not null,
-
-	foreign key (id_author)
-		references tbl_user(id)
-		on update no action
-		on delete no action
-)$
-#########################################################################################
-
-
-
-#########################################################################################
-# TABLE
-# * This table deals with threads, a type of content.
-#########################################################################################
-# HIERARCHY
-# * Derives from: tbl_content_base
-#########################################################################################
-create table tbl_content_thread
-(
-	# Primary key
-	id int auto_increment primary key,
-
-	# Content base
-	id_base int not null,
-
-	# Parent section
-	id_section int not null,
-
-	# Data
-	title varchar(255) not null,
-
-	foreign key (id_base)
-		references tbl_content_base(id)
-		on update cascade
-		on delete cascade,
-
-	foreign key (id_section)
-		references tbl_section(id)
-		on update no action
-		on delete no action
-)$
-#########################################################################################
-
-
-
-
-#########################################################################################
-# TABLE
-# * This table deals with posts, a type of content.
-#########################################################################################
-# HIERARCHY
-# * Derives from: tbl_content_base
-#########################################################################################
-create table tbl_content_post
-(
-	# Primary key
-	id int auto_increment primary key,
-
-	# Creation data
-	id_base int not null,
-
-	# Parent thread
-	id_thread int not null,
-
-	# Data
-	contents text not null,
-
-	foreign key (id_base)
-		references tbl_content_base(id)
-		on update cascade
-		on delete cascade,
-
-	foreign key (id_thread)
-		references tbl_content_thread(id)
-		on update no action
-		on delete no action
-)$
 #########################################################################################
 
 
