@@ -6,7 +6,7 @@ class ControlBase
 	private $children = [];
 
 	public function &add(&$mChild)
-	{	
+	{
 		array_push($this->children, $mChild);
 		$mChild->parent = &$this;
 		return $mChild;
@@ -75,7 +75,7 @@ class ControlBase
 	{
 		if($this->parent == null) return $this;
 		return $this->parent->root();
-	}	
+	}
 
 	public function &bsIcon($mIcon)
 	{
@@ -83,9 +83,26 @@ class ControlBase
 		return $this;
 	}
 
+	public function &inFooter(...$mArgs)
+	{
+		return $this->inHTMLCtrl('footer', ...$mArgs);
+	}
+
+	public function &inA(...$mArgs)
+	{
+		return $this->inHTMLCtrl('a', ...$mArgs);
+	}
+
 	public function &inBSLinkBtn($mID)
 	{
 		return $this->inHTMLCtrl('a', ['class' => 'btn btn-default', 'id' => $mID]);
+	}
+
+	public function &inBSLinkBtnActive($mID, $mOnClick)
+	{
+		$res = $this->inBSLinkBtn($mID);
+		$res->addAttribute('onclick', $mOnClick);
+		return $res;
 	}
 
 	public function &inBSLinkBtnCloseModal()
@@ -100,12 +117,12 @@ class ControlBase
 	{
 		$this->addAttribute('data-dismiss', 'modal');
 		return $this;
-	}	
+	}
 
 	public function &inBSModal($mID)
 	{
 		return $this->inDiv(['class' => 'modal fade', 'id' => $mID])->inDiv(['class' => 'modal-dialog'])->inDiv(['class' => 'modal-content']);
-	}	
+	}
 
 	public function &inBSModalHeader($mTitle)
 	{
@@ -151,13 +168,25 @@ class ControlBase
 					->literal($mHeader)
 					->out()
 				->out();
-	
+
 		return $panel->inDiv(['class' => 'panel-body']);
-	}			
-	
+	}
+
 	public function &inBSTable($mID)
 	{
 		return $this->inHTMLCtrl('table', ['id' => $mID, 'class' => 'table table-bordered table-striped']);
+	}
+
+	public function &inBSNavbarTextbox($mID, $mCaption)
+	{
+		$res = $this->inDiv(['class' => 'form-group']);
+		return $res->inHTMLCtrl('input', ['type' => 'text', 'class' => 'form-control', 'id' => $mID, 'placeholder' => $mCaption]);		
+	}
+
+	public function &bsNavbarTextbox($mID, $mCaption)
+	{
+		$this->inBSNavbarTextbox($mID, $mCaption);
+		return $this;
 	}
 
 	public function &inBSFormTextbox($mID, $mCaption)
@@ -213,7 +242,7 @@ class ControlBase
 		{
 			$mFn($currParent);
 			$currParent = &$currParent->$parent;
-		}	
+		}
 	}
 
 	protected function toHTML()
@@ -240,18 +269,18 @@ class Container extends ControlBase
 	{
 		return $this->getChildrenHTML();
 	}
-}	
+}
 
 class Literal extends ControlBase
 {
 	protected $html;
 
-	protected function __construct($mHTML) 
+	protected function __construct($mHTML)
 	{
 		$this->html = $mHTML;
 	}
 
-	protected function toHTML() 
+	protected function toHTML()
 	{
 		return $this->html;
 	}
@@ -263,7 +292,7 @@ class HTMLControl extends ControlBase
 	protected $tag;
 	protected $attributes = [];
 
-	public function __construct($mTag, $mAttributes = []) 
+	public function __construct($mTag, $mAttributes = [])
 	{
 		$this->html = '';
 		$this->tag = $mTag;
@@ -274,7 +303,7 @@ class HTMLControl extends ControlBase
 	{
 		$this->attributes = $mAttributes;
 		return $this;
-	}	
+	}
 
 	public function addAttribute($mK, $mV)
 	{
@@ -282,7 +311,7 @@ class HTMLControl extends ControlBase
 		return $this;
 	}
 
-	protected function toHTML() 
+	protected function toHTML()
 	{
 		$this->html = '<'.$this->tag;
 		foreach($this->attributes as $k => $v)
@@ -291,7 +320,7 @@ class HTMLControl extends ControlBase
 		}
 		$this->html .= '>';
 		$this->html .= $this->getChildrenHTML();
-		$this->html .= '</'.$this->tag.'>';
+		$this->html .= '</'.$this->tag.'> ';
 
 		return $this->html;
 	}
@@ -321,15 +350,15 @@ class BSModal extends Container
 		$btnGroup->inBSLinkBtnCloseModal();
 	}
 
-	public function &inHeader() 
+	public function &inHeader()
 	{
 		return $this->header;
 	}
-	public function &inBody() 
+	public function &inBody()
 	{
 		return $this->body;
 	}
-	public function &inFooterBtns() 
+	public function &inFooterBtns()
 	{
 		return $this->footerBtns;
 	}

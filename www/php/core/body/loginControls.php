@@ -1,10 +1,25 @@
-<div class="navbar-form navbar-right">
-	<?= Gen::FC_Textbox('tbUser', 'Username'); ?>
-	<?= Gen::FC_Textbox('tbPass', 'Password', 'password'); ?>
+<?php
+	require_once("$root/php/core/content/register/modalRegister.php");
 
-	<?= Gen::LinkBtnActive('btnSignIn', '', 'signIn()', 'Sign in'); ?>
-	<?= Gen::LinkBtnActive('btnRegister', '', 'register()', 'Register'); ?>
-</div>
+	(new Container())
+		->inDiv(['class' => 'navbar-form navbar-right'])
+			->bsNavbarTextbox('tbUser', 'Username')
+			->inBSNavbarTextbox('tbPass', 'Password')
+				->addAttribute('type', 'password')
+				->out()
+			->inBSLinkBtnActive('btnSignIn', 'signIn()')
+				->literal('Sign in')
+				->out()
+			->inBSLinkBtnActive('btnRegister', 'register()')
+				->literal('Register')
+				->out()
+	->printRoot();
+
+	Gen::JS_PostAction('trySignIn(mUser, mPass)', 'trySignIn',
+		[ 'user' => 'mUser', 'pass' => 'mPass' ],
+		'reloadNavbar(); reloadPage();'
+	);
+?>
 
 <script>
 
@@ -18,14 +33,3 @@ function register()
 }
 
 </script>
-
-<?php
-
-require_once("$root/php/core/content/register/modalRegister.php");
-
-Gen::JS_PostAction('trySignIn(mUser, mPass)', 'trySignIn',
-			[ 'user' => 'mUser', 'pass' => 'mPass' ],
-			'reloadNavbar(); reloadPage();'
-			);
-
-?>

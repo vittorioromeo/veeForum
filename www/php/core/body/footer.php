@@ -1,4 +1,8 @@
-<footer>
-	<hr>
-	<a href="http://vittorioromeo.info">http://vittorioromeo.info</a>
-</footer>
+<?php
+	(new Container())
+		->inFooter()
+			->hr()
+			->inA(['href' => 'http://vittorioromeo.info'])
+				->literal('http://vittorioromeo.info')
+	->printRoot();
+?>
