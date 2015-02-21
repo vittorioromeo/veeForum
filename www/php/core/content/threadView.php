@@ -41,6 +41,7 @@ function refreshAll()
 	refreshThreadCtrls();
 	refreshThread();
 	refreshPosts();
+	reloadNavbar();
 }
 
 $(document).ready(function(){ refreshAll(); });

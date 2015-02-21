@@ -211,7 +211,7 @@ class Actions
 	public static function deleteCurrentPosts()
 	{
 		$idThread = Session::get(SK::$threadID);
-		TBS::$post->deleteWhere("id_thread = $idThread");
+		TBS::$cntPost->deleteWhere("id_thread = $idThread");
 	}
 
 	public static function subCurrentThread()

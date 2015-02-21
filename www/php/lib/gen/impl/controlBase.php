@@ -93,9 +93,9 @@ class ControlBase
 		return $this->inHTMLCtrl('a', ...$mArgs);
 	}
 
-	public function &inBSLinkBtn($mID)
+	public function &inBSLinkBtn($mID, $mClass = '')
 	{
-		return $this->inHTMLCtrl('a', ['class' => 'btn btn-default', 'id' => $mID]);
+		return $this->inHTMLCtrl('a', ['class' => 'btn btn-default '.$mClass, 'id' => $mID]);
 	}
 
 	public function &inBSLinkBtnActive($mID, $mOnClick)
@@ -158,6 +158,12 @@ class ControlBase
 			->literal($mCaption);
 
 		return $this;
+	}
+
+	public function &inBSPanelNoHeader()
+	{
+		$panel = $this->inDiv(['class' => 'panel panel-default']);
+		return $panel->inDiv(['class' => 'panel-body']);
 	}
 
 	public function &inBSPanelWithHeader($mHeader)
@@ -328,6 +334,7 @@ class HTMLControl extends ControlBase
 
 class BSModal extends Container
 {
+	private $id;
 	private $header;
 	private $body;
 	private $footer;
@@ -335,6 +342,7 @@ class BSModal extends Container
 
 	public function __construct($mID, $mTitle)
 	{
+		$this->id = $mID;
 		$inner = $this->inBSModal($mID);
 
 		$this->header = $inner->add(new Container());
@@ -361,6 +369,10 @@ class BSModal extends Container
 	public function &inFooterBtns()
 	{
 		return $this->footerBtns;
+	}
+	public function jsShow()
+	{
+		return "$('#".$this->id."').modal('show');";
 	}
 };
 

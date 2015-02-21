@@ -1,3 +1,4 @@
 {
-	"forumName": "testForum"
+	"forumName": "testForum",
+	"defaultGroupID": 2
 }
