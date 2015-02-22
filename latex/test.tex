@@ -1,8 +1,9 @@
-\documentclass{article}
+\documentclass{report}
 \usepackage{minted}
 \usepackage{verbatim}
 \usepackage{fullpage}
-
+\usepackage{etoolbox}
+\usepackage{lipsum}
 
 
 \title{My first document}
@@ -10,19 +11,51 @@
 \author{John Doe}
 
 
+% \makeatletter
+% \def\app@exe{\immediate\write18}
+% \def\inputAllFiles#1{
+% 	\app@exe{ls #1/*.sql | xargs cat >> \jobname.tmp}
+% 	\printSQLtest{\jobname.tmp}{}
+% 	\AtEndDocument{\app@exe{rm -f #1/\jobname.tmp}}}
+% \makeatother
+
 \begin{document}
 
-\begin{verbatim}
-\end{verbatim}
+\newcommand{\printSQLtest}[1]
+{
+	\inputminted[linenos, breaklines, breakbytoken, tabsize=4]{mysql}{#1}
+}
 
-  \pagenumbering{gobble}
-  \maketitle
-  \newpage
-  \pagenumbering{arabic}
+\newcommand{\printSQLTablepage}[2]
+{
+	\section{Table: #2}
+	\subsection{Code}
+	\printSQLtest{../sql/parts/#1}
+	\subsection{Explanation}
+	\lipsum[1-2]
+	\newpage
 
-  Hello World!
+}
 
-  \inputminted[linenos, breaklines, breakbytoken, tabsize=4]{mysql}{../sql/script.sql}
 
+
+
+	\pagenumbering{gobble}
+	\maketitle
+	\newpage
+	\pagenumbering{arabic}
+
+	\tableofcontents{}
+	\newpage
+	
+	\chapter{Tables}
+	\newpage
+
+	\inputAllFiles{../sql/parts}
+
+	\printSQLTablepage{00_db.sql}{db}
+	\printSQLTablepage{01_tblLog.sql}{log}
+	\printSQLTablepage{02_tblTag.sql}{tag}
+	\printSQLTablepage{03_tblGroup.sql}{group}
 
 \end{document}
