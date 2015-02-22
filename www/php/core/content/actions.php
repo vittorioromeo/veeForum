@@ -51,10 +51,10 @@ class SectionData
 	{		
 		print('<div class="btn-group pull-right">');
 			
-		if(Creds::canCUCreateThread($this->row['id']))
+		if(Creds::hasCUPerm($this->row['id'], Perms::addThread))
 			Gen::LinkBtn($this->newThreadID, "glyphicon-plus", "New thread", "btn-xs");
 
-		if(Creds::canCUDeleteSection($this->row['id']))
+		if(Creds::hasCUPerm($this->row['id'], Perms::delSection))
 			Gen::LinkBtn($this->delSectionID, "glyphicon-remove", "Delete section", "btn-xs");
 		
 			print('
@@ -119,7 +119,7 @@ class SectionData
 
 	public function printAll()
 	{
-		if(!Creds::canCUView($this->row['id'])) return;
+		if(!Creds::hasCUPerm($this->row['id'], Perms::view)) return;
 
 		print('<div class="panel panel-default">');					
 			$this->printContents();
@@ -187,7 +187,7 @@ class Actions
 		$tid = Session::get(SK::$threadID);
 		$sid = TBS::$cntThread->findByID($tid)['id_section'];
 
-		if(Creds::canCUPost($sid))
+		if(Creds::hasCUPerm($sid, Perms::post))
 			Gen::LinkBtn('btnNewPost', 'glyphicon-plus', 'New post'); 
 
 		// TODO: if(TODO)
@@ -201,10 +201,10 @@ class Actions
 			Gen::LinkBtn('btnUnsubThread', 'glyphicon-star-empty', 'Unsubscribe'); 
 		}
 		
-		if(Creds::canCUDeletePost($sid))
+		if(Creds::hasCUPerm($sid, Perms::delPost))
 			Gen::LinkBtn('btnDelPosts', 'glyphicon-remove', 'Delete all posts'); 
 
-		if(Creds::canCUDeleteThread($sid))
+		if(Creds::hasCUPerm($sid, Perms::delThread))
 			Gen::LinkBtn('btnDelThread', 'glyphicon-remove', 'Delete thread'); 
 	}
 

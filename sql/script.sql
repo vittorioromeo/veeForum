@@ -985,7 +985,7 @@ create procedure generate_notifications_user()
 begin
 	declare loop_done int default false;
 	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_user, 
-	        current_id_subscriptor int;
+			current_id_subscriptor int;
 	declare itr cursor for select id, id_base, id_user from tbl_subscription_user;
 	declare continue handler for not found set loop_done = true;
 
@@ -1026,7 +1026,7 @@ create procedure generate_notifications_thread()
 begin
 	declare loop_done int default false;
 	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_thread, 
-	        current_id_subscriptor int;
+			current_id_subscriptor int;
 	declare itr cursor for select id, id_base, id_thread from tbl_subscription_thread;
 	declare continue handler for not found set loop_done = true;
 
@@ -1048,12 +1048,12 @@ begin
 
 		if var_id_sub_tracked_thread = @last_post_thread then
 			call get_subscriptor(var_id_sub_base, var_id_sub_tracked_thread, 
-				                 current_id_subscriptor);
+								 current_id_subscriptor);
 
 			# Check if an unseen notification for this thread exists 
 			# (TODO: should this be done at all?)
 			call check_notification_unseen_existance_thread(current_id_subscriptor, 
-				                                            @already_exists);
+															@already_exists);
 			if @already_exists = true then
 				leave label_loop;
 			end if;
@@ -1077,7 +1077,7 @@ create procedure generate_notifications_tag()
 begin
 	declare loop_done int default false;
 	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_tag, 
-	        current_id_subscriptor int;
+			current_id_subscriptor int;
 	declare itr cursor for select id, id_base, id_tag from tbl_subscription_tag;
 	declare continue handler for not found set loop_done = true;
 
@@ -1104,6 +1104,123 @@ begin
 	end loop;
 
 	close itr;
+end$
+#########################################################################################
+
+
+
+#########################################################################################
+# PROCEDURE
+# * Calculate the final privileges of a user by inheriting them from the group hierarchy
+# * they belong to.
+#########################################################################################
+create procedure calculate_final_privileges
+(
+	in v_id_user int,
+	out v_is_superadmin boolean,
+	out v_can_manage_sections boolean,
+	out v_can_manage_users boolean,
+	out v_can_manage_groups boolean,
+	out v_can_manage_permissions boolean
+)
+begin
+	# Set initial out values
+	set v_is_superadmin := false;
+	set v_can_manage_sections := false;
+	set v_can_manage_users := false;
+	set v_can_manage_groups := false;
+	set v_can_manage_permissions := false;
+
+	# Get user group
+	select id_group 
+	into @current_id_group
+	from tbl_user
+	where id = v_id_user;
+
+	# Traverse the hierarchy and set privileges
+	label_loop:
+	loop
+		set @last_id_group := @current_id_group; 
+
+		select id_parent, is_superadmin, can_manage_sections,
+			   can_manage_users, can_manage_groups, can_manage_permissions
+		into @current_id_group, @p0, @p1, @p2, @p3, @p4
+		from tbl_group
+		where id = @last_id_group; 
+
+		set v_is_superadmin := v_is_superadmin or @p0;
+		set v_can_manage_sections := v_can_manage_sections or @p1;
+		set v_can_manage_users := v_can_manage_users or @p2;
+		set v_can_manage_groups := v_can_manage_groups or @p3;
+		set v_can_manage_permissions := v_can_manage_permissions or @p4;
+
+		if @current_id_group is null then
+			leave label_loop;
+		end if;
+	end loop;
+end$
+#########################################################################################
+
+
+
+#########################################################################################
+# PROCEDURE
+# * Calculate the final permissions of a user by inheriting them from the group hierarchy
+# * they belong to, towards a specific section.
+#########################################################################################
+create procedure calculate_final_permissions
+(
+	in v_id_user int,
+	in v_id_section int,
+	out v_can_view boolean,
+	out v_can_post boolean,
+	out v_can_create_thread boolean,
+	out v_can_delete_post boolean,
+	out v_can_delete_thread boolean,
+	out v_can_delete_section boolean
+)
+begin
+	# Set initial out values
+	set v_can_view := false;
+	set v_can_post := false;
+	set v_can_create_thread := false;
+	set v_can_delete_post := false;
+	set v_can_delete_thread := false;
+	set v_can_delete_section := false;
+
+	# Get user group
+	select id_group 
+	into @current_id_group
+	from tbl_user
+	where id = v_id_user;
+
+	# Traverse the hierarchy and set permissions
+	label_loop:
+	loop
+		set @last_id_group := @current_id_group; 
+
+		select id_parent
+		into @current_id_group
+		from tbl_group
+		where id = @last_id_group; 
+
+		select can_view, can_post, can_create_thread, 
+			   can_delete_post, can_delete_thread, can_delete_section
+		into @p0, @p1, @p2, @p3, @p4, @p5
+		from tbl_group_section_permission
+		where id_group = @last_id_group and id_section = v_id_section; 
+
+		set v_can_view := v_can_view or @p0;
+		set v_can_post := v_can_post or @p1;
+		set v_can_create_thread := v_can_create_thread or @p2;
+		set v_can_delete_post := v_can_delete_post or @p3;
+		set v_can_delete_thread := v_can_delete_thread or @p4;
+		set v_can_delete_section := v_can_delete_section or @p5;
+
+		if @current_id_group is null then
+			leave label_loop;
+		end if;
+	end loop;
 end$
 #########################################################################################
 
@@ -1199,11 +1316,11 @@ create procedure create_test_data()
 begin
 	insert into tbl_user
 		(id_group, username, password_hash, email, registration_date)
-		values(1, 'user1', 'pass1', 'email1', curdate());
+		values(2, 'user1', 'pass1', 'email1', curdate());
 
 	insert into tbl_user
 		(id_group, username, password_hash, email, registration_date)
-		values(1, 'user2', 'pass2', 'email2', curdate());
+		values(2, 'user2', 'pass2', 'email2', curdate());
 
 	insert into tbl_section
 		(id_parent, name)

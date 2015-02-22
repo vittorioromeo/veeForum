@@ -1,5 +1,17 @@
 <?php
 
+class Perms
+{
+	const count = 6;
+
+	const view = 0;
+	const post = 1;
+	const addThread = 2;
+	const delPost = 3;
+	const delThread = 4;
+	const delSection = 5;
+}
+
 class Creds
 {
 	public static function isLoggedIn()
@@ -40,44 +52,33 @@ class Creds
 		return TBS::$user->findByID(Creds::getCUID());
 	}
 
-	public static function getCalcPSet()
+	public static function getCUPrivRow()
 	{
-		$groupID = Creds::getCURow()['id_group'];
-		$group = TBS::$group->findByID($groupID);		
-
-		$calcPset = PrivSet::fromGroup($group);
-
-		TBS::$group->forParent(function(&$mRow, $mDepth) use (&$calcPset)
-		{
-			$calcPset = $calcPset->getOrWith(PrivSet::fromGroup($mRow));
-		}, $groupID);
-
-		return $calcPset;
-	}
-
-	public static function hasCUPrivilege($mX)
-	{
-		return Creds::getCalcPSet()->has($mX);
-	}
-
-	public static function canCUViewCurrentPage()
-	{
-		return Pages::getCurrent()->canViewWithPrivs(Creds::getCalcPSet());
+		SPRCS::$calcFinalPrivs->callOut($res, Creds::getCUID());		
+		return $res;
 	}
 
 	public static function getCUPermRow($mSID)
-	{
-		$idGroup = Creds::getCURow()['id_group'];
-		$permRow = TBS::$gsperms->getFirstWhere("id_group = $idGroup AND id_section = $mSID");
-		return $permRow;
+	{		
+		SPRCS::$calcFinalPerms->callOut($res, Creds::getCUID(), $mSID);
+		return $res;
 	}
 
-	public static function canCUView($mSID){ return Creds::getCUPermRow($mSID)['can_view']; }
-	public static function canCUPost($mSID){ return Creds::getCUPermRow($mSID)['can_post']; }
-	public static function canCUCreateThread($mSID){ return Creds::getCUPermRow($mSID)['can_create_thread']; }
-	public static function canCUDeletePost($mSID){ return Creds::getCUPermRow($mSID)['can_delete_post']; }
-	public static function canCUDeleteThread($mSID){ return Creds::getCUPermRow($mSID)['can_delete_thread']; }
-	public static function canCUDeleteSection($mSID){ return Creds::getCUPermRow($mSID)['can_delete_section']; }
+
+	public static function canCUViewCurrentPage()
+	{
+		return Pages::getCurrent()->canViewWithPrivs(Creds::getCUPrivRow());
+	}
+
+	public static function hasCUPriv($mX)
+	{
+		return Creds::getCUPrivRow()[$mX];
+	}
+
+	public static function hasCUPerm($mSID, $mX)
+	{
+		return Creds::getCUPermRow($mSID)[$mX];
+	}
 }
 
 ?>

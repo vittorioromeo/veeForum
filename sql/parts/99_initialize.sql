@@ -42,11 +42,11 @@ create procedure create_test_data()
 begin
 	insert into tbl_user
 		(id_group, username, password_hash, email, registration_date)
-		values(1, 'user1', 'pass1', 'email1', curdate());
+		values(2, 'user1', 'pass1', 'email1', curdate());
 
 	insert into tbl_user
 		(id_group, username, password_hash, email, registration_date)
-		values(1, 'user2', 'pass2', 'email2', curdate());
+		values(2, 'user2', 'pass2', 'email2', curdate());
 
 	insert into tbl_section
 		(id_parent, name)

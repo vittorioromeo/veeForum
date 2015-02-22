@@ -48,7 +48,7 @@
 			->inHTMLCtrl('a', ['id' => 'btnNavSections', 'href' => '#'])
 				->literal('Sections');
 
-	if(Creds::hasCUPrivilege(Privs::isSuperAdmin))
+	if(Creds::hasCUPriv(Privs::isSuperAdmin))
 	{
 		$navLeft
 			->inHTMLCtrl('li')

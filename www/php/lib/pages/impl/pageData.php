@@ -5,7 +5,7 @@ class PageData
 	private $url;
 	private $privs;
 
-	public function __construct($mURL, $mPrivs)
+	public function __construct($mURL, ...$mPrivs)
 	{
 		$this->url = $mURL;
 		$this->privs = $mPrivs;
@@ -23,7 +23,10 @@ class PageData
 
 	public function canViewWithPrivs($mX)
 	{
-		return $this->privs->getAndWith($mX)->isEqualTo($this->privs);
+		foreach($this->privs as $p)		
+			if(!$mX[$p]) return false;
+		
+		return true;
 	}
 }
 
