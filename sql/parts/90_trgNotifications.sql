@@ -7,7 +7,7 @@ create trigger trg_notifications_user
 	after insert on tbl_content_base
 	for each row
 begin
-	call generate_notifications_user();
+	call generate_notifications_user(NEW.id, NEW.id_author);
 end$
 #########################################################################################
 
@@ -22,7 +22,7 @@ create trigger trg_notifications_thread
 	after insert on tbl_content_post
 	for each row
 begin
-	call generate_notifications_thread();
+	call generate_notifications_thread(NEW.id, NEW.id_thread);
 end$
 #########################################################################################
 
@@ -37,6 +37,6 @@ create trigger trg_notifications_tag
 	after insert on tbl_tag_content
 	for each row
 begin
-	call generate_notifications_tag();
+	call generate_notifications_tag(NEW.id_tag, NEW.id_content);
 end$
 #########################################################################################

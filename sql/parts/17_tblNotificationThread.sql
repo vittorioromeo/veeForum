@@ -24,6 +24,6 @@ create table tbl_notification_thread
 	foreign key (id_subscription_thread)
 		references tbl_subscription_thread(id)
 		on update cascade
-		on delete cascade
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################

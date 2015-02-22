@@ -22,7 +22,7 @@ create table tbl_content_thread
 	foreign key (id_base)
 		references tbl_content_base(id)
 		on update cascade
-		on delete cascade,
+		on delete no action,
 
 	foreign key (id_section)
 		references tbl_section(id)

@@ -3,7 +3,11 @@
 # * Generate notifications for every subscriber to the thread of the
 #   last created post.
 #########################################################################################
-create procedure generate_notifications_thread()
+create procedure generate_notifications_thread
+(
+	in v_last_post_id int, # TODO: use
+	in v_last_post_thread int
+)
 begin
 	declare loop_done int default false;
 	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_thread, 
@@ -13,12 +17,6 @@ begin
 
 	open itr;
 
-	# Get useful variables
-	select id, id_thread
-	into @last_post_id, @last_post_thread
-	from tbl_content_post
-	order by id desc limit 1;
-
 	label_loop:
 	loop
 		fetch itr into var_id_sub, var_id_sub_base, var_id_sub_tracked_thread;
@@ -27,14 +25,14 @@ begin
 			leave label_loop;
 		end if;
 
-		if var_id_sub_tracked_thread = @last_post_thread then
-			call get_subscriptor(var_id_sub_base, var_id_sub_tracked_thread, 
-								 current_id_subscriptor);
+		if var_id_sub_tracked_thread = v_last_post_thread then
+			call get_subscriptor(var_id_sub_base, current_id_subscriptor);
 
 			# Check if an unseen notification for this thread exists 
 			# (TODO: should this be done at all?)
 			call check_notification_unseen_existance_thread(current_id_subscriptor, 
-															@already_exists);
+				var_id_sub_tracked_thread, @already_exists);
+
 			if @already_exists = true then
 				leave label_loop;
 			end if;

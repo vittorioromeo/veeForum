@@ -13,7 +13,7 @@
 					'sectionId' => 'sectionId',
 					'title' => '$("#tbThreadTitle").val()'
 				],
-				'showModalInfo("New thread", mOut); refreshAll();',
+				'refreshAll();',
 				'showModalInfo("New thread - error", mErr);');
 
 	Gen::JS_OnBtnClick('btnNewThreadOk', 'newThread(); ');

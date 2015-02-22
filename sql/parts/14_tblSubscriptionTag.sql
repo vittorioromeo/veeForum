@@ -24,6 +24,6 @@ create table tbl_subscription_tag
 	foreign key (id_tag)
 		references tbl_tag(id)
 		on update cascade
-		on delete cascade
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################

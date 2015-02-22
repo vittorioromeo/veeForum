@@ -13,7 +13,7 @@
 		[
 			'contents' => '$("#taPost").val()'
 		],
-		'showModalInfo("New post", mOut); refreshAll();',
+		'refreshAll();',
 		'showModalInfo("New post - error", mErr);');
 
 	Gen::JS_OnBtnClick('btnNewPostOk', 'newPost();');

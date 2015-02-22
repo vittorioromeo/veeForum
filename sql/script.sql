@@ -217,7 +217,7 @@ create table tbl_content_thread
 	foreign key (id_base)
 		references tbl_content_base(id)
 		on update cascade
-		on delete cascade,
+		on delete no action, # Triggers do not get fired with 'cascade'
 
 	foreign key (id_section)
 		references tbl_section(id)
@@ -253,7 +253,7 @@ create table tbl_content_post
 	foreign key (id_base)
 		references tbl_content_base(id)
 		on update cascade
-		on delete cascade,
+		on delete no action, # Triggers do not get fired with 'cascade'
 
 	foreign key (id_thread)
 		references tbl_content_thread(id)
@@ -364,7 +364,7 @@ create table tbl_subscription_thread
 	foreign key (id_thread)
 		references tbl_content_thread(id)
 		on update cascade
-		on delete cascade
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################
 
@@ -397,7 +397,7 @@ create table tbl_subscription_user
 	foreign key (id_user)
 		references tbl_user(id)
 		on update cascade
-		on delete cascade
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################
 
@@ -429,7 +429,7 @@ create table tbl_subscription_tag
 	foreign key (id_tag)
 		references tbl_tag(id)
 		on update cascade
-		on delete cascade
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################
 
@@ -495,7 +495,7 @@ create table tbl_notification_user
 	foreign key (id_subscription_user)
 		references tbl_subscription_user(id)
 		on update cascade
-		on delete cascade
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################
 
@@ -527,7 +527,7 @@ create table tbl_notification_thread
 	foreign key (id_subscription_thread)
 		references tbl_subscription_thread(id)
 		on update cascade
-		on delete cascade
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################
 
@@ -559,7 +559,7 @@ create table tbl_notification_tag
 	foreign key (id_subscription_tag)
 		references tbl_subscription_tag(id)
 		on update cascade
-		on delete cascade
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################
 
@@ -981,7 +981,11 @@ end$
 # * Generate notifications for every subscriber to the author of the
 #   last created content.
 #########################################################################################
-create procedure generate_notifications_user()
+create procedure generate_notifications_user
+(
+	in v_last_content_id int, # TODO: use
+	in v_last_content_author int
+)
 begin
 	declare loop_done int default false;
 	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_user, 
@@ -991,12 +995,6 @@ begin
 
 	open itr;
 
-	# Get useful variables
-	select id, id_author
-	into @last_content_id, @last_content_author
-	from tbl_content_base
-	order by id desc limit 1;
-
 	label_loop:
 	loop
 		fetch itr into var_id_sub, var_id_sub_base, var_id_sub_tracked_user;
@@ -1005,7 +1003,7 @@ begin
 			leave label_loop;
 		end if;
 
-		if var_id_sub_tracked_user = @last_content_author then
+		if var_id_sub_tracked_user = v_last_content_author then
 			call get_subscriptor(var_id_sub_base, current_id_subscriptor);
 			call mk_notification_user(current_id_subscriptor, var_id_sub);
 		end if;
@@ -1022,7 +1020,11 @@ end$
 # * Generate notifications for every subscriber to the thread of the
 #   last created post.
 #########################################################################################
-create procedure generate_notifications_thread()
+create procedure generate_notifications_thread
+(
+	in v_last_post_id int, # TODO: use
+	in v_last_post_thread int
+)
 begin
 	declare loop_done int default false;
 	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_thread, 
@@ -1032,12 +1034,6 @@ begin
 
 	open itr;
 
-	# Get useful variables
-	select id, id_thread
-	into @last_post_id, @last_post_thread
-	from tbl_content_post
-	order by id desc limit 1;
-
 	label_loop:
 	loop
 		fetch itr into var_id_sub, var_id_sub_base, var_id_sub_tracked_thread;
@@ -1046,14 +1042,14 @@ begin
 			leave label_loop;
 		end if;
 
-		if var_id_sub_tracked_thread = @last_post_thread then
-			call get_subscriptor(var_id_sub_base, var_id_sub_tracked_thread, 
-								 current_id_subscriptor);
+		if var_id_sub_tracked_thread = v_last_post_thread then
+			call get_subscriptor(var_id_sub_base, current_id_subscriptor);
 
 			# Check if an unseen notification for this thread exists 
 			# (TODO: should this be done at all?)
 			call check_notification_unseen_existance_thread(current_id_subscriptor, 
-															@already_exists);
+				var_id_sub_tracked_thread, @already_exists);
+
 			if @already_exists = true then
 				leave label_loop;
 			end if;
@@ -1073,7 +1069,11 @@ end$
 # * Generate notifications for every subscriber to the tag of the
 #   last created content.
 #########################################################################################
-create procedure generate_notifications_tag()
+create procedure generate_notifications_tag
+(
+	in v_last_tc_tag int, # TODO: use
+	in v_last_tc_content int
+)
 begin
 	declare loop_done int default false;
 	declare var_id_sub, var_id_sub_base, var_id_sub_tracked_tag, 
@@ -1083,12 +1083,6 @@ begin
 
 	open itr;
 
-	# Get useful variables
-	select id_tag, id_content
-	into @last_tc_tag, @last_tc_content
-	from tbl_tag_content
-	order by id desc limit 1;
-
 	label_loop:
 	loop
 		fetch itr into var_id_sub, var_id_sub_base, var_id_sub_tracked_tag;
@@ -1097,7 +1091,7 @@ begin
 			leave label_loop;
 		end if;
 
-		if var_id_sub_tracked_tag = @last_tc_tag then
+		if var_id_sub_tracked_tag = v_last_tc_tag then
 			call get_subscriptor(var_id_sub_base, current_id_subscriptor);
 			call mk_notification_tag(current_id_subscriptor, var_id_sub);
 		end if;
@@ -1235,7 +1229,7 @@ create trigger trg_notifications_user
 	after insert on tbl_content_base
 	for each row
 begin
-	call generate_notifications_user();
+	call generate_notifications_user(NEW.id, NEW.id_author);
 end$
 #########################################################################################
 
@@ -1250,7 +1244,7 @@ create trigger trg_notifications_thread
 	after insert on tbl_content_post
 	for each row
 begin
-	call generate_notifications_thread();
+	call generate_notifications_thread(NEW.id, NEW.id_thread);
 end$
 #########################################################################################
 
@@ -1265,10 +1259,233 @@ create trigger trg_notifications_tag
 	after insert on tbl_tag_content
 	for each row
 begin
-	call generate_notifications_tag();
+	call generate_notifications_tag(NEW.id_tag, NEW.id_content);
 end$
 #########################################################################################
 
+
+
+#########################################################################################
+# TRIGGER
+# * Delete content base left behind by derived content types.
+#########################################################################################
+create trigger trg_del_content_base_thread
+	after delete on tbl_content_thread
+	for each row
+begin
+	delete from tbl_content_base
+	where id = OLD.id_base;
+end$
+########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * Delete content base left behind by derived content types.
+#########################################################################################
+create trigger trg_del_content_base_post
+	after delete on tbl_content_post
+	for each row
+begin
+	delete from tbl_content_base
+	where id = OLD.id_base;
+end$
+########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * Delete content base left behind by derived content types.
+#########################################################################################
+create trigger trg_del_content_base_attachment
+	after delete on tbl_content_attachment
+	for each row
+begin
+	delete from tbl_content_base
+	where id = OLD.id_base;
+end$
+########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * Delete subscription base left behind by derived subscription types.
+#########################################################################################
+create trigger trg_del_subscription_base_thread
+	after delete on tbl_subscription_thread
+	for each row
+begin
+	delete from tbl_subscription_base
+	where id = OLD.id_base;
+end$
+########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * Delete subscription base left behind by derived subscription types.
+#########################################################################################
+create trigger trg_del_subscription_base_user
+	after delete on tbl_subscription_user
+	for each row
+begin
+	delete from tbl_subscription_base
+	where id = OLD.id_base;
+end$
+########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * Delete subscription base left behind by derived subscription types.
+#########################################################################################
+create trigger trg_del_subscription_base_tag
+	after delete on tbl_subscription_tag
+	for each row
+begin
+	delete from tbl_subscription_base
+	where id = OLD.id_base;
+end$
+########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * Delete notification base left behind by derived notification types.
+#########################################################################################
+create trigger trg_del_notification_base_thread
+	after delete on tbl_notification_thread
+	for each row
+begin
+	delete from tbl_notification_base
+	where id = OLD.id_base;
+end$
+########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * Delete notification base left behind by derived notification types.
+#########################################################################################
+create trigger trg_del_notification_base_user
+	after delete on tbl_notification_user
+	for each row
+begin
+	delete from tbl_notification_base
+	where id = OLD.id_base;
+end$
+########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * Delete notification base left behind by derived notification types.
+#########################################################################################
+create trigger trg_del_notification_base_tag
+	after delete on tbl_notification_tag
+	for each row
+begin
+	delete from tbl_notification_base
+	where id = OLD.id_base;
+end$
+########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * Delete notifications that point to the deleted subscription.
+#########################################################################################
+create trigger trg_del_subscription_ntf_thread
+	before delete on tbl_subscription_thread
+	for each row
+begin
+	delete from tbl_notification_thread
+	where id_subscription_thread = OLD.id;
+end$
+#########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * Delete notifications that point to the deleted subscription.
+#########################################################################################
+create trigger trg_del_subscription_ntf_user
+	before delete on tbl_subscription_user
+	for each row
+begin
+	delete from tbl_notification_user
+	where id_subscription_user = OLD.id;
+end$
+#########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * Delete notifications that point to the deleted subscription.
+#########################################################################################
+create trigger trg_del_subscription_ntf_tag
+	before delete on tbl_subscription_tag
+	for each row
+begin
+	delete from tbl_notification_tag
+	where id_subscription_tag = OLD.id;
+end$
+#########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * TODO
+#########################################################################################
+create trigger trg_del_subscription_cnt_thread
+	before delete on tbl_content_thread
+	for each row
+begin
+	delete from tbl_subscription_thread
+	where id_thread = OLD.id;
+end$
+#########################################################################################
+
+
+#########################################################################################
+# TRIGGER
+# * TODO
+#########################################################################################
+create trigger trg_del_subscription_cnt_user
+	before delete on tbl_user
+	for each row
+begin
+	delete from tbl_subscription_user
+	where id_user = OLD.id;
+end$
+#########################################################################################
+
+
+
+#########################################################################################
+# TRIGGER
+# * TODO
+#########################################################################################
+create trigger trg_del_subscription_cnt_tag
+	before delete on tbl_tag
+	for each row
+begin
+	delete from tbl_subscription_tag
+	where id_tag = OLD.id;
+end$
+#########################################################################################
 
 
 
