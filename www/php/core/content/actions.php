@@ -160,11 +160,100 @@ class ActionUtils
 			print('</div>');
 		print('</div>');
 	}
+
+	public static function printNtfs($mXs)
+	{
+		while($row = $mXs->fetch_assoc())
+		{			
+			$idNtf = $row['id'];
+			$idNtfBase = $row['id_base'];
+			$idThread = $row['id_thread'];
+			$idPost = $row['id_post'];
+			$seen = $row['seen'];
+
+
+			$threadTitle = TBS::$cntThread->findByID($idThread)['title'];
+			$idPostBase = TBS::$cntPost->findByID($idPost)['id_base'];
+			$idPostAuthor = TBS::$cntBase->findByID($idPostBase)['id_author'];
+			$postAuthor = TBS::$user->findByID($idPostAuthor)['username'];
+
+			$btnIdPrefix = 'btnNtfThread'.$idNtf.$idThread.$idPost;
+			$btnIdGo = $btnIdPrefix.'go';
+			$btnIdDel = $btnIdPrefix.'del';
+			$btnIdMark = $btnIdPrefix.'mark';
+
+			$bf = (new Container());
+			$bpb = $bf->inBSPanelNoHeader()
+					->inBSBtnGroup('pull-left')
+						->inBSLinkBtnActive($btnIdDel, 'delNtfByID('.$idNtfBase.');', 'btn-xs')
+							->bsIcon('remove')
+							->out()
+						->inBSLinkBtnActive($btnIdMark, 'markNtfByID('.$idNtfBase.');', 'btn-xs')
+							->bsIcon('pushpin')
+							->out()
+						->inBSLinkBtnActive($btnIdGo, 'gotoThread('.$idThread.'); refreshAll();', 'btn-xs')					
+							->bsIcon('arrow-right')
+							->out()
+						->out();
+
+
+
+			$bfdiv = $bpb->inDiv(['style' => 'float: left; padding-left: 10px;']);
+				
+			$str = 'New post in thread <strong>'.$threadTitle.'</strong> by <strong>'.$postAuthor.'</strong>';
+
+			if(!$seen)
+			{
+				$bfdiv->literal($str);
+			}
+			else
+			{
+				$bpb->addAttribute('style', 'background-color: rgb(220, 220, 220)');
+				$bfdiv->literal($str);
+			}
+
+
+			$bf->printRoot();
+		}
+	}
 }
 
 class Actions
 {
-	
+	public static function markAllNtfs()
+	{
+		$res = TBS::$ntfBase->markAllCU();
+		return ActionUtils::printQuerySuccess($res);
+	}
+
+	public static function delAllNtfs()
+	{
+		$res = TBS::$ntfBase->delAllCU();
+		return ActionUtils::printQuerySuccess($res);	
+	}
+
+	public static function delNtfByID()
+	{
+		$id = $_POST["id"];
+		TBS::$ntfThread->deleteWhere('id_base = '.$id);
+		TBS::$ntfUser->deleteWhere('id_base = '.$id);
+		TBS::$ntfTag->deleteWhere('id_base = '.$id);		
+	}
+
+	public static function markNtfByID()
+	{
+		$id = $_POST["id"];
+		$currentSeen = TBS::$ntfBase->findByID($id)['seen'];		
+		$res = DB::query("UPDATE tbl_notification_base SET seen = ".($currentSeen ? 'false' : 'true')." where id = $id");
+		return ActionUtils::printQuerySuccess($res);
+	}
+
+	public static function refreshNotificationsModal()
+	{	
+		ActionUtils::printNtfs(TBS::$ntfThread->getUnseen());
+		ActionUtils::printNtfs(TBS::$ntfThread->getSeen());
+	}
+
 
 	public static function refreshThread()
 	{

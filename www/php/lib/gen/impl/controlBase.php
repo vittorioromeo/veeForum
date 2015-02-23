@@ -98,9 +98,9 @@ class ControlBase
 		return $this->inHTMLCtrl('a', ['class' => 'btn btn-default '.$mClass, 'id' => $mID]);
 	}
 
-	public function &inBSLinkBtnActive($mID, $mOnClick)
+	public function &inBSLinkBtnActive($mID, $mOnClick, $mClass = '')
 	{
-		$res = $this->inBSLinkBtn($mID);
+		$res = $this->inBSLinkBtn($mID, $mClass);
 		$res->addAttribute('onclick', $mOnClick);
 		return $res;
 	}

@@ -32,6 +32,6 @@ create table tbl_notification_thread
 	foreign key (id_post)
 		references tbl_content_post(id)
 		on update cascade
-		on delete cascade
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################

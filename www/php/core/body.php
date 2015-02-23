@@ -1,5 +1,6 @@
 <?php	
 	require_once("$root/php/core/body/modalInfo.php");
+	require_once("$root/php/core/body/modalNotifications.php");
 	require_once("$root/php/core/body/navbar.php");
 
 	(new HTMLControl('body'))

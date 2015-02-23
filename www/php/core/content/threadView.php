@@ -18,6 +18,7 @@
 
 	require_once("$root/php/core/content/sections/modalNewPost.php"); 
 
+
 	Gen::JS_PostAction('refreshThreadCtrls()', 'refreshThreadCtrls', [], '$("#threadCtrls").html(mOut);', 'showModalInfo("Error", mErr);'); 
 	Gen::JS_PostAction('refreshThread()', 'refreshThread', [], '$("#threadName").html(mOut);', 'showModalInfo("Error", mErr);'); 
 	Gen::JS_PostAction('refreshPosts()', 'refreshPosts', [], '$("#threadPage").html(mOut);', 'showModalInfo("Error", mErr);');
@@ -25,7 +26,7 @@
 	Gen::JS_PostAction('deleteCurrentPosts()', 'deleteCurrentPosts', [], 'refreshAll();', 'showModalInfo("Error", mErr);');
 	Gen::JS_PostAction('deleteCurrentThread()', 'deleteCurrentThread', [], 'if(mOut){ changeCurrentPage('.PK::$sections.'); } refreshAll();', 'showModalInfo("Error", mErr);');
 
-	Gen::JS_PostAction('subCurrentThread()', 'subCurrentThread', [], 'alert("SUB RECEIVED"); refreshAll();', 'showModalInfo("Error", mErr);');
+	Gen::JS_PostAction('subCurrentThread()', 'subCurrentThread', [], 'refreshAll();', 'showModalInfo("Error", mErr);');
 	Gen::JS_PostAction('unsubCurrentThread()', 'unsubCurrentThread', [], 'refreshAll();', 'showModalInfo("Error", mErr);');
 
 	Gen::JS_OnBtnClickDynamic('btnNewPost', '$("#modalNewPost").modal("show");');
@@ -38,7 +39,7 @@
 <script>
 function refreshAll()
 {
-	alert("REFRESH");
+	// alert("REFRESH");
 	refreshThreadCtrls();
 	refreshThread();
 	refreshPosts();

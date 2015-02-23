@@ -134,18 +134,45 @@ class TblSubTag extends Tbl
 
 
 
+class TblNtfBase extends Tbl
+{
+	public function delAllCU()
+	{
+		$cuid = Creds::getCUID();
+		return DB::query("DELETE FROM tbl_notification_base where id_receiver = $cuid");
+	}
+
+	public function markAllCU()
+	{
+		$cuid = Creds::getCUID();
+		return DB::query("UPDATE tbl_notification_base SET seen = true where id_receiver = $cuid");
+	}
+}
+
+
 class TblNtfThread extends Tbl
 {
-	public function getUnseen()
+	public function getNtfs($mSeen)
 	{
-		$res = DB::query(
-			'SELECT tn.id_subscription_thread, tb.seen, tn.id_post, ts.id_thread
+		$uid = Creds::getCUID();
+
+		return DB::query(
+			'SELECT tn.id, tn.id_subscription_thread, tb.seen, tnb.id_receiver, tn.id_post, ts.id_thread, tn.id_base
 			FROM  tbl_notification_thread as tn 
 			INNER JOIN tbl_notification_base as tb ON tn.id_base = tb.id 
 			INNER JOIN tbl_subscription_thread as ts ON tn.id_subscription_thread = ts.id  
-			WHERE tb.seen = false;');
+			INNER JOIN tbl_notification_base as tnb ON tn.id_base = tnb.id
+			WHERE tb.seen = '.$mSeen.' AND tnb.id_receiver = '.$uid.';');
 
-		return $res;
+	}
+
+	public function getUnseen()
+	{
+		return $this->getNtfs('false');
+	}
+	public function getSeen()
+	{
+		return $this->getNtfs('true');
 	}
 
 	public function mk(...$mArgs)
@@ -199,7 +226,7 @@ TBS::$subThread = new TblSubThread('tbl_subscription_thread');
 TBS::$subUser = new TblSubUser('tbl_subscription_user');
 TBS::$subTag = new TblSubTag('tbl_subscription_tag');
 
-TBS::$ntfBase = new Tbl('tbl_notification_base');
+TBS::$ntfBase = new TblNtfBase('tbl_notification_base');
 TBS::$ntfThread = new TblNtfThread('tbl_notification_thread');
 TBS::$ntfUser = new TblNtfUser('tbl_notification_user');
 TBS::$ntfTag = new TblNtfTag('tbl_notification_tag');
