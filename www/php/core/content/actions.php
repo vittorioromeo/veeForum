@@ -170,6 +170,7 @@ class ActionUtils
 			$idThread = $row['id_thread'];
 			$idPost = $row['id_post'];
 			$seen = $row['seen'];
+			$timestamp = $row['creation_timestamp'];
 
 
 			$threadTitle = TBS::$cntThread->findByID($idThread)['title'];
@@ -201,6 +202,9 @@ class ActionUtils
 			$bfdiv = $bpb->inDiv(['style' => 'float: left; padding-left: 10px;']);
 				
 			$str = 'New post in thread <strong>'.$threadTitle.'</strong> by <strong>'.$postAuthor.'</strong>';
+
+			$bpb->inDiv(['style' => 'float: right; padding-right: 10px;'])
+	                ->literal('<i>'.$timestamp.'</i>');
 
 			if(!$seen)
 			{
