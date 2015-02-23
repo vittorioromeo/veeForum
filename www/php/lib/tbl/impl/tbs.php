@@ -157,12 +157,12 @@ class TblNtfThread extends Tbl
 		$uid = Creds::getCUID();
 
 		return DB::query(
-			'SELECT tn.id, tn.id_subscription_thread, tb.seen, tnb.id_receiver, tn.id_post, ts.id_thread, tn.id_base
+			'SELECT tn.id, tn.id_subscription_thread, tb.seen, tnb.id_receiver, tn.id_post, ts.id_thread, tn.id_base, tb.creation_timestamp
 			FROM  tbl_notification_thread as tn 
 			INNER JOIN tbl_notification_base as tb ON tn.id_base = tb.id 
 			INNER JOIN tbl_subscription_thread as ts ON tn.id_subscription_thread = ts.id  
 			INNER JOIN tbl_notification_base as tnb ON tn.id_base = tnb.id
-			WHERE tb.seen = '.$mSeen.' AND tnb.id_receiver = '.$uid.';');
+			WHERE tb.seen = '.$mSeen.' AND tnb.id_receiver = '.$uid.' ORDER BY tb.creation_timestamp DESC;');
 
 	}
 
