@@ -164,6 +164,8 @@ class ActionUtils
 
 class Actions
 {
+	
+
 	public static function refreshThread()
 	{
 		$idThread = Session::get(SK::$threadID);
@@ -218,6 +220,8 @@ class Actions
 	{
 		$idThread = Session::get(SK::$threadID);
 		$res = TBS::$subThread->mkCU($idThread);
+
+		Debug::lo("FIRINGACTION");
 
 		header("Content-type: application/json; charset=ISO-8859-1");
 		if(!$res) print('false');

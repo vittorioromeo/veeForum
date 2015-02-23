@@ -16,6 +16,9 @@ create table tbl_notification_user
 	# Subscription
 	id_subscription_user int not null,
 
+	# Content posted by the user
+	id_content int not null,
+
 	foreign key (id_base)
 		references tbl_notification_base(id)
 		on update cascade
@@ -24,6 +27,11 @@ create table tbl_notification_user
 	foreign key (id_subscription_user)
 		references tbl_subscription_user(id)
 		on update cascade
-		on delete no action # Triggers do not get fired with 'cascade'
+		on delete no action, # Triggers do not get fired with 'cascade'
+
+	foreign key (id_content)
+		references tbl_content_base(id)
+		on update cascade
+		on delete cascade
 )$
 #########################################################################################

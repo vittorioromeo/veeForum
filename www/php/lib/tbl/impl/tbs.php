@@ -88,6 +88,16 @@ class TblSubThread extends Tbl
 	{
 		$idSubscriptor = Creds::getCUID();
 
+		$res = DB::query('SELECT ts.id
+			FROM tbl_subscription_thread AS ts
+			INNER JOIN tbl_subscription_base AS tb ON ts.id_base = tb.id 
+			WHERE ts.id_thread = '.$mIDThread.' AND tb.id_subscriptor = '.$idSubscriptor.'');
+
+		while($row = $res->fetch_assoc())
+		{
+			$this->deleteByID($row['id']);
+		}		
+/*
 		$qres = $this->getWhere('id_thread = '.$mIDThread);
 		if(!$qres) return false;
 
@@ -102,6 +112,7 @@ class TblSubThread extends Tbl
 				return true;
 			}
 		}
+	*/
 	}
 }
 
@@ -125,10 +136,24 @@ class TblSubTag extends Tbl
 
 class TblNtfThread extends Tbl
 {
+	public function getUnseen()
+	{
+		$res = DB::query(
+			'SELECT tn.id_subscription_thread, tb.seen, tn.id_post, ts.id_thread
+			FROM  tbl_notification_thread as tn 
+			INNER JOIN tbl_notification_base as tb ON tn.id_base = tb.id 
+			INNER JOIN tbl_subscription_thread as ts ON tn.id_subscription_thread = ts.id  
+			WHERE tb.seen = false;');
+
+		return $res;
+	}
+
 	public function mk(...$mArgs)
 	{
 		return SPRCS::$mkNotificationThread->call(...$mArgs);
 	}
+
+
 }
 
 class TblNtfUser extends Tbl

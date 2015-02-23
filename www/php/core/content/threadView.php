@@ -25,19 +25,20 @@
 	Gen::JS_PostAction('deleteCurrentPosts()', 'deleteCurrentPosts', [], 'refreshAll();', 'showModalInfo("Error", mErr);');
 	Gen::JS_PostAction('deleteCurrentThread()', 'deleteCurrentThread', [], 'if(mOut){ changeCurrentPage('.PK::$sections.'); } refreshAll();', 'showModalInfo("Error", mErr);');
 
-	Gen::JS_PostAction('subCurrentThread()', 'subCurrentThread', [], 'refreshAll();', 'showModalInfo("Error", mErr);');
+	Gen::JS_PostAction('subCurrentThread()', 'subCurrentThread', [], 'alert("SUB RECEIVED"); refreshAll();', 'showModalInfo("Error", mErr);');
 	Gen::JS_PostAction('unsubCurrentThread()', 'unsubCurrentThread', [], 'refreshAll();', 'showModalInfo("Error", mErr);');
 
 	Gen::JS_OnBtnClickDynamic('btnNewPost', '$("#modalNewPost").modal("show");');
 	Gen::JS_OnBtnClickDynamic('btnDelPosts', 'deleteCurrentPosts();');
 	Gen::JS_OnBtnClickDynamic('btnDelThread', 'deleteCurrentThread(); ');
-	Gen::JS_OnBtnClickDynamic('btnSubThread', 'subCurrentThread(); ');
+	Gen::JS_OnBtnClickDynamic('btnSubThread', 'alert("SUB CLICK"); subCurrentThread(); ');
 	Gen::JS_OnBtnClickDynamic('btnUnsubThread', 'unsubCurrentThread(); ');
 ?>
 
 <script>
 function refreshAll()
 {
+	alert("REFRESH");
 	refreshThreadCtrls();
 	refreshThread();
 	refreshPosts();

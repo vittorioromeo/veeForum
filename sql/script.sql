@@ -217,7 +217,7 @@ create table tbl_content_thread
 	foreign key (id_base)
 		references tbl_content_base(id)
 		on update cascade
-		on delete no action, # Triggers do not get fired with 'cascade'
+		on delete no action,
 
 	foreign key (id_section)
 		references tbl_section(id)
@@ -253,7 +253,7 @@ create table tbl_content_post
 	foreign key (id_base)
 		references tbl_content_base(id)
 		on update cascade
-		on delete no action, # Triggers do not get fired with 'cascade'
+		on delete no action,
 
 	foreign key (id_thread)
 		references tbl_content_thread(id)
@@ -288,7 +288,7 @@ create table tbl_content_attachment
 	foreign key (id_base)
 		references tbl_content_base(id)
 		on update cascade
-		on delete cascade,
+		on delete cascade, # TODO: use a trigger
 
 	foreign key (id_post)
 		references tbl_content_post(id)
@@ -359,7 +359,7 @@ create table tbl_subscription_thread
 	foreign key (id_base)
 		references tbl_subscription_base(id)
 		on update cascade
-		on delete cascade,
+		on delete cascade, # TODO: use a trigger
 
 	foreign key (id_thread)
 		references tbl_content_thread(id)
@@ -392,7 +392,7 @@ create table tbl_subscription_user
 	foreign key (id_base)
 		references tbl_subscription_base(id)
 		on update cascade
-		on delete cascade,
+		on delete cascade, # TODO: use a trigger
 
 	foreign key (id_user)
 		references tbl_user(id)
@@ -487,6 +487,9 @@ create table tbl_notification_user
 	# Subscription
 	id_subscription_user int not null,
 
+	# Content posted by the user
+	id_content int not null,
+
 	foreign key (id_base)
 		references tbl_notification_base(id)
 		on update cascade
@@ -495,7 +498,12 @@ create table tbl_notification_user
 	foreign key (id_subscription_user)
 		references tbl_subscription_user(id)
 		on update cascade
-		on delete no action # Triggers do not get fired with 'cascade'
+		on delete no action, # Triggers do not get fired with 'cascade'
+
+	foreign key (id_content)
+		references tbl_content_base(id)
+		on update cascade
+		on delete cascade
 )$
 #########################################################################################
 
@@ -519,6 +527,9 @@ create table tbl_notification_thread
 	# Subscription
 	id_subscription_thread int not null,
 
+	# Newly created post
+	id_post int not null,
+
 	foreign key (id_base)
 		references tbl_notification_base(id)
 		on update cascade
@@ -527,7 +538,12 @@ create table tbl_notification_thread
 	foreign key (id_subscription_thread)
 		references tbl_subscription_thread(id)
 		on update cascade
-		on delete no action # Triggers do not get fired with 'cascade'
+		on delete no action, # Triggers do not get fired with 'cascade'
+
+	foreign key (id_post)
+		references tbl_content_post(id)
+		on update cascade
+		on delete cascade
 )$
 #########################################################################################
 
@@ -820,14 +836,15 @@ end$
 create procedure mk_notification_user
 (
 	in v_id_receiver int,
-	in v_id_subscription_user int
+	in v_id_subscription_user int,
+	in v_id_content int
 )
 begin
 	call mk_notification_base(v_id_receiver, @out_id_base);
 
 	insert into tbl_notification_user
-		(id_base, id_subscription_user)
-		values(@out_id_base, v_id_subscription_user);
+		(id_base, id_subscription_user, id_content)
+		values(@out_id_base, v_id_subscription_user, v_id_content);
 end$
 #########################################################################################
 
@@ -840,14 +857,15 @@ end$
 create procedure mk_notification_thread
 (
 	in v_id_receiver int,
-	in v_id_subscription_thread int
+	in v_id_subscription_thread int,
+	in v_id_post int
 )
 begin
 	call mk_notification_base(v_id_receiver, @out_id_base);
 
 	insert into tbl_notification_thread
-		(id_base, id_subscription_thread)
-		values(@out_id_base, v_id_subscription_thread);
+		(id_base, id_subscription_thread, id_post)
+		values(@out_id_base, v_id_subscription_thread, v_id_post);
 end$
 #########################################################################################
 
@@ -983,7 +1001,7 @@ end$
 #########################################################################################
 create procedure generate_notifications_user
 (
-	in v_last_content_id int, # TODO: use
+	in v_last_content_id int,
 	in v_last_content_author int
 )
 begin
@@ -1005,7 +1023,7 @@ begin
 
 		if var_id_sub_tracked_user = v_last_content_author then
 			call get_subscriptor(var_id_sub_base, current_id_subscriptor);
-			call mk_notification_user(current_id_subscriptor, var_id_sub);
+			call mk_notification_user(current_id_subscriptor, var_id_sub, v_last_content_id);
 		end if;
 	end loop;
 
@@ -1022,7 +1040,7 @@ end$
 #########################################################################################
 create procedure generate_notifications_thread
 (
-	in v_last_post_id int, # TODO: use
+	in v_last_post_id int,
 	in v_last_post_thread int
 )
 begin
@@ -1044,17 +1062,7 @@ begin
 
 		if var_id_sub_tracked_thread = v_last_post_thread then
 			call get_subscriptor(var_id_sub_base, current_id_subscriptor);
-
-			# Check if an unseen notification for this thread exists 
-			# (TODO: should this be done at all?)
-			call check_notification_unseen_existance_thread(current_id_subscriptor, 
-				var_id_sub_tracked_thread, @already_exists);
-
-			if @already_exists = true then
-				leave label_loop;
-			end if;
-
-			call mk_notification_thread(current_id_subscriptor, var_id_sub);
+			call mk_notification_thread(current_id_subscriptor, var_id_sub, v_last_post_id);
 		end if;
 	end loop;
 

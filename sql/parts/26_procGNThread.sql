@@ -5,7 +5,7 @@
 #########################################################################################
 create procedure generate_notifications_thread
 (
-	in v_last_post_id int, # TODO: use
+	in v_last_post_id int,
 	in v_last_post_thread int
 )
 begin
@@ -27,17 +27,7 @@ begin
 
 		if var_id_sub_tracked_thread = v_last_post_thread then
 			call get_subscriptor(var_id_sub_base, current_id_subscriptor);
-
-			# Check if an unseen notification for this thread exists 
-			# (TODO: should this be done at all?)
-			call check_notification_unseen_existance_thread(current_id_subscriptor, 
-				var_id_sub_tracked_thread, @already_exists);
-
-			if @already_exists = true then
-				leave label_loop;
-			end if;
-
-			call mk_notification_thread(current_id_subscriptor, var_id_sub);
+			call mk_notification_thread(current_id_subscriptor, var_id_sub, v_last_post_id);
 		end if;
 	end loop;
 

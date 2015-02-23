@@ -25,14 +25,15 @@ end$
 create procedure mk_notification_user
 (
 	in v_id_receiver int,
-	in v_id_subscription_user int
+	in v_id_subscription_user int,
+	in v_id_content int
 )
 begin
 	call mk_notification_base(v_id_receiver, @out_id_base);
 
 	insert into tbl_notification_user
-		(id_base, id_subscription_user)
-		values(@out_id_base, v_id_subscription_user);
+		(id_base, id_subscription_user, id_content)
+		values(@out_id_base, v_id_subscription_user, v_id_content);
 end$
 #########################################################################################
 
@@ -45,14 +46,15 @@ end$
 create procedure mk_notification_thread
 (
 	in v_id_receiver int,
-	in v_id_subscription_thread int
+	in v_id_subscription_thread int,
+	in v_id_post int
 )
 begin
 	call mk_notification_base(v_id_receiver, @out_id_base);
 
 	insert into tbl_notification_thread
-		(id_base, id_subscription_thread)
-		values(@out_id_base, v_id_subscription_thread);
+		(id_base, id_subscription_thread, id_post)
+		values(@out_id_base, v_id_subscription_thread, v_id_post);
 end$
 #########################################################################################
 

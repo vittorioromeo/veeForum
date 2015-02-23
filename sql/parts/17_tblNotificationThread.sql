@@ -16,6 +16,9 @@ create table tbl_notification_thread
 	# Subscription
 	id_subscription_thread int not null,
 
+	# Newly created post
+	id_post int not null,
+
 	foreign key (id_base)
 		references tbl_notification_base(id)
 		on update cascade
@@ -24,6 +27,11 @@ create table tbl_notification_thread
 	foreign key (id_subscription_thread)
 		references tbl_subscription_thread(id)
 		on update cascade
-		on delete no action # Triggers do not get fired with 'cascade'
+		on delete no action, # Triggers do not get fired with 'cascade'
+
+	foreign key (id_post)
+		references tbl_content_post(id)
+		on update cascade
+		on delete cascade
 )$
 #########################################################################################

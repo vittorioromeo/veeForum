@@ -5,7 +5,7 @@
 #########################################################################################
 create procedure generate_notifications_user
 (
-	in v_last_content_id int, # TODO: use
+	in v_last_content_id int,
 	in v_last_content_author int
 )
 begin
@@ -27,7 +27,7 @@ begin
 
 		if var_id_sub_tracked_user = v_last_content_author then
 			call get_subscriptor(var_id_sub_base, current_id_subscriptor);
-			call mk_notification_user(current_id_subscriptor, var_id_sub);
+			call mk_notification_user(current_id_subscriptor, var_id_sub, v_last_content_id);
 		end if;
 	end loop;
 
