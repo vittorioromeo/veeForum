@@ -90,7 +90,7 @@ class Gen
 		</div>');
 	}	
 
-	public static function JS_PostAction($mFnName, $mAction, $mKVArray, $mFnOk = '', $mFnFail = '')
+	public static function JS_PostAction($mFnName, $mAction, $mKVArray = [], $mFnOk = '', $mFnFail = '')
 	{
 		print('<script>
 			function '.$mFnName.'

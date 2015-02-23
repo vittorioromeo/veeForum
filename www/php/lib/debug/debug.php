@@ -5,7 +5,7 @@ class Debug
 	public static function setEnabled($mX)
 	{
 		Session::set(SK::$debugEnabled, $mX);
-		Session::set(SK::$debugLog, "");
+		Debug::clear();
 	}
 
 	public static function isEnabled()
@@ -13,14 +13,14 @@ class Debug
 		return Session::get(SK::$debugEnabled);
 	}
 
+	public static function clear()
+	{
+		Session::set(SK::$debugLog, "");
+	}
+
 	public static function lo($mX)
 	{
 		if(!Debug::isEnabled()) return;
-
-		if(isset(TBS::$log))
-		{
-			TBS::$log->mk(LogType::Debug, $mX);
-		}
 
 		$value = Session::get(SK::$debugLog);
 		$value .= $mX . '<br/>';

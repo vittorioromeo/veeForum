@@ -11,13 +11,26 @@
 	$navLeft = (new Container())->inHTMLCtrl('ul', ['class' => 'nav navbar-nav']);
 	
 	
-
-	$navLeft
+	$btnLeftNavDiv = $navLeft
 		->inHTMLCtrl('li')
 			->inDiv(['class' => 'navbar-form'])
-				->inBSLinkBtnActive('btnShowNotifications', "refreshNotificationsModal(); $('#modalNtf').modal('show');")
-					->strong(' '.$notificationCount.' ') 
-					->bsIcon('list-alt');
+				->inDiv(['class' => 'btn-group pull-left']);
+
+	if(Debug::isEnabled())
+	{
+		$btnLeftNavDiv
+			->inBSLinkBtnActive('btnShowDebugModal', "refreshDebugModal(); $('#modalDebug').modal('show');")
+				->strong('DEBUG');
+
+		$btnLeftNavDiv
+			->inBSLinkBtnActive('btnClearDebugModal', "clearDebugModal(); refreshDebugModal();")
+				->strong('CLEAR');
+	}
+
+	$btnLeftNavDiv
+		->inBSLinkBtnActive('btnShowNotifications', "refreshNotificationsModal(); $('#modalNtf').modal('show');")
+			->strong(' '.$notificationCount.' ') 
+			->bsIcon('list-alt');
 
 	$navLeft
 		->inHTMLCtrl('li')

@@ -8,6 +8,35 @@ ini_set('display_startup_errors', 1);
 error_reporting(-1);
 date_default_timezone_set('UTC');
 
+class TBS
+{
+	public static $log;
+	public static $tag;
+	public static $group;
+	public static $user;
+	public static $section;
+
+	public static $cntBase;
+	public static $cntThread;
+	public static $cntPost;
+	public static $cntAttachment;
+
+	public static $subBase;
+	public static $subThread;
+	public static $subUser;
+	public static $subTag;
+
+	public static $ntfBase;
+	public static $ntfThread;
+	public static $ntfUser;
+	public static $ntfTag;
+
+	public static $tagContent; // TODO
+	public static $fileData; // TODO
+
+	public static $gsperms;
+}
+
 require_once("$rootLib/settings/settings.php");
 require_once("$rootLib/session/session.php");
 require_once("$rootLib/debug/debug.php");

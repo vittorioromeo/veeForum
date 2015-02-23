@@ -1,33 +1,6 @@
 <?php
 
-class TBS
-{
-	public static $log;
-	public static $tag;
-	public static $group;
-	public static $user;
-	public static $section;
 
-	public static $cntBase;
-	public static $cntThread;
-	public static $cntPost;
-	public static $cntAttachment;
-
-	public static $subBase;
-	public static $subThread;
-	public static $subUser;
-	public static $subTag;
-
-	public static $ntfBase;
-	public static $ntfThread;
-	public static $ntfUser;
-	public static $ntfTag;
-
-	public static $tagContent; // TODO
-	public static $fileData; // TODO
-
-	public static $gsperms;
-}
 
 class LogType
 {

@@ -29,11 +29,11 @@ class Settings
 		return Settings::$data["forumName"];
 	}
 
-	public static function getDefaultGroup($mX)
+	public static function setDefaultGroup($mX)
 	{
 		Settings::$data["defaultGroup"] = $mX;
 	}
-	public static function setDefaultGroup()
+	public static function getDefaultGroup()
 	{
 		return Settings::$data["defaultGroup"];
 	}

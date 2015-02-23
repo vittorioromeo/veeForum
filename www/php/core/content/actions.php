@@ -252,6 +252,16 @@ class Actions
 		return ActionUtils::printQuerySuccess($res);
 	}
 
+	public static function refreshDebugModal()
+	{	
+		Debug::echoLo();
+	}
+	public static function clearDebugModal()
+	{	
+		Debug::clear();
+	}
+
+
 	public static function refreshNotificationsModal()
 	{	
 		ActionUtils::printNtfs(TBS::$ntfThread->getUnseen());

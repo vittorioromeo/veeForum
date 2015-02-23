@@ -23,7 +23,7 @@ class DB
 
 	public static function query($mX)
 	{		
-		Debug::lo("Executing query: " . $mX);
+		Debug::lo("Query: " . $mX);
 
 		$res = DB::$conn->query($mX);
 
