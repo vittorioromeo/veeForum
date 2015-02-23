@@ -11,6 +11,14 @@
 	->printRoot();
 
 	Gen::JS_PostAction('reloadPage()', 'getCurrentPage', [], 'reloadPageImpl(mOut);');
+
+
+	Gen::JS_OnBtnClickDynamic('btnNewPost', '$("#modalNewPost").modal("show");');
+	Gen::JS_OnBtnClickDynamic('btnDelPosts', 'deleteCurrentPosts();');
+	Gen::JS_OnBtnClickDynamic('btnDelThread', 'deleteCurrentThread(); ');
+	Gen::JS_OnBtnClickDynamic('btnSubThread', 'alert("SUB CLICK"); subCurrentThread(); ');
+	Gen::JS_OnBtnClickDynamic('btnUnsubThread', 'unsubCurrentThread(); ');
+	Gen::JS_OnBtnClickDynamic('btnUsAdd',		'showUsEditModal(-1);');
 ?>
 
 <script>

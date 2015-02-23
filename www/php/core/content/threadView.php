@@ -28,12 +28,6 @@
 
 	Gen::JS_PostAction('subCurrentThread()', 'subCurrentThread', [], 'refreshAll();', 'showModalInfo("Error", mErr);');
 	Gen::JS_PostAction('unsubCurrentThread()', 'unsubCurrentThread', [], 'refreshAll();', 'showModalInfo("Error", mErr);');
-
-	Gen::JS_OnBtnClickDynamic('btnNewPost', '$("#modalNewPost").modal("show");');
-	Gen::JS_OnBtnClickDynamic('btnDelPosts', 'deleteCurrentPosts();');
-	Gen::JS_OnBtnClickDynamic('btnDelThread', 'deleteCurrentThread(); ');
-	Gen::JS_OnBtnClickDynamic('btnSubThread', 'alert("SUB CLICK"); subCurrentThread(); ');
-	Gen::JS_OnBtnClickDynamic('btnUnsubThread', 'unsubCurrentThread(); ');
 ?>
 
 <script>
