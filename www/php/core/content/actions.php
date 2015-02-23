@@ -184,7 +184,7 @@ class ActionUtils
 			$btnIdMark = $btnIdPrefix.'mark';
 
 			$bf = (new Container());
-			$bpb = $bf->inBSPanelNoHeader()
+			$bpb = $bf->inBSPanelNoHeader('ntfPanel')					
 					->inBSBtnGroup('pull-left')
 						->inBSLinkBtnActive($btnIdDel, 'delNtfByID('.$idNtfBase.');', 'btn-xs')
 							->bsIcon('remove')
@@ -255,6 +255,7 @@ class Actions
 	public static function refreshNotificationsModal()
 	{	
 		ActionUtils::printNtfs(TBS::$ntfThread->getUnseen());
+		print("<hr>");
 		ActionUtils::printNtfs(TBS::$ntfThread->getSeen());
 	}
 
@@ -406,7 +407,7 @@ class Actions
 	
 	public static function tryRegister()
 	{
-		$groupId = TBS::$group->getFirst()['id'];
+		$groupId = Settings::getDefaultGroup();
 		$username = $_POST['username'];
 		$passwordHash = Utils::getPwdHash($_POST['password']);
 		$email = $_POST['email'];

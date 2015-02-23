@@ -4,7 +4,17 @@ body
 	padding-bottom: 20px;
 }
 
+.ntfPanel
+{
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
 
+.ntfPanel .panel-body
+{
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
 
 
 

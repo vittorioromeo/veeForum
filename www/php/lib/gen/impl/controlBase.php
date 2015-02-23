@@ -160,9 +160,9 @@ class ControlBase
 		return $this;
 	}
 
-	public function &inBSPanelNoHeader()
+	public function &inBSPanelNoHeader($mClass = '')
 	{
-		$panel = $this->inDiv(['class' => 'panel panel-default']);
+		$panel = $this->inDiv(['class' => 'panel panel-default '.$mClass]);
 		return $panel->inDiv(['class' => 'panel-body']);
 	}
 
@@ -313,7 +313,18 @@ class HTMLControl extends ControlBase
 
 	public function addAttribute($mK, $mV)
 	{
-		$this->attributes[$mK] = $mV;
+		if(isset($this->attributes[$mK]))
+		{
+			$this->attributes[$mK] .= ' '.$mV;
+		}
+		else
+		{
+			$this->attributes[$mK] = $mV;
+		}
+
+
+		// $this->attributes[$mK] = $mV.' '.( ? $this->attributes[$mK] : '');
+		// $this->attributes[$mK] = $mV;
 		return $this;
 	}
 
