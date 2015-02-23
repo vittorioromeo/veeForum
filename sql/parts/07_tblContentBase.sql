@@ -12,7 +12,7 @@ create table tbl_content_base
 	id int auto_increment primary key,
 
 	# Data
-	creation_timestamp timestamp not null,
+	creation_timestamp timestamp not null default 0,
 	id_author int not null,
 
 	foreign key (id_author)

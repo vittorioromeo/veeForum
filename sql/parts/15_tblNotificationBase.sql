@@ -20,7 +20,7 @@ create table tbl_notification_base
 	seen boolean not null default false,
 
 	# Notification data creation timestamp
-	creation_timestamp timestamp not null,
+	creation_timestamp timestamp not null default 0,
 
 	foreign key (id_receiver)
 		references tbl_user(id)

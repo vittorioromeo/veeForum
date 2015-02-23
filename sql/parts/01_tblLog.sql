@@ -11,7 +11,7 @@ create table tbl_log
 	type int not null default 0,
 
 	# Entry timestamp
-	creation_timestamp timestamp not null,
+	creation_timestamp timestamp not null default 0,
 
 	# Name
 	value varchar(512) not null

@@ -16,7 +16,7 @@ create table tbl_subscription_base
 	id_subscriptor int not null,
 
 	# Timestamp of beginning
-	creation_timestamp timestamp not null,
+	creation_timestamp timestamp not null default 0,
 
 	# Active/inactive
 	active boolean not null default true,
