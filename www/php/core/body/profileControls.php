@@ -36,7 +36,7 @@
 	$navRight
 		->inHTMLCtrl('li')
 			->inHTMLCtrl('a')
-				->literal('Logged in as:')
+				->literal('Logged in as: ')
 				->inHTMLCtrl('strong')
 					->literal(Creds::getCURow()['username']);					
 	$navRight
@@ -60,7 +60,7 @@
 				[ 'idThread' => 'mX' ],
 				'changeCurrentPage('.PK::$threadView.');');
 
-	
+
 
 	Gen::JS_OnBtnClick('btnNavSections', 'changeCurrentPage('.PK::$sections.'); ');
 	Gen::JS_OnBtnClick('btnNavAdministration', 'changeCurrentPage('.PK::$administration.'); ');
