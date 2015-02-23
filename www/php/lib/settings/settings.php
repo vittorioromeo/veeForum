@@ -28,6 +28,15 @@ class Settings
 	{
 		return Settings::$data["forumName"];
 	}
+
+	public static function getDefaultGroup($mX)
+	{
+		Settings::$data["defaultGroup"] = $mX;
+	}
+	public static function setDefaultGroup()
+	{
+		return Settings::$data["defaultGroup"];
+	}
 }
 
 Settings::init();
