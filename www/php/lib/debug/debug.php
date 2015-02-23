@@ -17,6 +17,11 @@ class Debug
 	{
 		if(!Debug::isEnabled()) return;
 
+		if(isset(TBS::$log))
+		{
+			TBS::$log->mk(LogType::Debug, $mX);
+		}
+
 		$value = Session::get(SK::$debugLog);
 		$value .= $mX . '<br/>';
 		Session::set(SK::$debugLog, $value);
