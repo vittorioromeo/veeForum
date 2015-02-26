@@ -70,22 +70,6 @@ class TblSubThread extends Tbl
 		{
 			$this->deleteByID($row['id']);
 		}		
-/*
-		$qres = $this->getWhere('id_thread = '.$mIDThread);
-		if(!$qres) return false;
-
-		while($row = $qres->fetch_assoc())
-		{
-			$baseRow = TBS::$subBase->findByID($row['id_base']);
-			if(!$baseRow) continue;
-
-			if($baseRow['id_subscriptor'] == $idSubscriptor) 
-			{
-				TBS::$subBase->deleteByID($baseRow['id']);
-				return true;
-			}
-		}
-	*/
 	}
 }
 
@@ -94,6 +78,42 @@ class TblSubUser extends Tbl
 	public function mk(...$mArgs)
 	{
 		return SPRCS::$mkSubscriptionUser->call(...$mArgs);
+	}
+
+	public function mkCU(...$mArgs)
+	{
+		return $this->mk(Creds::getCUID(), ...$mArgs);
+	}
+
+	public function has($mIDSubscriptor, $mIDUser)
+	{
+		$qres = $this->getWhere('id_user = '.$mIDUser);
+		if(!$qres) return false;
+
+		while($row = $qres->fetch_assoc())
+		{
+			$baseRow = TBS::$subBase->findByID($row['id_base']);
+			if(!$baseRow) continue;
+
+			if($baseRow['id_subscriptor'] == $mIDSubscriptor) return true;
+		}
+
+		return false;
+	}
+
+	public function delCU($mIDUser)
+	{
+		$idSubscriptor = Creds::getCUID();
+
+		$res = DB::query('SELECT ts.id
+			FROM tbl_subscription_user AS ts
+			INNER JOIN tbl_subscription_base AS tb ON ts.id_base = tb.id 
+			WHERE ts.id_user = '.$mIDUser.' AND tb.id_subscriptor = '.$idSubscriptor.'');
+
+		while($row = $res->fetch_assoc())
+		{
+			$this->deleteByID($row['id']);
+		}		
 	}
 }
 

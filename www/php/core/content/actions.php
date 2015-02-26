@@ -30,7 +30,13 @@ class SectionData
 				$rowCD = TBS::$cntBase->findByID($mRow['id_base']);
 				$authorName = TBS::$user->findByID($rowCD['id_author'])['username'];
 				$date = $rowCD['creation_timestamp'];
-				print("By: $authorName<br/>");
+				print("By: ");
+				
+				print('<a href="#" onclick="showModalUP('.$rowCD['id_author'].');">');
+				print($authorName);
+				print('</a>');
+
+				print("<br/>");
 				print("On: $date");
 
 				print('<div class="btn-group-vertical pull-right">');
@@ -40,8 +46,7 @@ class SectionData
 					Gen::LinkBtn($btnID, 'glyphicon-arrow-right');
 
 					Gen::JS_OnBtnClick($btnID, 'gotoThread('.$threadID.');');
-						
-		
+								
 				print('</div>');
 			print('</div>');
 		print('</div>');
@@ -148,7 +153,14 @@ class ActionUtils
 			print('<div class="panel-body">');
 
 			print('<strong>');
-			print("Post ID: $id<br/>Author: $authorName<br/>Posted on: $postDate");
+			print("Post ID: $id<br/>");
+
+			print("Author: ");
+			print('<a href="#" onclick="showModalUP('.$rowCD['id_author'].');">');
+			print($authorName);
+			print('</a>');			
+
+			print("<br/>Posted on: $postDate");
 			print('</strong>');
 
 			print('<br/><br/>');
@@ -261,10 +273,40 @@ class Actions
 		Debug::clear();
 	}
 
+	public static function refreshModalUP()
+	{	
+		$id = $_POST["id"];
+		$user = TBS::$user->findByID($id);
+
+		$modalUP = new BSModal('modalUP', 'User: '.$user['username']);
+		$modalUPBody = $modalUP->inBody();
+
+		$modalUPBody->literal(nl2br(print_r($user, true)));
+
+		if(!TBS::$subUser->has(Creds::getCUID(), $id))
+		{			
+			$modalUP->inFooterBtns()
+			    ->inBSLinkBtnActive('btnSubUP', 'subUser('.$id.');')
+					->bsIcon('star')
+					->literal(' Subscribe');
+		}
+		else
+		{
+			$modalUP->inFooterBtns()
+			    ->inBSLinkBtnActive('btnUnsubUP', 'unsubUser('.$id.');')
+					->bsIcon('star-empty')
+					->literal(' Unsubscribe');
+		}
+
+		
+		$modalUP->printRoot();
+	}
+
 
 	public static function refreshNotificationsModal()
 	{	
 		ActionUtils::printNtfs(TBS::$ntfThread->getUnseen());
+		// TODO: other ntfs
 		print("<hr>");
 		ActionUtils::printNtfs(TBS::$ntfThread->getSeen());
 	}
@@ -283,7 +325,13 @@ class Actions
 		print("<h2>$title</h2>");
 		print("<strong>");
 		print("ID: $idThread<br/>");
-		print("Author: $authorName<br/>");
+		
+		print("Author: ");
+		print('<a href="#" onclick="showModalUP('.$rowCD['id_author'].');">');
+		print($authorName);
+		print('</a>');
+		print('<br/>');
+		
 		print("Date: $date<br/>");
 		print("</strong>");
 	}
@@ -318,6 +366,26 @@ class Actions
 	{
 		$idThread = Session::get(SK::$threadID);
 		TBS::$cntPost->deleteWhere("id_thread = $idThread");
+	}
+
+	public static function subUser()
+	{
+		$id = $_POST["id"];
+		$res = TBS::$subUser->mkCU($id);
+
+		header("Content-type: application/json; charset=ISO-8859-1");
+		if(!$res) print('false');
+		else print('true');
+	}
+
+	public static function unsubUser()
+	{
+		$id = $_POST["id"];
+		$res = TBS::$subUser->delCU($id);
+
+		header("Content-type: application/json; charset=ISO-8859-1");
+		if(!$res) print('false');
+		else print('true');
 	}
 
 	public static function subCurrentThread()

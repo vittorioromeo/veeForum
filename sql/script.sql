@@ -36,7 +36,7 @@ create table tbl_log
 	type int not null default 0,
 
 	# Entry timestamp
-	creation_timestamp timestamp not null,
+	creation_timestamp timestamp not null default 0,
 
 	# Name
 	value varchar(512) not null
@@ -181,7 +181,7 @@ create table tbl_content_base
 	id int auto_increment primary key,
 
 	# Data
-	creation_timestamp timestamp not null,
+	creation_timestamp timestamp not null default 0,
 	id_author int not null,
 
 	foreign key (id_author)
@@ -323,7 +323,7 @@ create table tbl_subscription_base
 	id_subscriptor int not null,
 
 	# Timestamp of beginning
-	creation_timestamp timestamp not null,
+	creation_timestamp timestamp not null default 0,
 
 	# Active/inactive
 	active boolean not null default true,
@@ -457,7 +457,7 @@ create table tbl_notification_base
 	seen boolean not null default false,
 
 	# Notification data creation timestamp
-	creation_timestamp timestamp not null,
+	creation_timestamp timestamp not null default 0,
 
 	foreign key (id_receiver)
 		references tbl_user(id)
@@ -503,7 +503,7 @@ create table tbl_notification_user
 	foreign key (id_content)
 		references tbl_content_base(id)
 		on update cascade
-		on delete cascade
+		on delete no action # TODO Triggers do not get fired with 'cascade'
 )$
 #########################################################################################
 
@@ -543,7 +543,7 @@ create table tbl_notification_thread
 	foreign key (id_post)
 		references tbl_content_post(id)
 		on update cascade
-		on delete cascade
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################
 
@@ -1313,6 +1313,42 @@ create trigger trg_del_content_base_attachment
 begin
 	delete from tbl_content_base
 	where id = OLD.id_base;
+end$
+########################################################################################
+
+
+
+
+
+
+
+
+
+
+#########################################################################################
+# TRIGGER
+# * TODO
+#########################################################################################
+create trigger trg_del_ntf_user_on_post_del
+	before delete on tbl_content_base
+	for each row
+begin
+	delete from tbl_notification_user
+	where id_content = OLD.id;
+end$
+########################################################################################
+
+
+#########################################################################################
+# TRIGGER
+# * TODO
+#########################################################################################
+create trigger trg_del_ntf_thread_on_post_del
+	before delete on tbl_content_post
+	for each row
+begin
+	delete from tbl_notification_thread
+	where id_post = OLD.id;
 end$
 ########################################################################################
 
