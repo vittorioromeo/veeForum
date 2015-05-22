@@ -6,6 +6,7 @@
 \usepackage{lipsum}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{titlesec}
 
 %!group(cpp)(\begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm]{cpp})(\end{minted})
 
@@ -14,6 +15,15 @@
 %!group(sql)(\begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm]{sql})(\end{minted})
 
 \graphicspath{ {res/} }
+
+
+\setcounter{secnumdepth}{4}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \renewcommand\emph{\textbf}
@@ -241,11 +251,11 @@
                     \subsubsection{Mobile game forum}
                         aaa
 
-                        \subsubsubsection{Brief description}
+                        \paragraph{Brief description}
                             A company developed a popular mobile game, with a wide audience.
                             The company uses the veeForum framework to give users a place to discuss game strategy, give feedback on the quality of their product and receive technical support.
 
-                        \subsubsubsection{Actors}
+                        \paragraph{Actors}
                             \begin{itemize}
                                 \item Game developers.
                                 \item Game players.
@@ -254,27 +264,61 @@
                                 \item Feedback (PR) team.
                             \end{itemize}
 
-                        \subsubsubsection{Pre-conditions}
+                        \paragraph{Pre-conditions}
                             \begin{itemize}
                                 \item Release of a popular product with a wide audience.                            
                                 \item Game users need to register on the forum.
                             \end{itemize}
 
-                        \subsubsubsection{Flow of events}
+                        \paragraph{Flow of events}
                             \begin{itemize}
                                 \item Installation and configuration of a veeForum-enabled forum system by the forum management team.                            
                                 \item Creation of the sections and permission hierarchies by the forum management team.
                                 \item Registration and content creation by the game developers and game players.
                             \end{itemize}
 
-                        \subsubsubsection{Post-conditions}
+                        \paragraph{Post-conditions}
                             \begin{itemize}
                                 \item Game players will be able to share their strategies and thoughts on the product.
                                 \item The technical support team will find all technical issues grouped in a convenient way and will be able to track individual issues. Technical support members will be able to communicate with each other in a private section.
                                 \item The feedback team will be able to track user suggestions and forward potential product improvements to the developer team.
                             \end{itemize}
 
-                \subsection{Functional requirements}                    
+                \subsection{Functional requirements}   
+                    aaa
+
+                    \subsubsection{Performance}
+                        aaa
+
+                    \subsubsection{Reliability}
+                        aaa
+
+                    \subsubsection{Availability}
+                        aaa
+
+                    \subsubsection{Security}
+                        aaa
+
+                    \subsubsection{Maintainability}
+                        aaa
+
+                    \subsubsection{Portability}
+                        aaa
+
+                \subsection{Logical Database Requirements}
+                    aaa
+
+            \section{Analysis models}
+                aaa
+                
+                \subsection{Sequence Diagrams}
+                    aaa
+
+                \subsection{Data Flow Diagrams}
+                    aaa
+
+                \subsection{State-Transition Diagrams}
+                    aaa
 
         \chapter{Glossary}
             aaa
