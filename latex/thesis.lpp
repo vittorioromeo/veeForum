@@ -28,6 +28,21 @@
 \renewcommand\emph{\textbf}
 \renewcommand{\baselinestretch}{1.1}
 
+\newcommand{\printSQLtest}[1]
+{
+    \inputminted[linenos, breaklines, breakbytoken, tabsize=4, fontsize=\footnotesize]{mysql}{#1}
+}
+
+\newcommand{\printSQLTablepage}[2]
+{
+    \newpage
+    \section{Table: #2}
+    \subsection{Code}
+    \printSQLtest{../sql/parts/#1}
+    \subsection{Explanation}
+    % \lipsum[1-2]
+}
+
 \begin{document}
     \begin{titlepage}
 
@@ -406,10 +421,95 @@
 !!}
 
         \chapter{Project structure}
-            aaa
+            The project folder and file structure is organized as such:
 
-            \section{Folder structure}
-                aaa
+            \begin{itemize}
+                \item \emph{./doc/}
+                    
+                    Folder containing the documentation of the project.
+                    \begin{itemize}
+                        \item \emph{./latex/} 
+
+                        LatexPP and \LaTeX{}  source and output files.                            
+                    \end{itemize}
+            
+                \item \emph{./sql/}
+
+                    Folder containing the SQL DDL scripts.
+                    \begin{itemize}
+                        \item \emph{./scripts/}
+
+                        Contains all the parts that make up the complete SQL initialization script.
+                        
+                        \item \emph{./mkScript.sh}
+
+                        Builds the complete SQL initialization scripts from the files in ./scripts/.
+
+                        \item \emph{./script.sql}
+
+                        Complete SQL initialization scripts that sets up a database suitable veeForum.
+                    \end{itemize}
+
+                \item \emph{./exe/}
+                    
+                    Folder containing executable scripts to setup the system.
+                    \begin{itemize}
+                        \item \emph{./docker/} 
+
+                        Docker-related scripts.
+                        \begin{itemize}
+                            \item \emph{./start.sh} 
+
+                            Starts a Docker instance containing veeForum.
+
+                            \item \emph{./cleanup.sh} 
+
+                            Cleans any running veeForum Docker instance.
+
+                            \item \emph{./shell.sh} 
+
+                            Starts a Docker instance containing veeForum, controlling an instance of bash inside it.
+
+                            \item \emph{./httpdLog.sh} 
+
+                            Prints the Apache error log of the current running veeForum Docker instance.
+                        \end{itemize}
+
+                    \end{itemize}
+
+                \item \emph{./www/}
+                    
+                    Folder containing web application data.
+                    \begin{itemize}
+
+                        \item \emph{./css/} 
+
+                        CSS3 stylesheets.
+
+                        \item \emph{./js/} 
+
+                        ECMAScript 5 script files.
+
+                        \item \emph{./json/} 
+
+                        Non-relational data storage files, in JSON format.
+
+                        \item \emph{./php/} 
+
+                        PHP backend code. 
+                        \begin{itemize}
+                            \item \emph{./lib/} 
+
+                            Backend to database interface library and HTML5 generation library.
+
+                            \item \emph{./core/} 
+
+                            PHP frontend files that generate the responsive HTML5 web application user interface.
+                        \end{itemize}
+
+                    \end{itemize}
+
+            \end{itemize}
 
             \section{PHP Module}
                 aaa
@@ -419,6 +519,24 @@
 
             \section{Other data}
                 aaa
+
+        \chapter{SQL}
+
+            \printSQLTablepage{00_db.sql}{db}
+                \lipsum[1-1]
+            \newpage
+
+            \printSQLTablepage{01_tblLog.sql}{log}
+                \lipsum[1-1]
+            \newpage
+
+            \printSQLTablepage{02_tblTag.sql}{tag}
+                \lipsum[1-1]
+            \newpage
+
+            \printSQLTablepage{03_tblGroup.sql}{group}
+                \lipsum[1-1]
+            \newpage
 
         \chapter{Installation}
             aaa
