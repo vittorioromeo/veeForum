@@ -1,5 +1,4 @@
 \documentclass[12pt]{report}
-\usepackage{minted}
 \usepackage{verbatim}
 \usepackage{fullpage}
 \usepackage{etoolbox}
@@ -7,6 +6,8 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{titlesec}
+\usepackage{pdftexcmds} 
+\usepackage{minted}
 
 %!group(cpp)(\begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm]{cpp})(\end{minted})
 
@@ -14,16 +15,14 @@
 
 %!group(sql)(\begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm]{sql})(\end{minted})
 
+%!group(bash)(\begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm]{bash})(\end{minted})
+
 \graphicspath{ {res/} }
-
-
 \setcounter{secnumdepth}{4}
-
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
 {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
-
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \renewcommand\emph{\textbf}
@@ -41,13 +40,13 @@
         \HRule \\[0.4cm]
         { \huge \bfseries veeForum}\\[0.1cm]
 
-        {\large 23 March 2015}
+        {\large 29 May 2015}
         \HRule \\[1.5cm]
 
         \begin{minipage}{0.4\textwidth}
         \begin{flushleft} \large
         \emph{Author:}\\
-        Vittorio \textsc{Romeo} % Your name
+        Vittorio \textsc{Romeo}
         \end{flushleft}
         \end{minipage}
         ~
@@ -91,8 +90,24 @@
     \newpage
     \pagenumbering{arabic}
 
-    \part{Non-technical}
-        aaa
+    \part{Project specifications}
+        The following part of the document describes the project and its design/development process without exploring its implementation details.
+
+        The part begins with a synthesis of the \emph{client request}, which is then analyzed into a \emph{Software Requirements Specification} (SRS).
+
+        Writing a correct and informative SRS is utmost importance to achieve an high-quality final product.
+
+        The SRS will cover the following points in depth:
+
+        \begin{itemize}
+            \item \emph{Scope and purpose}. 
+            \item \emph{Feature and functions}. 
+            \item \emph{External interface requirements}.
+            \item \emph{Functional requirements}.
+            \item \emph{Example use cases}.
+            \item \emph{Non-functional requirements}.
+            \item \emph{Analysis models}.
+        \end{itemize}
 
         \chapter{Client request}
             The client requests the design and implementation of a \emph{forum creation/management framework} and a \emph{modern responsive web forum browsing/management application}.
@@ -120,14 +135,10 @@
             Moderators and administrators should be able to edit and delete posts through the same interface as well. User interface controls will be shown/hidden depending on the user’s permissions.
 
         \chapter{Software Requirements Specification}
-            aaa
-
             \section{Introduction}
                 This \emph{Software Requirements Specification} (SRS) chapter contains all the information needed by software engineers and project managers to design and implement the requested forum creation/management framework.
 
                 The SRS was written following the \emph{Institute of Electrical and Electronics Engineers} (IEEE) guidelines on SRS creation.
-
-
 
                 \subsection{Purpose}
                     The SRS chapter is contained in the \emph{non-technical} part of the thesis.
@@ -142,8 +153,6 @@
 
                     \subsubsection{Identity}
                         The software that will be designed and produced will be called \emph{veeForum}.
-
-
 
                     \subsubsection{Feature extents}
 
@@ -161,8 +170,6 @@
                             \item Provide infrastructure or implementation for a complete blog/website. The scope of the software is forum building.
                             \item Implement instant private messaging - user-to-user chat is beyond the scope of the project.
                         \end{itemize}
-
-
 
                     \subsubsection{Benefits and objectives}
 
@@ -222,7 +229,11 @@
                         Accessing and modifying forum data will be possible through \emph{RESTful} requests, returning and accepting \emph{JSON} (Javascript Object Notation).
 
                 \subsection{Functional requirements}
-                    aaa
+                    In software engineering, a \emph{functional requirement} defines a function of a system and its components. 
+
+                    Functional requirements may be \emph{calculations}, \emph{technical details}, \emph{data manipulation and processing} and other specific functionality that define what a system is supposed to accomplish. 
+
+                    Behavioral requirements describing all the cases where the system uses the functional requirements are captured in \emph{use cases}.
 
                     \subsubsection{User/group management}
                         \begin{itemize}
@@ -246,14 +257,11 @@
                         \end{itemize}
 
                 \subsection{Example use cases}
-                    aaa
+                    In software and systems engineering, a \emph{use case} is a list of steps, typically defining interactions between one or more actors and a system, to achieve a goal. 
 
                     \subsubsection{Mobile game forum}
-                        aaa
-
-                        \paragraph{Brief description}
-                            A company developed a popular mobile game, with a wide audience.
-                            The company uses the veeForum framework to give users a place to discuss game strategy, give feedback on the quality of their product and receive technical support.
+                        A company developed a popular mobile game, with a wide audience.
+                        The company uses the veeForum framework to give users a place to discuss game strategy, give feedback on the quality of their product and receive technical support.
 
                         \paragraph{Actors}
                             \begin{itemize}
@@ -284,26 +292,32 @@
                                 \item The feedback team will be able to track user suggestions and forward potential product improvements to the developer team.
                             \end{itemize}
 
-                \subsection{Functional requirements}   
-                    aaa
+                \subsection{Non-functional requirements}   
+                    Functional requirements are supported by \emph{non-functional requirements} (also known as quality requirements), which impose constraints on the design or implementation (such as performance requirements, security, or reliability). 
 
                     \subsubsection{Performance}
-                        aaa
+                        The system will be designed from the ground-up with emphasis on performance. As the forum may have huge amounts of contents and concurrent usage after its deployment, optimizing is a must.
+
+                        When possible, functions will be implemented \emph{directly in the database}, for maximum performance.
+
+                        Web backend functions will also be carefully \emph{optimized both for memory and speed}.
 
                     \subsubsection{Reliability}
-                        aaa
+                        The system will have to be reliable and keep working in case of errors. 
 
-                    \subsubsection{Availability}
-                        aaa
+                        Database queries and functions will be executed in \emph{safe wrappers} that catch and handle errors carefully.
 
                     \subsubsection{Security}
-                        aaa
+                        veeForum needs to guarantee privacy and security for users and administrator of the system.
 
-                    \subsubsection{Maintainability}
-                        aaa
+                        Well-tested and well-received \emph{security idioms} and \emph{encryption algorithms} will have to be used throughout the implementation of the whole system.
 
-                    \subsubsection{Portability}
-                        aaa
+                    \subsubsection{Maintainability and portability}
+                        Being an open-source project, \emph{maintainability}, \emph{extensibility} and \emph{portability} are key.
+
+                        The code layer will be carefully designed and organized to allow easy maintenance, bugfixing and feature addition.
+
+                        To ensure maximum portability, the product will be designed to work on the most popular \emph{GNU/Linux} distributions and will be thoroughly tested on different platforms.
 
                 \subsection{Logical Database Requirements}
                     aaa
@@ -320,35 +334,76 @@
                 \subsection{State-Transition Diagrams}
                     aaa
 
-        \chapter{Glossary}
-            aaa
+    \part{Technical analysis}
+        The following part of the thesis will cover all implementation choices and details for veeForum in depth.
 
-        \chapter{Usage}
-            aaa
+        Firstly, the \emph{development environment and tools} and \emph{chosen technologies} will be described and motivated.
 
-    \part{Technical}
-        aaa
+        Afterwards, the technical details, including code examples and APIs, will be described for the two modules of the application: the \emph{database} and the \emph{web application}.
 
-        \chapter{Development}
-            aaa
+        Every \emph{table} of the database will be analyzed in detail, directly showing commented \emph{DDL} code. The database also contains important \emph{stored procedures} and \emph{triggers} that are core part of the system's logic and that need to be explained in depth - the related \emph{DML} code will be shown and commented.
 
-            \section{Environment}
-                aaa
+        The web application itself is divided in multiple modules:
+        \begin{itemize}
+            \item A \emph{database interface backend module}, that interfaces with the database and wraps its tables and stored procedures.
+            \item A \emph{HTML5 generation module}, that greatly simplifies the creation of dynamic forum web pages by wrapping HTML5 controls in \emph{object-oriented wrappers} that can be easily bound to callbacks and database events.
+            \item A \emph{modern responsive AJAX frontend} that allows users and interact with the backend module from multiple device, limiting postbacks and page refreshes.
+        \end{itemize}
+         
+        \chapter{Development process}
+
+            \section{Environment and tools}
+                All modules of veeForum have been developed on \emph{Arch Linux x64}, a lightweight GNU/Linux distribution.
+
+                Arch is installed as a minimal base system, configured by the user upon which their own ideal environment is assembled by installing only what is required or desired for their unique purposes. GUI configuration utilities are not officially provided, and most system configuration is performed from the shell and a text editor. Based on a rolling-release model, Arch strives to stay bleeding edge, and typically offers the latest stable versions of most software.
+
+                No particular integrated development environments (IDEs) were used during the development - a modern graphical text editor, \emph{Sublime Text 3}, was used instead.
 
             \section{Docker}
-                aaa
+                Docker is an open-source project that \emph{automates the deployment of applications} inside software containers, by providing an additional layer of abstraction and automation of operating-system-level virtualization on Linux.
 
-            \section{Version control}
-                aaa
+                Docker uses resource isolation features of the Linux kernel such as \emph{cgroups} and \emph{kernel namespaces} to allow independent containers to run within a single Linux instance.
 
+                This technology has been used since the beginning of the development process to \emph{separate veeForum data and packages} from the host system and to dramatically increase \emph{portability} and \emph{ease of testing}.
+
+                Docker is also used for the installation of the product on target systems - with a single command it is possible to \emph{retrieve all required dependencies}, correctly \emph{configure the system} and \emph{automatically install veeForum}.
+
+            \section{Version control system}
+                Version control systems (VCSs) allow the \emph{management of changes} to documents, computer programs, large web sites, and other collections of information.
+
+                Nowadays, a version control system is \emph{essential} for the development of any project. 
+                Being able to track changes, develop features in separate \emph{branches}, have multiple programmers work on the same code base without conflicts and much more is extremely important for projects of any scope and size.
+
+                The chosen VCS is \emph{Git}, a distributed revision control system with an emphasis on \emph{speed}, \emph{data integrity}, and support for \emph{distributed, non-linear workflows}.
+
+                Git is widely appreciated in the private and open-source programming communities - it was initially designed and developed by \emph{Linus Torvalds} for Linux kernel development in 2005, and has since become the most widely adopted version control system for software development.
+
+                The veeForum project is \emph{open-source} and \emph{appreciates feedback and contributions}. It is hosted on \emph{GitHub}, a web-based Git repository hosting service, which offers all of the distributed revision control and source code management (SCM) functionality of Git, while adding \emph{additional features} that make collaboration and public contributions easy and accessible.
+
+            \section{Apache}
+                The Apache HTTP server is the world's most widely used web server software. 
+
+                Apache has been under open-source development for about 20 years - it supports all modern server-side technologies and programming languages, and also is \emph{extremely reliable} and \emph{secure}.
+                        
             \section{Thesis}
-                aaa
+                The current document was written using \LaTeX, an high-quality typesetting system; it includes features designed for the production of \emph{technical and scientific documentation}.
 
-                \subsection{\LaTeX}
-                    aaa
+                \LaTeX was chosen for the current document because of the visually pleasant typography, its extensibility features and its abilities to include and highlight source code.
 
                 \subsection{LatexPP}
-                    aaa
+                    A small \emph{C++14} \LaTeX preprocessor named \emph{LatexPP} was developed for the composition of this thesis.
+
+                    LatexPP allows to use an intuitive syntax that avoids markup repetition for code highlighting and macros.
+
+                    Preprocessing and compiling a \LaTeX document using LatexPP is simple and can be automated using a simple \emph{bash} script.
+
+!!(bash)
+!!{
+    #!/bin/bash
+
+    latexpp ./thesis.lpp > ./thesis.tex
+    pdflatex -shell-escape ./thesis.tex && chromium ./thesis.pdf    
+!!}
 
         \chapter{Project structure}
             aaa
