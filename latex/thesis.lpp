@@ -1,0 +1,229 @@
+\documentclass[12pt]{report}
+\usepackage{minted}
+\usepackage{verbatim}
+\usepackage{fullpage}
+\usepackage{etoolbox}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+%!group(cpp)(\begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm]{cpp})(\end{minted})
+
+%!group(php)(\begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm]{php})(\end{minted})
+
+%!group(sql)(\begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm]{sql})(\end{minted})
+
+\graphicspath{ {res/} }
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+\renewcommand\emph{\textbf}
+\renewcommand{\baselinestretch}{1.1} 
+
+\begin{document}
+    \begin{titlepage}
+
+        \center
+
+        \textsc{\LARGE Universita' degli Studi di Messina}\\[0.1cm] 
+        \textsc{\Large Dipartimento di Matematica e Informatica}\\[0.5cm] 
+        \textsc{\Large Database course project}\\[0.5cm] 
+
+        \HRule \\[0.4cm]
+        { \huge \bfseries veeForum}\\[0.1cm]
+
+        {\large 23 March 2015}
+        \HRule \\[1.5cm]
+         
+        \begin{minipage}{0.4\textwidth}
+        \begin{flushleft} \large
+        \emph{Author:}\\
+        Vittorio \textsc{Romeo} % Your name
+        \end{flushleft}
+        \end{minipage}
+        ~
+        \begin{minipage}{0.4\textwidth}
+        \begin{flushright} \large
+        \emph{Professor:} \\
+        Massimo \textsc{Villari}
+
+        
+        \end{flushright}
+        \end{minipage}\\[4cm]
+
+        \vfill
+
+        \begin{minipage}{\linewidth}
+            \centering
+            \begin{minipage}{0.35\linewidth}
+                \begin{figure}[H]
+                    \center
+                    \includegraphics[width=2cm, height=2cm]{logovee}
+                    
+                    http://vittorioromeo.info
+                \end{figure}
+            \end{minipage}
+            \hspace{0.27\linewidth}
+            \begin{minipage}{0.35\linewidth}
+                \begin{figure}[H]
+                    \center
+                    \includegraphics[width=2cm, height=2cm]{logounime}
+                    
+                    http://unime.it
+                \end{figure}
+            \end{minipage}
+        \end{minipage}\\[3cm]
+    \end{titlepage}
+
+    \pagenumbering{gobble}
+    \newcommand{\atoc}[1]{\addtocontents{toc}{#1\par}}
+    \renewcommand{\thesection}{\arabic{section}.}
+    \tableofcontents
+    \newpage
+    \pagenumbering{arabic}
+
+    \part{Non-technical}
+        aaa
+
+        \chapter{Client request}
+            The client requests the design and implementation of a \emph{forum creation/management framework} and a \emph{modern responsive web forum browsing/management application}.
+
+            The client intends using the requested forum framework \emph{to build communication platforms} for various projects, both for internal employee usage and interaction with the public.
+
+            It is imperative for the system to allow administrators to easily well-organized create \emph{content-section hierarchies} and \emph{user-group hierarchies}.
+
+            Administrators also need to be able to \emph{give groups specific permissions for every section}.
+
+            Some sections will only be visible and editable to employee groups (e.g. internal discussion), some sections will be visible but not editable by the public (e.g. announcements), and others will need to be completely open to the public (e.g. technical support).
+
+            Being able to \emph{keep track of user-created content} is also very important for the client.
+
+            Initially, tracking the date and the author of the content will be enough, but the system has to be designed in such a way that inserting additional creation information (e.g. browser/operating system used to post) will be trivial. 
+
+            In the future, additional content types (e.g. videos, attachments) may be added to the system and their creation will have to be tracked as well.
+
+            This data needs to be independent from the contents, in order to easily allow administrators and project managers to gather statistical data on forum usage.
+
+            The web application has to be extremely simple but flexible as well. Administrators need be able to perform all functions described above through a responsive admin panel.
+
+            Content consumers and creators should be able to view and create content from the same responsive interface.
+
+            Moderators and administrators should be able to edit and delete posts through the same interface as well. User interface controls will be shown/hidden depending on the user’s permissions.
+
+        \chapter{Software Requirements Specification}
+            aaa
+
+            \section{Introduction}
+                This \emph{Software Requirements Specification} (SRS) chapter contains all the information needed by software engineers and project managers to design and implement the requested forum creation/management framework.
+
+                The SRS was written following the \emph{Institute of Electrical and Electronics Engineers} (IEEE) guidelines on SRS creation.
+
+                \subsection{Purpose}
+                    The SRS chapter is contained in the \emph{non-technical} part of the thesis.
+                    
+                    Its purpose is providing a \emph{comprehensive description} of the objective and environment for the software under development.
+
+                    The SRS fully describes \emph{what the software will do} and \emph{how it will be expected to perform}.
+
+                \subsection{Scope}
+                    The software that will be designed and produced is called \emph{veeForum}.
+
+                    The complete product will:
+
+                    \begin{itemize}
+                        \item Provide a framework for the \emph{creation and the management of a forum system}.
+                        \item Allow its users to \emph{deploy and administrate} multi-purpose forums.
+                        \item Give access to a \emph{modern responsive web application} to setup, browse and manage the forum.
+                    \end{itemize}
+
+                    veeForum, however, will not:
+
+                    \begin{itemize}
+                        \item Provide infrastructure or implementation for a complete blog/website. The scope of the software is forum building.
+                        \item Implement instant private messaging - user-to-user chat is beyond the scope of the project.
+                    \end{itemize}
+
+                \subsection{Definitions, acronyms and abbreviations}
+                    aaa
+
+                \subsection{Overview}
+                    aaa
+
+        \chapter{Glossary}
+            aaa
+
+        \chapter{Usage}
+            aaa
+
+    \part{Technical}
+        aaa
+
+        \chapter{Development}
+            aaa
+
+            \section{Environment}
+                aaa
+
+            \section{Docker}
+                aaa
+
+            \section{Version control}
+                aaa
+
+            \section{Thesis}
+                aaa
+
+                \subsection{\LaTeX}
+                    aaa
+
+                \subsection{LatexPP}
+                    aaa
+
+        \chapter{Project structure}
+            aaa
+
+            \section{Folder structure}
+                aaa
+
+            \section{PHP Module}
+                aaa
+
+            \section{SQL Module}
+                aaa
+
+            \section{Other data}
+                aaa
+
+        \chapter{Installation}
+            aaa
+
+        \chapter{Conceptual model}
+            aaa
+
+        \chapter{Logical model}
+            aaa
+
+        \chapter{Table details} 
+            aaa
+
+        \chapter{Web interface}
+            aaa
+            
+        \chapter{Sample queries}
+            aaa
+
+    \part{Conclusion}
+        aaa
+
+        \chapter{Final product}
+            aaa
+
+        \chapter{What I learned}
+            aaa
+
+        \chapter{Future}
+            aaa
+
+        \chapter{References}
+            aaa
+
+\end{document}
