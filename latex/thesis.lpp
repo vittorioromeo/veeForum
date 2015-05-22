@@ -15,25 +15,25 @@
 
 \graphicspath{ {res/} }
 
-\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \renewcommand\emph{\textbf}
-\renewcommand{\baselinestretch}{1.1} 
+\renewcommand{\baselinestretch}{1.1}
 
 \begin{document}
     \begin{titlepage}
 
         \center
 
-        \textsc{\LARGE Universita' degli Studi di Messina}\\[0.1cm] 
-        \textsc{\Large Dipartimento di Matematica e Informatica}\\[0.5cm] 
-        \textsc{\Large Database course project}\\[0.5cm] 
+        \textsc{\LARGE Universita' degli Studi di Messina}\\[0.1cm]
+        \textsc{\Large Dipartimento di Matematica e Informatica}\\[0.5cm]
+        \textsc{\Large Database course project}\\[0.5cm]
 
         \HRule \\[0.4cm]
         { \huge \bfseries veeForum}\\[0.1cm]
 
         {\large 23 March 2015}
         \HRule \\[1.5cm]
-         
+
         \begin{minipage}{0.4\textwidth}
         \begin{flushleft} \large
         \emph{Author:}\\
@@ -46,7 +46,7 @@
         \emph{Professor:} \\
         Massimo \textsc{Villari}
 
-        
+
         \end{flushright}
         \end{minipage}\\[4cm]
 
@@ -58,7 +58,7 @@
                 \begin{figure}[H]
                     \center
                     \includegraphics[width=2cm, height=2cm]{logovee}
-                    
+
                     http://vittorioromeo.info
                 \end{figure}
             \end{minipage}
@@ -67,7 +67,7 @@
                 \begin{figure}[H]
                     \center
                     \includegraphics[width=2cm, height=2cm]{logounime}
-                    
+
                     http://unime.it
                 \end{figure}
             \end{minipage}
@@ -97,7 +97,7 @@
 
             Being able to \emph{keep track of user-created content} is also very important for the client.
 
-            Initially, tracking the date and the author of the content will be enough, but the system has to be designed in such a way that inserting additional creation information (e.g. browser/operating system used to post) will be trivial. 
+            Initially, tracking the date and the author of the content will be enough, but the system has to be designed in such a way that inserting additional creation information (e.g. browser/operating system used to post) will be trivial.
 
             In the future, additional content types (e.g. videos, attachments) may be added to the system and their creation will have to be tracked as well.
 
@@ -117,36 +117,164 @@
 
                 The SRS was written following the \emph{Institute of Electrical and Electronics Engineers} (IEEE) guidelines on SRS creation.
 
+
+
                 \subsection{Purpose}
                     The SRS chapter is contained in the \emph{non-technical} part of the thesis.
-                    
+
                     Its purpose is providing a \emph{comprehensive description} of the objective and environment for the software under development.
 
                     The SRS fully describes \emph{what the software will do} and \emph{how it will be expected to perform}.
 
+
+
                 \subsection{Scope}
-                    The software that will be designed and produced is called \emph{veeForum}.
 
-                    The complete product will:
+                    \subsubsection{Identity}
+                        The software that will be designed and produced will be called \emph{veeForum}.
 
-                    \begin{itemize}
-                        \item Provide a framework for the \emph{creation and the management of a forum system}.
-                        \item Allow its users to \emph{deploy and administrate} multi-purpose forums.
-                        \item Give access to a \emph{modern responsive web application} to setup, browse and manage the forum.
-                    \end{itemize}
 
-                    veeForum, however, will not:
 
-                    \begin{itemize}
-                        \item Provide infrastructure or implementation for a complete blog/website. The scope of the software is forum building.
-                        \item Implement instant private messaging - user-to-user chat is beyond the scope of the project.
-                    \end{itemize}
+                    \subsubsection{Feature extents}
+
+                        The complete product will:
+
+                        \begin{itemize}
+                            \item Provide a framework for the \emph{creation and the management of a forum system}.
+                            \item Allow its users to \emph{deploy and administrate} multi-purpose forums.
+                            \item Give access to a \emph{modern responsive web application} to setup, browse and manage the forum.
+                        \end{itemize}
+
+                        veeForum, however, will not:
+
+                        \begin{itemize}
+                            \item Provide infrastructure or implementation for a complete blog/website. The scope of the software is forum building.
+                            \item Implement instant private messaging - user-to-user chat is beyond the scope of the project.
+                        \end{itemize}
+
+
+
+                    \subsubsection{Benefits and objectives}
+
+                        Deploying veeForum will give its users a number of important benefits and will fulfill specific objectives.
+
+                        \begin{itemize}
+                            \item Companies and individuals making use of veeForum will have access to an \emph{easy-to-install} and \emph{easy-to-use} forum creation and management platform.
+                            \item Users and moderators of the deployed forums will be able to \emph{easily create, track and manage} content and other forum users.
+                            \item Forum administrators will be given \emph{total control} of the forum structure, users and permissions through an \emph{easy-to-use} responsive administration panel.
+                        \end{itemize}
 
                 \subsection{Definitions, acronyms and abbreviations}
                     aaa
 
                 \subsection{Overview}
                     aaa
+
+            \section{General description}
+                aaa
+
+                \subsection{Product perspective and functions}
+                    The product shares many basic aspects and features with existing forum frameworks such as \emph{phpBB} or \emph{vBulletin}: flat/threaded discussion support, nested sections, user attachments, etc.
+
+                    veeForum improves on existing forum frameworks in the following ways:
+
+                    \begin{itemize}
+                        \item Provides a responsive web interface without postbacks.
+                        \item Allows users and moderators to subscribe and unsubscribe not only to posts, but to users and sections as well.
+                        \item Has a powerful real-time Facebook-like notification system that notifies users when tracked content has been added or edited.
+                        \item Gives administrator the possibility to design and manage complex permission hierarchies for user groups and single users.
+                    \end{itemize}
+
+                \subsection{User characteristics}
+                    veeForum needs to target both users that \emph{only consume the content offered by deployed forums}, users that \emph{actively create and manage content in deployed forums}, and users that \emph{build and deploy forum instances}.
+
+                    User-friendliness is essential for every target, but all the required functionality is effectively exposed to different user groups.
+
+                    It is therefore required to have clear interfaces thar do not negatively affect the user experience by being either too complex or too simple (all features need to be exposed).
+
+            \section{Specific requirements}
+                aaa
+
+                \subsection{External interface requirements}
+                    aaa
+
+                    \subsubsection{User interfaces}
+                        The product will provide both a desktop and a mobile user web interface.
+
+                        \begin{itemize}
+                            \item \emph{Web interface}: it is required to provide a modern responsive web interface, compatible and tested with the most popular browsers (Internet Explorer 10+, Google Chrome, Mozilla Firefox). The web interface will give forum access to users and moderators, and administrator access to forum management staff.
+                            \item \emph{Mobile interface}: is is required to provide a modern mobile application for the major platforms (Android, iOS, Windows Phone). The mobile application will allow browsing and content management of forums created with the product.
+                        \end{itemize}
+
+                    \subsubsection{Software interfaces}
+                        The \emph{open-source policy} of veeForum will allow framework users to expand or improve existing functionality and to interact with other existing technologies.
+
+                        Accessing and modifying forum data will be possible through \emph{RESTful} requests, returning and accepting \emph{JSON} (Javascript Object Notation).
+
+                \subsection{Functional requirements}
+                    aaa
+
+                    \subsubsection{User/group management}
+                        \begin{itemize}
+                            \item \emph{Users}: users will be managed by the system. Users can register (or be manually added by an administrator). Registration can be configured to require a confirmation email or not.
+                            \item \emph{Groups}: every user will be part of at least one group at all times. Groups are part of an hierarchy: they can inherit from each other. Groups can have permissions specific to sections and system-wide permissions.
+                        \end{itemize}
+
+                     \subsubsection{Content hierarchy}
+                        \begin{itemize}
+                            \item \emph{Posts}: posts will be the base of the content hierarchy. They will contain HTML-enabled text and any number of attachments.
+                            Posts can be edited and deleted by the original owner.
+                            \item \emph{Threads}: threads are groups of posts. Users with the correct permissions can create a thread in a specific section and have other users add posts or subscribe to it.
+                            Threads can be edited and deleted by the original owner.
+                            \item \emph{Sections}: sections are content containers intended to group threads related to the same subject. Forum administrators and moderators can create sections and give users permissions to view or edit them.
+                        \end{itemize}
+
+                      \subsubsection{Content tracking system}
+                        \begin{itemize}
+                            \item \emph{Creation data}: user-created content (posts, threads,attachments, etc) will have some data specific to its creation can be extended by forum administrators. Basic predefined data will consist of creation date and time. It will be possible to run statistical queries on content creation data.
+                            \item \emph{Subscriptions}: users and moderators will be able to subscribe to specific sections, threads or user to track their contents. They will receive real-time notifications upon addition/editing of tracked content.
+                        \end{itemize}
+
+                \subsection{Example use cases}
+                    aaa
+
+                    \subsubsection{Mobile game forum}
+                        aaa
+
+                        \subsubsubsection{Brief description}
+                            A company developed a popular mobile game, with a wide audience.
+                            The company uses the veeForum framework to give users a place to discuss game strategy, give feedback on the quality of their product and receive technical support.
+
+                        \subsubsubsection{Actors}
+                            \begin{itemize}
+                                \item Game developers.
+                                \item Game players.
+                                \item Forum management team.
+                                \item Technical support team.
+                                \item Feedback (PR) team.
+                            \end{itemize}
+
+                        \subsubsubsection{Pre-conditions}
+                            \begin{itemize}
+                                \item Release of a popular product with a wide audience.                            
+                                \item Game users need to register on the forum.
+                            \end{itemize}
+
+                        \subsubsubsection{Flow of events}
+                            \begin{itemize}
+                                \item Installation and configuration of a veeForum-enabled forum system by the forum management team.                            
+                                \item Creation of the sections and permission hierarchies by the forum management team.
+                                \item Registration and content creation by the game developers and game players.
+                            \end{itemize}
+
+                        \subsubsubsection{Post-conditions}
+                            \begin{itemize}
+                                \item Game players will be able to share their strategies and thoughts on the product.
+                                \item The technical support team will find all technical issues grouped in a convenient way and will be able to track individual issues. Technical support members will be able to communicate with each other in a private section.
+                                \item The feedback team will be able to track user suggestions and forward potential product improvements to the developer team.
+                            \end{itemize}
+
+                \subsection{Functional requirements}                    
 
         \chapter{Glossary}
             aaa
@@ -202,12 +330,12 @@
         \chapter{Logical model}
             aaa
 
-        \chapter{Table details} 
+        \chapter{Table details}
             aaa
 
         \chapter{Web interface}
             aaa
-            
+
         \chapter{Sample queries}
             aaa
 

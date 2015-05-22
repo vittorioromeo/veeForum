@@ -106,8 +106,107 @@
 
             Moderators and administrators should be able to edit and delete posts through the same interface as well. User interface controls will be shown/hidden depending on the user’s permissions.
 
-        \chapter{Requirement analysis}
+        \chapter{Software Requirements Specification}
             aaa
+
+            \section{Introduction}
+                This \emph{Software Requirements Specification} (SRS) chapter contains all the information needed by software engineers and project managers to design and implement the requested forum creation/management framework.
+
+                The SRS was written following the \emph{Institute of Electrical and Electronics Engineers} (IEEE) guidelines on SRS creation.
+
+
+
+                \subsection{Purpose}
+                    The SRS chapter is contained in the \emph{non-technical} part of the thesis.
+                    
+                    Its purpose is providing a \emph{comprehensive description} of the objective and environment for the software under development.
+
+                    The SRS fully describes \emph{what the software will do} and \emph{how it will be expected to perform}.
+
+
+
+                \subsection{Scope}
+
+                    \subsubsection{Identity}
+                        The software that will be designed and produced will be called \emph{veeForum}.
+
+
+
+                    \subsubsection{Feature extents}
+
+                        The complete product will:
+
+                        \begin{itemize}
+                            \item Provide a framework for the \emph{creation and the management of a forum system}.
+                            \item Allow its users to \emph{deploy and administrate} multi-purpose forums.
+                            \item Give access to a \emph{modern responsive web application} to setup, browse and manage the forum.
+                        \end{itemize}
+
+                        veeForum, however, will not:
+
+                        \begin{itemize}
+                            \item Provide infrastructure or implementation for a complete blog/website. The scope of the software is forum building.
+                            \item Implement instant private messaging - user-to-user chat is beyond the scope of the project.
+                        \end{itemize}
+
+
+
+                    \subsubsection{Benefits and objectives}
+
+                        Deploying veeForum will give its users a number of important benefits and will fulfill specific objectives.
+
+                        \begin{itemize}
+                            \item Companies and individuals making use of veeForum will have access to an \emph{easy-to-install} and \emph{easy-to-use} forum creation and management platform.
+                            \item Users and moderators of the deployed forums will be able to \emph{easily create, track and manage} content and other forum users.
+                            \item Forum administrators will be given \emph{total control} of the forum structure, users and permissions through an \emph{easy-to-use} responsive administration panel. 
+                        \end{itemize}
+
+                \subsection{Definitions, acronyms and abbreviations}
+                    aaa
+
+                \subsection{Overview}
+                    aaa
+
+            \section{General description}
+                aaa
+
+                \subsection{Product perspective and functions}
+                    The product shares many basic aspects and features with existing forum frameworks such as \emph{phpBB} or \emph{vBulletin}: flat/threaded discussion support, nested sections, user attachments, etc.
+
+                    veeForum improves on existing forum frameworks in the following ways:
+
+                    \begin{itemize}
+                        \item Provides a responsive web interface without postbacks.
+                        \item Allows users and moderators to subscribe and unsubscribe not only to posts, but to users and sections as well.
+                        \item Has a powerful real-time Facebook-like notification system that notifies users when tracked content has been added or edited.
+                        \item Gives administrator the possibility to design and manage complex permission hierarchies for user groups and single users.
+                    \end{itemize}
+
+                \subsection{User characteristics}
+                    veeForum needs to target both users that \emph{only consume the content offered by deployed forums}, users that \emph{actively create and manage content in deployed forums}, and users that \emph{build and deploy forum instances}.
+
+                    User-friendliness is essential for every target, but all the required functionality is effectively exposed to different user groups.
+
+                    It is therefore required to have clear interfaces thar do not negatively affect the user experience by being either too complex or too simple (all features need to be exposed).
+
+            \section{Specific requirements}
+                aaa
+
+                \subsection{External interface requirements}
+                    aaa
+
+                    \subsubsection{User interfaces}
+                        The product will provide both a desktop and a mobile user web interface.
+
+                        \begin{itemize}
+                            \item \emph{Web interface}: it is required to provide a modern responsive web interface, compatible and tested with the most popular browsers (Internet Explorer 10+, Google Chrome, Mozilla Firefox). The web interface will give forum access to users and moderators, and administrator access to forum management staff.
+                            \item \emph{Mobile interface}: is is required to provide a modern mobile application for the major platforms (Android, iOS, Windows Phone). The mobile application will allow browsing and content management of forums created with the product. 
+                        \end{itemize}
+
+                    \subsubsection{Software interfaces}
+                        The \emph{open-source policy} of veeForum will allow framework users to expand or improve existing functionality and to interact with other existing technologies.
+
+                        Interface
 
         \chapter{Glossary}
             aaa
