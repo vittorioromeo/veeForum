@@ -30,12 +30,12 @@
 }
 
 \newcommand{\printSQLTablepage}[2]
-{
-
+{    
     \subsection{#2}
     \subsubsection{Code}
     \printSQLtest{../sql/parts/#1}
     \subsubsection{Explanation}
+    \newpage
 }
 
 \begin{document}
@@ -548,41 +548,66 @@
 
         \chapter{SQL}
 
+            \newpage
             \section{Database setup}
+
+                veeForum is supposed to be installed on a clean instance of MySQL server. The following script correctly initializes the required database and cleans any previous version of veeForum.
                 
                 \printSQLTablepage{00_db.sql}{db}
-                    \lipsum[1-1]
+                    This script is meant to be run once to create and initialize from scratch the whole MySQL veeForum backend.
+                    Therefore, we drop the database if exists and re-create it.
 
-
+            \newpage
             \section{Tables}
 
-                \printSQLTablepage{01_tblLog.sql}{log}
-                    \lipsum[1-1]
+                A big amount of tables is required to make veeForum satisfy all requirements. Every table in the project is documented in the following section - the full \emph{DDL} commented code and an explanation is provided for every table.
 
+                \printSQLTablepage{01_tblLog.sql}{log}
+                    The \emph{log} table is a simple non-relational list of log messages that can be used for debugging and security purposes. 
 
                 \printSQLTablepage{02_tblTag.sql}{tag}
-                    \lipsum[1-1]
-
+                    The \emph{tag} table is a simple non-relational list of unique tags that can be attached to user-created content.
 
                 \printSQLTablepage{03_tblGroup.sql}{group}
-                    \lipsum[1-1]
+                    The \emph{group} table defines the groups users can belong to. Every row defines a different group and assigns forum-wide permissions to them.
+                    Groups can inherit from each other thanks to the \mintinline{sql}{id_parent} field, which is the id of the parent group and can be \mintinline{sql}{NULL}.
 
+                    \begin{figure}[h]
+                    \caption{Group parenthood relationship.}
+                    \centering
+                    \includegraphics[width=0.5\textwidth]{td/03group}
+                    \end{figure}
 
                 \printSQLTablepage{04_tblUser.sql}{user}
-                    \lipsum[1-1]
+                    The \emph{group} table contains the users registered to the forum system. Every user \emph{needs} to belong to a group, whose id is stored in \mintinline{sql}{id_group}.
+                    Every row stores user credentials data and personal info.
 
+                    \begin{figure}[h]
+                    \caption{User-group relationship.}
+                    \centering
+                    \includegraphics[width=0.5\textwidth]{td/04user}
+                    \end{figure}
 
                 \printSQLTablepage{05_tblSection.sql}{section}
-                    \lipsum[1-1]
+                    The \emph{section} table contains all forum sections, defining the base hierarchy for content. Sections have a name and can inherit from each other thanks to the \mintinline{sql}{id_parent} field, which is the id of the parent section and can be \mintinline{sql}{NULL}.
 
+                    \begin{figure}[h]
+                    \caption{Section parenthood relationship.}
+                    \centering
+                    \includegraphics[width=0.5\textwidth]{td/05section}
+                    \end{figure}
 
                 \printSQLTablepage{06_tblFileData.sql}{fileData}
-                    \lipsum[1-1]
-
+                    The \emph{fileData} table stores binary data and a filename for attachments. It makes use of the \mintinline{sql}{blob} MySQL data type to directly store binary data in the database backend.
 
                 \printSQLTablepage{07_tblContentBase.sql}{contentBase}
                     \lipsum[1-1]
 
+                    \begin{figure}[h]
+                    \caption{Content specializations.}
+                    \centering
+                    \includegraphics[width=0.5\textwidth]{td/07contentbase}
+                    \end{figure}
 
                 \printSQLTablepage{08_tblContentThread.sql}{contentThread}
                     \lipsum[1-1]
@@ -598,6 +623,12 @@
 
                 \printSQLTablepage{11_tblSubscriptionBase.sql}{subscriptionBase}
                     \lipsum[1-1]
+
+                    \begin{figure}[h]
+                    \caption{Subscription specializations.}
+                    \centering
+                    \includegraphics[width=0.5\textwidth]{td/11subscriptionbase}
+                    \end{figure}
 
 
                 \printSQLTablepage{12_tblSubscriptionThread.sql}{subscriptionThread}
@@ -615,6 +646,12 @@
                 \printSQLTablepage{15_tblNotificationBase.sql}{notificationBase}
                     \lipsum[1-1]
 
+                    \begin{figure}[h]
+                    \caption{Notification specializations.}
+                    \centering
+                    \includegraphics[width=0.5\textwidth]{td/11subscriptionbase}
+                    \end{figure}
+
 
                 \printSQLTablepage{16_tblNotificationUser.sql}{notificationUser}
                     \lipsum[1-1]
@@ -631,11 +668,17 @@
                 \printSQLTablepage{19_tblTagContent.sql}{tagContent}
                     \lipsum[1-1]
 
+                    \begin{figure}[h]
+                    \caption{Tag-content relationship.}
+                    \centering
+                    \includegraphics[width=0.5\textwidth]{td/19tagcontent}
+                    \end{figure}
+
 
                 \printSQLTablepage{20_tblGroupSectionPermission.sql}{groupSectionPermission}
                     \lipsum[1-1]
 
-
+            \newpage
             \section{Stored procedures}
 
                 \printSQLTablepage{21_procsMkContent.sql}{mkContent}
@@ -673,7 +716,7 @@
                 \printSQLTablepage{29_procCalcPerms.sql}{calcPerms}
                     \lipsum[1-1]
 
-
+            \newpage
             \section{Triggers}
 
                 \printSQLTablepage{90_trgNotifications.sql}{notifications}
@@ -699,7 +742,7 @@
                 \printSQLTablepage{95_trgDelSubCnt.sql}{delSubCnt}
                     \lipsum[1-1]
 
-
+            \newpage
             \section{Database inizialization}
 
                 \printSQLTablepage{99_initialize.sql}{initialize}
