@@ -48,3 +48,10 @@
 /latex/thesis.aux
 /latex/thesis.log
 /latex/thesis.toc
+*.pygstyle
+*.pygtex
+*.dvi
+*.aux
+*.tmp
+*.toc
+*.mintedcmd

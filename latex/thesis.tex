@@ -31,12 +31,11 @@
 
 \newcommand{\printSQLTablepage}[2]
 {
-    \newpage
-    \section{Table: #2}
-    \subsection{Code}
+
+    \subsection{#2}
+    \subsubsection{Code}
     \printSQLtest{../sql/parts/#1}
-    \subsection{Explanation}
-    % \lipsum[1-2]
+    \subsubsection{Explanation}
 }
 
 \begin{document}
@@ -104,9 +103,9 @@
     \part{Project specifications}
         The following part of the document describes the project and its design/development process without exploring its implementation details.
 
-        The part begins with a synthesis of the \emph{client request}, which is then analyzed into a \emph{Software Requirements Specification} (SRS).
+        The part begins with a synthesis of the \emph{client request}. After a careful analysis of the request, a \emph{Software Requirements Specification} (SRS) was written.
 
-        Writing a correct and informative SRS is utmost importance to achieve an high-quality final product.
+        Writing a correct and informative SRS is of utmost importance to achieve an high-quality final product and ensuring the development process goes smoothly.
 
         The SRS will cover the following points in depth:
 
@@ -121,6 +120,7 @@
         \end{itemize}
 
         \chapter{Client request}
+
             The client requests the design and implementation of a \emph{forum creation/management framework} and a \emph{modern responsive web forum browsing/management application}.
 
             The client intends using the requested forum framework \emph{to build communication platforms} for various projects, both for internal employee usage and interaction with the public.
@@ -136,6 +136,8 @@
             Initially, tracking the date and the author of the content will be enough, but the system has to be designed in such a way that inserting additional creation information (e.g. browser/operating system used to post) will be trivial.
 
             In the future, additional content types (e.g. videos, attachments) may be added to the system and their creation will have to be tracked as well.
+
+            Users and moderators will also need to be able to track user content through a \emph{real-time notification system} directly from the web application interface.
 
             This data needs to be independent from the contents, in order to easily allow administrators and project managers to gather statistical data on forum usage.
 
@@ -191,16 +193,8 @@
                             \item Users and moderators of the deployed forums will be able to \emph{easily create, track and manage} content and other forum users.
                             \item Forum administrators will be given \emph{total control} of the forum structure, users and permissions through an \emph{easy-to-use} responsive administration panel.
                         \end{itemize}
-
-                \subsection{Definitions, acronyms and abbreviations}
-                    aaa
-
-                \subsection{Overview}
-                    aaa
-
-            \section{General description}
-                aaa
-
+            
+            \section{General description}                            
                 \subsection{Product perspective and functions}
                     The product shares many basic aspects and features with existing forum frameworks such as \emph{phpBB} or \emph{vBulletin}: flat/threaded discussion support, nested sections, user attachments, etc.
 
@@ -221,10 +215,10 @@
                     It is therefore required to have clear interfaces thar do not negatively affect the user experience by being either too complex or too simple (all features need to be exposed).
 
             \section{Specific requirements}
-                aaa
 
                 \subsection{External interface requirements}
-                    aaa
+
+                    \emph{External interface requirements} identify and document the interfaces to other systems and external entities within the project scope. 
 
                     \subsubsection{User interfaces}
                         The product will provide both a desktop and a mobile user web interface.
@@ -237,7 +231,7 @@
                     \subsubsection{Software interfaces}
                         The \emph{open-source policy} of veeForum will allow framework users to expand or improve existing functionality and to interact with other existing technologies.
 
-                        Accessing and modifying forum data will be possible through \emph{RESTful} requests, returning and accepting \emph{JSON} (Javascript Object Notation).
+                        Accessing and modifying forum data (assuming permission requirements are satisfied by the user) will be possible through \emph{RESTful} requests, returning and accepting \emph{JSON} (Javascript Object Notation).
 
                 \subsection{Functional requirements}
                     In software engineering, a \emph{functional requirement} defines a function of a system and its components. 
@@ -272,7 +266,7 @@
 
                     \subsubsection{Mobile game forum}
                         A company developed a popular mobile game, with a wide audience.
-                        The company uses the veeForum framework to give users a place to discuss game strategy, give feedback on the quality of their product and receive technical support.
+                        The company uses the \emph{veeForum framework} to give users a place to discuss game strategy, give feedback on the quality of their product and receive technical support.
 
                         \paragraph{Actors}
                             \begin{itemize}
@@ -301,6 +295,38 @@
                                 \item Game players will be able to share their strategies and thoughts on the product.
                                 \item The technical support team will find all technical issues grouped in a convenient way and will be able to track individual issues. Technical support members will be able to communicate with each other in a private section.
                                 \item The feedback team will be able to track user suggestions and forward potential product improvements to the developer team.
+                            \end{itemize}
+
+                    \subsubsection{Local city GNU/Linux usergroup forum}
+                        Some GNU/Linux users from the same city decide to start a local usergroup to discuss the GNU/Linux ecosystem and make new friends. In spirit with the open-source nature of the system, collaboration is extremely important. They require to easily assign specific permissions to users and groups to allow the forum to grow and be well-organized.
+
+                        \paragraph{Actors}
+                            \begin{itemize}
+                                \item Usergroup creators.
+                                \item Usergroup members.
+                                \item External visitors.
+                            \end{itemize}
+
+                        \paragraph{Pre-conditions}
+                            \begin{itemize}
+                                \item Interest in a local GNU/Linux usergroup.                            
+                                \item Availability of people willing to collaborate.
+                            \end{itemize}
+
+                        \paragraph{Flow of events}
+                            \begin{itemize}
+                                \item Installation and configuration of a veeForum-enabled forum system by the usergroup creators.
+                                \item Creation of the initial sections and permission hierarchies by the usergroup creators.
+                                \item Registration of usergroup members and external visitors.
+                                \item The usergroup creators give other usergroup members permissions to create and manage sections and users, starting a chain of collaborative forum content development.
+                                \item Usergroup members and external visitors contribute and make use of the content.
+                            \end{itemize}
+
+                        \paragraph{Post-conditions}
+                            \begin{itemize}
+                                \item Local city usergroup members will be able to get to know and speak to each other.
+                                \item Usergroups members willing to contribute will be able to easily manage sections and write posts/articles.
+                                \item External visitors will be able to make use of the public content.
                             \end{itemize}
 
                 \subsection{Non-functional requirements}   
@@ -415,6 +441,11 @@
     pdflatex -shell-escape ./thesis.tex && chromium ./thesis.pdf    
 \end{minted}
 
+                    LatexPP is available as an open-source project on GitHub:
+
+                    \url{https://github.com/SuperV1234/Experiments/Random}
+
+
         \chapter{Project structure}
             The project folder and file structure is organized as such:
 
@@ -517,21 +548,164 @@
 
         \chapter{SQL}
 
-            \printSQLTablepage{00_db.sql}{db}
-                \lipsum[1-1]
-            \newpage
+            \section{Database setup}
+                
+                \printSQLTablepage{00_db.sql}{db}
+                    \lipsum[1-1]
 
-            \printSQLTablepage{01_tblLog.sql}{log}
-                \lipsum[1-1]
-            \newpage
 
-            \printSQLTablepage{02_tblTag.sql}{tag}
-                \lipsum[1-1]
-            \newpage
+            \section{Tables}
 
-            \printSQLTablepage{03_tblGroup.sql}{group}
-                \lipsum[1-1]
-            \newpage
+                \printSQLTablepage{01_tblLog.sql}{log}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{02_tblTag.sql}{tag}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{03_tblGroup.sql}{group}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{04_tblUser.sql}{user}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{05_tblSection.sql}{section}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{06_tblFileData.sql}{fileData}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{07_tblContentBase.sql}{contentBase}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{08_tblContentThread.sql}{contentThread}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{09_tblContentPost.sql}{contentPost}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{10_tblContentAttachment.sql}{contentAttachment}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{11_tblSubscriptionBase.sql}{subscriptionBase}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{12_tblSubscriptionThread.sql}{subscriptionThread}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{13_tblSubscriptionUser.sql}{subscriptionUser}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{14_tblSubscriptionTag.sql}{subscriptionTag}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{15_tblNotificationBase.sql}{notificationBase}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{16_tblNotificationUser.sql}{notificationUser}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{17_tblNotificationThread.sql}{notificationThread}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{18_tblNotificationTag.sql}{notificationTag}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{19_tblTagContent.sql}{tagContent}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{20_tblGroupSectionPermission.sql}{groupSectionPermission}
+                    \lipsum[1-1]
+
+
+            \section{Stored procedures}
+
+                \printSQLTablepage{21_procsMkContent.sql}{mkContent}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{22_procsMkSubscription.sql}{mkSubscription}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{23_procsMkNotification.sql}{mkNotification}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{24_procsUtils.sql}{utils}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{25_procGNUser.sql}{gNUser}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{26_procGNThread.sql}{gNThread}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{27_procGNTag.sql}{gNTag}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{28_procCalcPrivs.sql}{calcPrivs}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{29_procCalcPerms.sql}{calcPerms}
+                    \lipsum[1-1]
+
+
+            \section{Triggers}
+
+                \printSQLTablepage{90_trgNotifications.sql}{notifications}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{91_trgDelContentBase.sql}{contentBase}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{92_trgDelSubscriptionBase.sql}{subscriptionBase}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{93_trgDelNotificationBase.sql}{notificationBase}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{94_trgDelSubscriptionNtf.sql}{subscriptionNtf}
+                    \lipsum[1-1]
+
+
+                \printSQLTablepage{95_trgDelSubCnt.sql}{delSubCnt}
+                    \lipsum[1-1]
+
+
+            \section{Database inizialization}
+
+                \printSQLTablepage{99_initialize.sql}{initialize}
+                    \lipsum[1-1]
+
+
 
         \chapter{Installation}
             aaa
