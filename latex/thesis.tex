@@ -601,7 +601,8 @@
                     The \emph{fileData} table stores binary data and a filename for attachments. It makes use of the \mintinline{sql}{blob} MySQL data type to directly store binary data in the database backend.
 
                 \printSQLTablepage{07_tblContentBase.sql}{contentBase}
-                    \lipsum[1-1]
+                    The \emph{contentBase} table defines the base entity of the content inheritance tree. Derived content types are: \emph{threads}, \emph{posts} and \emph{attachments}.
+                    All content types share a \mintinline{sql}{creation_timestamp} and an author, identified by \mintinline{sql}{id_author}.
 
                     \begin{figure}[h]
                     \caption{Content specializations.}
@@ -610,19 +611,22 @@
                     \end{figure}
 
                 \printSQLTablepage{08_tblContentThread.sql}{contentThread}
-                    \lipsum[1-1]
+                    Content specialization for \emph{threads}. A thread belongs to a section (identified by \mintinline{sql}{id_section}) and has a \mintinline{sql}{title}.
+                    The base content instance is identified by \mintinline{sql}{id_base}.
 
 
                 \printSQLTablepage{09_tblContentPost.sql}{contentPost}
-                    \lipsum[1-1]
-
+                    Content specialization for \emph{posts}. A post belongs to a thread (identified by \mintinline{sql}{id_thread}) and has text \mintinline{sql}{contents}.
+                    The base content instance is identified by \mintinline{sql}{id_base}.
 
                 \printSQLTablepage{10_tblContentAttachment.sql}{contentAttachment}
-                    \lipsum[1-1]
+                    Content specialization for \emph{attachments}. An attachment belongs to a post (identified by \mintinline{sql}{id_post}) and points to a specific file data instance \mintinline{sql}{id_file_data}.
+                    The base content instance is identified by \mintinline{sql}{id_base}.
 
 
                 \printSQLTablepage{11_tblSubscriptionBase.sql}{subscriptionBase}
-                    \lipsum[1-1]
+                    The \emph{subscriptionBase} table defines the base entity of the subscription inheritance tree. Derived subscription types are: \emph{thread subscriptions}, \emph{user subscriptions} and \emph{tag subscriptions}.
+                    All subscription types share a \mintinline{sql}{creation_timestamp} (beginning of the subscription), a subscriptor (identified by \mintinline{sql}{id_subscriptor}) and an \mintinline{sql}{active} flag that can be turned on and off from the web interface by the subscriptor.
 
                     \begin{figure}[h]
                     \caption{Subscription specializations.}
@@ -632,19 +636,25 @@
 
 
                 \printSQLTablepage{12_tblSubscriptionThread.sql}{subscriptionThread}
-                    \lipsum[1-1]
+                    Subscription specialization for \emph{thread subscriptions}. Allows to track a thread (identified by \mintinline{sql}{id_thread}) for new content additions.
+                    The base subscription instance is identified by \mintinline{sql}{id_base}.
 
 
                 \printSQLTablepage{13_tblSubscriptionUser.sql}{subscriptionUser}
-                    \lipsum[1-1]
+                    Subscription specialization for \emph{user subscriptions}. Allows to track an user (identified by \mintinline{sql}{id_user}) for new content additions.
+                    The base subscription instance is identified by \mintinline{sql}{id_base}.
 
 
                 \printSQLTablepage{14_tblSubscriptionTag.sql}{subscriptionTag}
-                    \lipsum[1-1]
+                    Subscription specialization for \emph{tag subscriptions}. Allows to track a tag (identified by \mintinline{sql}{id_tag}) for new content additions.
+                    The base subscription instance is identified by \mintinline{sql}{id_base}.
 
 
                 \printSQLTablepage{15_tblNotificationBase.sql}{notificationBase}
-                    \lipsum[1-1]
+                    The \emph{notificationBase} table defines the base entity of the notification inheritance tree. Derived notification types are: \emph{thread notifications}, \emph{user notifications} and \emph{tag notifications}.
+                    All notifications types share a \mintinline{sql}{seen} flag (which is set to \mintinline{sql}{true} if the receiver seen a particular notification), a receiver (identified by \mintinline{sql}{id_receiver}) and a \mintinline{sql}{creation_timestamp}.
+
+                    Notifications are created from subscriptions, using triggers.
 
                     \begin{figure}[h]
                     \caption{Notification specializations.}
@@ -654,19 +664,20 @@
 
 
                 \printSQLTablepage{16_tblNotificationUser.sql}{notificationUser}
-                    \lipsum[1-1]
-
+                    Notification specialization for \emph{user notifications}. Generated when a tracked user creates new content. Points to the subscription that generated the notification (identified by \mintinline{sql}{id_subscription_user}) and to the created content (identified by \mintinline{sql}{id_content}).
+                    The base notification instance is identified by \mintinline{sql}{id_base}.
 
                 \printSQLTablepage{17_tblNotificationThread.sql}{notificationThread}
-                    \lipsum[1-1]
-
+                    Notification specialization for \emph{thread notifications}. Generated when new content is added to a tracked thread. Points to the subscription that generated the notification (identified by \mintinline{sql}{id_subscription_thread}) and to the created content (identified by \mintinline{sql}{id_content}).
+                    The base notification instance is identified by \mintinline{sql}{id_base}.                    
 
                 \printSQLTablepage{18_tblNotificationTag.sql}{notificationTag}
-                    \lipsum[1-1]
-
+                    Notification specialization for \emph{tag notifications}. Generated when new content is labeled with the tracked tag. Points to the subscription that generated the notification (identified by \mintinline{sql}{id_subscription_tag}) and to the created content (identified by \mintinline{sql}{id_content}).
+                    The base notification instance is identified by \mintinline{sql}{id_base}.
 
                 \printSQLTablepage{19_tblTagContent.sql}{tagContent}
-                    \lipsum[1-1]
+                    The \emph{tagContent} table labels content to tags. 
+                    It is a \emph{N to N} relationship table.
 
                     \begin{figure}[h]
                     \caption{Tag-content relationship.}
@@ -676,13 +687,28 @@
 
 
                 \printSQLTablepage{20_tblGroupSectionPermission.sql}{groupSectionPermission}
-                    \lipsum[1-1]
+                    The \emph{groupSectionPermission} table links groups to sections, giving users belonging to the selected group a set of permissions for the selected section.
+                    It is a \emph{N to N} relationship table.
 
             \newpage
             \section{Stored procedures}
 
+                To ensure \emph{maximum performance} and to \emph{minimize coupling} with the PHP backend, the logic of the forum system is, where possible, implemented with SQL \emph{stored procedures}.
+                A stored procedure is a subroutine available to applications that access a relational database system, and it is actually stored in the database data dictionary.
+
                 \printSQLTablepage{21_procsMkContent.sql}{mkContent}
-                    \lipsum[1-1]
+                    The procedures in the code listed above deal with the creation of content. To create content, it is necessary to instantiate both a \mintinline{sql}{content_base} row and a specialization data row.
+                    These procedures automatically create both the required rows and make sure they relate to each other correctly, thanks to the \mintinline{sql}{LAST_INSERT_ID()} MySQL function.
+
+                    \begin{itemize}
+                        \item \mintinline{sql}{mk_content_base}: creates a content base record and returns its id.
+                        \item \mintinline{sql}{mk_content_thread}: calls \mintinline{sql}{mk_content_base}, then creates a thread specialization row linked to it.
+                        Takes the author id and title of the thread as input parameters.
+                        \item \mintinline{sql}{mk_content_post}: calls \mintinline{sql}{mk_content_base}, then creates a thread specialization row linked to it.
+                        Takes the author id and id of the parent thread as input parameters.
+                        \item \mintinline{sql}{mk_content_attachment}: calls \mintinline{sql}{mk_content_base}, then creates a thread specialization row linked to it.
+                        Takes the author id and id of the parent post as input parameters.
+                    \end{itemize}
 
 
                 \printSQLTablepage{22_procsMkSubscription.sql}{mkSubscription}
