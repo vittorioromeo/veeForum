@@ -1,7 +1,7 @@
 #########################################################################################
 # PROCEDURE
 # * Calculate the final privileges of a user by inheriting them from the group hierarchy
-# * they belong to.
+#   they belong to.
 #########################################################################################
 create procedure calculate_final_privileges
 (

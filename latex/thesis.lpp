@@ -6,7 +6,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{titlesec}
-\usepackage{pdftexcmds} 
+\usepackage{pdftexcmds}
 \usepackage{minted}
 
 %!group(cpp)(\begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm]{cpp})(\end{minted})
@@ -34,12 +34,12 @@
 }
 
 \newcommand{\printSQLTablepage}[2]
-{    
+{
     \newpage
     \subsection{#2}
     \subsubsection{Code}
     \printSQLtest{../sql/parts/#1}
-    \subsubsection{Explanation}    
+    \subsubsection{Explanation}
 }
 
 \begin{document}
@@ -114,8 +114,8 @@
         The SRS will cover the following points in depth:
 
         \begin{itemize}
-            \item \emph{Scope and purpose}. 
-            \item \emph{Feature and functions}. 
+            \item \emph{Scope and purpose}.
+            \item \emph{Feature and functions}.
             \item \emph{External interface requirements}.
             \item \emph{Functional requirements}.
             \item \emph{Example use cases}.
@@ -164,8 +164,6 @@
 
                     The SRS fully describes \emph{what the software will do} and \emph{how it will be expected to perform}.
 
-
-
                 \subsection{Scope}
 
                     \subsubsection{Identity}
@@ -197,8 +195,8 @@
                             \item Users and moderators of the deployed forums will be able to \emph{easily create, track and manage} content and other forum users.
                             \item Forum administrators will be given \emph{total control} of the forum structure, users and permissions through an \emph{easy-to-use} responsive administration panel.
                         \end{itemize}
-            
-            \section{General description}                            
+
+            \section{General description}
                 \subsection{Product perspective and functions}
                     The product shares many basic aspects and features with existing forum frameworks such as \emph{phpBB} or \emph{vBulletin}: flat/threaded discussion support, nested sections, user attachments, etc.
 
@@ -207,8 +205,8 @@
                     \begin{itemize}
                         \item Provides a responsive web interface without postbacks.
                         \item Allows users and moderators to subscribe and unsubscribe not only to posts, but to users and sections as well.
-                        \item Has a powerful real-time Facebook-like notification system that notifies users when tracked content has been added or edited.
-                        \item Gives administrator the possibility to design and manage complex permission hierarchies for user groups and single users.
+                        \item Has a powerful \emph{real-time} Facebook-like notification system that notifies users when tracked content has been added or edited.
+                        \item Gives administrator the possibility to \emph{design and manage complex permission hierarchies} for user groups and single users.
                     \end{itemize}
 
                 \subsection{User characteristics}
@@ -222,7 +220,7 @@
 
                 \subsection{External interface requirements}
 
-                    \emph{External interface requirements} identify and document the interfaces to other systems and external entities within the project scope. 
+                    \emph{External interface requirements} identify and document the interfaces to other systems and external entities within the project scope.
 
                     \subsubsection{User interfaces}
                         The product will provide both a desktop and a mobile user web interface.
@@ -238,9 +236,9 @@
                         Accessing and modifying forum data (assuming permission requirements are satisfied by the user) will be possible through \emph{RESTful} requests, returning and accepting \emph{JSON} (Javascript Object Notation).
 
                 \subsection{Functional requirements}
-                    In software engineering, a \emph{functional requirement} defines a function of a system and its components. 
+                    In software engineering, a \emph{functional requirement} defines a function of a system and its components.
 
-                    Functional requirements may be \emph{calculations}, \emph{technical details}, \emph{data manipulation and processing} and other specific functionality that define what a system is supposed to accomplish. 
+                    Functional requirements may be \emph{calculations}, \emph{technical details}, \emph{data manipulation and processing} and other specific functionality that define what a system is supposed to accomplish.
 
                     Behavioral requirements describing all the cases where the system uses the functional requirements are captured in \emph{use cases}.
 
@@ -250,6 +248,12 @@
                             \item \emph{Groups}: every user will be part of at least one group at all times. Groups are part of an hierarchy: they can inherit from each other. Groups can have permissions specific to sections and system-wide permissions.
                         \end{itemize}
 
+                        \begin{figure}[h]
+                        \caption{User/group hierarchy example.}
+                        \centering
+                        \includegraphics[width=0.5\textwidth]{ed/hier_user}
+                        \end{figure}
+
                      \subsubsection{Content hierarchy}
                         \begin{itemize}
                             \item \emph{Posts}: posts will be the base of the content hierarchy. They will contain HTML-enabled text and any number of attachments.
@@ -257,7 +261,14 @@
                             \item \emph{Threads}: threads are groups of posts. Users with the correct permissions can create a thread in a specific section and have other users add posts or subscribe to it.
                             Threads can be edited and deleted by the original owner.
                             \item \emph{Sections}: sections are content containers intended to group threads related to the same subject. Forum administrators and moderators can create sections and give users permissions to view or edit them.
+                            \item \emph{Attachments}: users with the correct permissions can upload files and attach any number of them to one of their posts.
                         \end{itemize}
+
+                        \begin{figure}[h]
+                        \caption{Content hierarchy example.}
+                        \centering
+                        \includegraphics[width=1\textwidth]{ed/hier_sec}
+                        \end{figure}
 
                       \subsubsection{Content tracking system}
                         \begin{itemize}
@@ -265,8 +276,16 @@
                             \item \emph{Subscriptions}: users and moderators will be able to subscribe to specific sections, threads or user to track their contents. They will receive real-time notifications upon addition/editing of tracked content.
                         \end{itemize}
 
+                        \begin{figure}[h]
+                        \caption{Subscription/notification architecture example.}
+                        \centering
+                        \includegraphics[width=1\textwidth]{ed/hier_sub}
+                        \end{figure}
+
+                \newpage
+
                 \subsection{Example use cases}
-                    In software and systems engineering, a \emph{use case} is a list of steps, typically defining interactions between one or more actors and a system, to achieve a goal. 
+                    In software and systems engineering, a \emph{use case} is a list of steps, typically defining interactions between one or more actors and a system, to achieve a goal.
 
                     \subsubsection{Mobile game forum}
                         A company developed a popular mobile game, with a wide audience.
@@ -283,14 +302,14 @@
 
                         \paragraph{Pre-conditions}
                             \begin{itemize}
-                                \item Release of a popular product with a wide audience.                            
+                                \item Release of a popular product with a wide audience.
                                 \item Game users need to register on the forum.
                             \end{itemize}
 
                         \paragraph{Flow of events}
                             \begin{itemize}
-                                \item Installation and configuration of a veeForum-enabled forum system by the forum management team.                            
-                                \item Creation of the sections and permission hierarchies by the forum management team.
+                                \item Installation and configuration of a veeForum-enabled forum system by the forum management team.
+                                \item Creation of the sections and permission hierarchies by the forum management team and the developers.
                                 \item Registration and content creation by the game developers and game players.
                             \end{itemize}
 
@@ -301,6 +320,19 @@
                                 \item The feedback team will be able to track user suggestions and forward potential product improvements to the developer team.
                             \end{itemize}
 
+                        \begin{figure}[!htb]
+                        \caption{Basic forum usage use case diagram.}
+                        \centering
+                        \includegraphics[width=1\textwidth]{uc/uc1}
+                        \end{figure}
+
+                        \begin{figure}[!htb]
+                        \caption{Technical support and feedback use case diagram.}
+                        \centering
+                        \includegraphics[width=1\textwidth]{uc/uc2}
+                        \end{figure}
+
+                    \newpage
                     \subsubsection{Local city GNU/Linux usergroup forum}
                         Some GNU/Linux users from the same city decide to start a local usergroup to discuss the GNU/Linux ecosystem and make new friends. In spirit with the open-source nature of the system, collaboration is extremely important. They require to easily assign specific permissions to users and groups to allow the forum to grow and be well-organized.
 
@@ -313,7 +345,7 @@
 
                         \paragraph{Pre-conditions}
                             \begin{itemize}
-                                \item Interest in a local GNU/Linux usergroup.                            
+                                \item Interest in a local GNU/Linux usergroup.
                                 \item Availability of people willing to collaborate.
                             \end{itemize}
 
@@ -333,8 +365,14 @@
                                 \item External visitors will be able to make use of the public content.
                             \end{itemize}
 
-                \subsection{Non-functional requirements}   
-                    Functional requirements are supported by \emph{non-functional requirements} (also known as quality requirements), which impose constraints on the design or implementation (such as performance requirements, security, or reliability). 
+                        \begin{figure}[!htb]
+                        \caption{Usergroup forum use case diagram.}
+                        \centering
+                        \includegraphics[width=1\textwidth]{uc/uc3}
+                        \end{figure}
+
+                \subsection{Non-functional requirements}
+                    Functional requirements are supported by \emph{non-functional requirements} (also known as quality requirements), which impose constraints on the design or implementation (such as performance requirements, security, or reliability).
 
                     \subsubsection{Performance}
                         The system will be designed from the ground-up with emphasis on performance. As the forum may have huge amounts of contents and concurrent usage after its deployment, optimizing is a must.
@@ -344,7 +382,7 @@
                         Web backend functions will also be carefully \emph{optimized both for memory and speed}.
 
                     \subsubsection{Reliability}
-                        The system will have to be reliable and keep working in case of errors. 
+                        The system will have to be reliable and keep working in case of errors.
 
                         Database queries and functions will be executed in \emph{safe wrappers} that catch and handle errors carefully.
 
@@ -364,10 +402,44 @@
                     aaa
 
             \section{Analysis models}
-                aaa
-                
+                \subsection{Activity Diagrams}
+                    Activity diagrams are graphical representations of workflows of stepwise activities and actions with support for choice, iteration and concurrency. 
+                    In the Unified Modeling Language, activity diagrams are intended to model both computational and organisational processes (i.e. workflows). 
+                    Activity diagrams show the overall flow of control.
+
+                    \newpage
+
+                    The following diagram shows the steps that the \emph{forum management team} must take in order to setup and initialize a veeForum-enabled forum.
+
+                    \begin{figure}[!htb]
+                    \caption{Forum setup and initialization activity diagram.}
+                    \centering
+                    \includegraphics[width=1\textwidth]{uc/a1}
+                    \end{figure}
+
+                    \newpage
+
+                    The following diagram shows the steps that the \emph{forum users} must take in order to add content to the forum system.
+
+                    \begin{figure}[!htb]
+                    \caption{Content creation activity diagram.}
+                    \centering
+                    \includegraphics[width=1\textwidth]{uc/a2}
+                    \end{figure}
+
+                    \newpage
+
                 \subsection{Sequence Diagrams}
-                    aaa
+                    
+                    The following diagram shows the interaction between \emph{forum users}, the \emph{subscription broker} and the \emph{content management} systen in order to manage subscriptions and generate notifications.
+
+                    \begin{figure}[!htb]
+                    \caption{Subscription/notification system sequence diagram.}
+                    \centering
+                    \includegraphics[width=1\textwidth]{uc/s1}
+                    \end{figure}
+
+                    \newpage
 
                 \subsection{Data Flow Diagrams}
                     aaa
@@ -390,7 +462,7 @@
             \item A \emph{HTML5 generation module}, that greatly simplifies the creation of dynamic forum web pages by wrapping HTML5 controls in \emph{object-oriented wrappers} that can be easily bound to callbacks and database events.
             \item A \emph{modern responsive AJAX frontend} that allows users and interact with the backend module from multiple device, limiting postbacks and page refreshes.
         \end{itemize}
-         
+
         \chapter{Development process}
 
             \section{Environment and tools}
@@ -412,7 +484,7 @@
             \section{Version control system}
                 Version control systems (VCSs) allow the \emph{management of changes} to documents, computer programs, large web sites, and other collections of information.
 
-                Nowadays, a version control system is \emph{essential} for the development of any project. 
+                Nowadays, a version control system is \emph{essential} for the development of any project.
                 Being able to track changes, develop features in separate \emph{branches}, have multiple programmers work on the same code base without conflicts and much more is extremely important for projects of any scope and size.
 
                 The chosen VCS is \emph{Git}, a distributed revision control system with an emphasis on \emph{speed}, \emph{data integrity}, and support for \emph{distributed, non-linear workflows}.
@@ -422,10 +494,10 @@
                 The veeForum project is \emph{open-source} and \emph{appreciates feedback and contributions}. It is hosted on \emph{GitHub}, a web-based Git repository hosting service, which offers all of the distributed revision control and source code management (SCM) functionality of Git, while adding \emph{additional features} that make collaboration and public contributions easy and accessible.
 
             \section{Apache}
-                The Apache HTTP server is the world's most widely used web server software. 
+                The Apache HTTP server is the world's most widely used web server software.
 
                 Apache has been under open-source development for about 20 years - it supports all modern server-side technologies and programming languages, and also is \emph{extremely reliable} and \emph{secure}.
-                        
+
             \section{Thesis}
                 The current document was written using \LaTeX, an high-quality typesetting system; it includes features designed for the production of \emph{technical and scientific documentation}.
 
@@ -443,7 +515,7 @@
     #!/bin/bash
 
     latexpp ./thesis.lpp > ./thesis.tex
-    pdflatex -shell-escape ./thesis.tex && chromium ./thesis.pdf    
+    pdflatex -shell-escape ./thesis.tex && chromium ./thesis.pdf
 !!}
 
                     LatexPP is available as an open-source project on GitHub:
@@ -456,14 +528,14 @@
 
             \begin{itemize}
                 \item \emph{./doc/}
-                    
+
                     Folder containing the documentation of the project.
                     \begin{itemize}
-                        \item \emph{./latex/} 
+                        \item \emph{./latex/}
 
-                        LatexPP and \LaTeX{}  source and output files.                            
+                        LatexPP and \LaTeX{}  source and output files.
                     \end{itemize}
-            
+
                 \item \emph{./sql/}
 
                     Folder containing the SQL DDL scripts.
@@ -471,7 +543,7 @@
                         \item \emph{./scripts/}
 
                         Contains all the parts that make up the complete SQL initialization script.
-                        
+
                         \item \emph{./mkScript.sh}
 
                         Builds the complete SQL initialization scripts from the files in ./scripts/.
@@ -482,26 +554,26 @@
                     \end{itemize}
 
                 \item \emph{./exe/}
-                    
+
                     Folder containing executable scripts to setup the system.
                     \begin{itemize}
-                        \item \emph{./docker/} 
+                        \item \emph{./docker/}
 
                         Docker-related scripts.
                         \begin{itemize}
-                            \item \emph{./start.sh} 
+                            \item \emph{./start.sh}
 
                             Starts a Docker instance containing veeForum.
 
-                            \item \emph{./cleanup.sh} 
+                            \item \emph{./cleanup.sh}
 
                             Cleans any running veeForum Docker instance.
 
-                            \item \emph{./shell.sh} 
+                            \item \emph{./shell.sh}
 
                             Starts a Docker instance containing veeForum, controlling an instance of bash inside it.
 
-                            \item \emph{./httpdLog.sh} 
+                            \item \emph{./httpdLog.sh}
 
                             Prints the Apache error log of the current running veeForum Docker instance.
                         \end{itemize}
@@ -509,31 +581,31 @@
                     \end{itemize}
 
                 \item \emph{./www/}
-                    
+
                     Folder containing web application data.
                     \begin{itemize}
 
-                        \item \emph{./css/} 
+                        \item \emph{./css/}
 
                         CSS3 stylesheets.
 
-                        \item \emph{./js/} 
+                        \item \emph{./js/}
 
                         ECMAScript 5 script files.
 
-                        \item \emph{./json/} 
+                        \item \emph{./json/}
 
                         Non-relational data storage files, in JSON format.
 
-                        \item \emph{./php/} 
+                        \item \emph{./php/}
 
-                        PHP backend code. 
+                        PHP backend code.
                         \begin{itemize}
-                            \item \emph{./lib/} 
+                            \item \emph{./lib/}
 
                             Backend to database interface library and HTML5 generation library.
 
-                            \item \emph{./core/} 
+                            \item \emph{./core/}
 
                             PHP frontend files that generate the responsive HTML5 web application user interface.
                         \end{itemize}
@@ -557,7 +629,7 @@
             \section{Database setup}
 
                 veeForum is supposed to be installed on a clean instance of MySQL server. The following script correctly initializes the required database and cleans any previous version of veeForum.
-                
+
                 \printSQLTablepage{00_db.sql}{db}
                     This script is meant to be run once to create and initialize from scratch the whole MySQL veeForum backend.
                     Therefore, we drop the database if exists and re-create it.
@@ -568,7 +640,7 @@
                 A big amount of tables is required to make veeForum satisfy all requirements. Every table in the project is documented in the following section - the full \emph{DDL} commented code and an explanation is provided for every table.
 
                 \printSQLTablepage{01_tblLog.sql}{log}
-                    The \emph{log} table is a simple non-relational list of log messages that can be used for debugging and security purposes. 
+                    The \emph{log} table is a simple non-relational list of log messages that can be used for debugging and security purposes.
 
                 \printSQLTablepage{02_tblTag.sql}{tag}
                     The \emph{tag} table is a simple non-relational list of unique tags that can be attached to user-created content.
@@ -664,7 +736,7 @@
                     \begin{figure}[h]
                     \caption{Notification specializations.}
                     \centering
-                    \includegraphics[width=0.5\textwidth]{td/11subscriptionbase}
+                    \includegraphics[width=0.5\textwidth]{td/15notificationbase}
                     \end{figure}
 
 
@@ -674,14 +746,14 @@
 
                 \printSQLTablepage{17_tblNotificationThread.sql}{notificationThread}
                     Notification specialization for \emph{thread notifications}. Generated when new content is added to a tracked thread. Points to the subscription that generated the notification (identified by \mintinline{sql}{id_subscription_thread}) and to the created content (identified by \mintinline{sql}{id_content}).
-                    The base notification instance is identified by \mintinline{sql}{id_base}.                    
+                    The base notification instance is identified by \mintinline{sql}{id_base}.
 
                 \printSQLTablepage{18_tblNotificationTag.sql}{notificationTag}
                     Notification specialization for \emph{tag notifications}. Generated when new content is labeled with the tracked tag. Points to the subscription that generated the notification (identified by \mintinline{sql}{id_subscription_tag}) and to the created content (identified by \mintinline{sql}{id_content}).
                     The base notification instance is identified by \mintinline{sql}{id_base}.
 
                 \printSQLTablepage{19_tblTagContent.sql}{tagContent}
-                    The \emph{tagContent} table labels content to tags. 
+                    The \emph{tagContent} table labels content to tags.
                     It is a \emph{N to N} relationship table.
 
                     \begin{figure}[h]
@@ -717,35 +789,105 @@
 
 
                 \printSQLTablepage{22_procsMkSubscription.sql}{mkSubscription}
-                    \lipsum[1-1]
+                    The procedures in the code listed above deal with the creation of subscriptions. To create subscriptions, it is necessary to instantiate both a \mintinline{sql}{subscription_base} row and a specialization data row.
+                    These procedures automatically create both the required rows and make sure they relate to each other correctly, thanks to the \mintinline{sql}{LAST_INSERT_ID()} MySQL function.
+
+                    \begin{itemize}
+                        \item \mintinline{sql}{mk_subscription_base}: creates a subscription base record and returns its id.
+                         \item \mintinline{sql}{mk_subscription_user}: calls \mintinline{sql}{mk_subscription_base}, then creates a user specialization row linked to it.
+                        Takes the subscriptor id and id of the user as input parameters.
+                        \item \mintinline{sql}{mk_subscription_thread}: calls \mintinline{sql}{mk_subscription_base}, then creates a thread specialization row linked to it.
+                        Takes the subscriptor id and id of the thread as input parameters.
+                        \item \mintinline{sql}{mk_subscription_tag}: calls \mintinline{sql}{mk_subscription_base}, then creates a tag specialization row linked to it.
+                        Takes the subscriptor id and id of the tag as input parameters.
+                    \end{itemize}
 
 
                 \printSQLTablepage{23_procsMkNotification.sql}{mkNotification}
-                    \lipsum[1-1]
+                     The procedures in the code listed above deal with the creation of notifications. To create notifications, it is necessary to instantiate both a \mintinline{sql}{notification_base} row and a specialization data row.
+                    These procedures automatically create both the required rows and make sure they relate to each other correctly, thanks to the \mintinline{sql}{LAST_INSERT_ID()} MySQL function.
+
+                    \begin{itemize}
+                        \item \mintinline{sql}{mk_notification_base}: creates a notification base record and returns its id.
+                         \item \mintinline{sql}{mk_notification_user}: calls \mintinline{sql}{mk_notification_base}, then creates a user specialization row linked to it.
+                        Takes the notification receiver id, the user subscription id and id of the new content as input parameters.
+                        \item \mintinline{sql}{mk_notification_thread}: calls \mintinline{sql}{mk_notification_base}, then creates a thread specialization row linked to it.
+                        Takes the notification receiver id, the thread subscription id and id of the new content as input parameters.
+                        \item \mintinline{sql}{mk_notification_tag}: calls \mintinline{sql}{mk_notification_base}, then creates a tag specialization row linked to it.
+                        Takes the notification receiver id, the tag subscription id and id of the new content as input parameters.
+                    \end{itemize}
 
 
                 \printSQLTablepage{24_procsUtils.sql}{utils}
-                    \lipsum[1-1]
+                    The code listed above is composed of several utility stored procedures.
 
+                    \begin{itemize}
+                        \item \mintinline{sql}{get_subscriptor}: takes a \emph{subscription base id} as an input parameter and returns the id of the subscriptor.
+                        \item \mintinline{sql}{check_notification_unseen_existance_user}: takes a \emph{subscriptor id} and a \emph{target subscribed user id} as input parameters and returns \mintinline{sql}{true} if an unseen user notification with the passed parameters exists.
+                        \item \mintinline{sql}{check_notification_unseen_existance_thread}: takes a \emph{subscriptor id} and a \emph{target subscribed thread id} as input parameters and returns \mintinline{sql}{true} if an unseen thread notification with the passed parameters exists.
+                        \item \mintinline{sql}{check_notification_unseen_existance_tag}: takes a \emph{subscriptor id} and a \emph{target subscribed tag id} as input parameters and returns \mintinline{sql}{true} if an unseen tag notification with the passed parameters exists.                        
+                    \end{itemize}
 
                 \printSQLTablepage{25_procGNUser.sql}{gNUser}
-                    \lipsum[1-1]
+                    The stored procedure listed above deals with the \emph{generation of user notifications}. It is automatically called by the \mintinline{sql}{trg_notifications_user} trigger, which fires after the addition of new content to the system.
+
+                    The procedure takes the \emph{last added content id} and its \emph{author id} as input parameters, and generates (if matching subscriptions exists) notification records for every subscriptor.
+
+                    The code makes use of \emph{complex MySQL features} like \emph{cursors}, \emph{variable declarations} and \emph{loops}.
+                    These features are required to efficiently traverse the subscription hierarchies and retrieve the necessary identifiers.
+
+                    To generate the notifications, the \mintinline{sql}{get_subscriptor} and \mintinline{sql}{mk_notification_user} procedures are called inside the loop, for each matching subscriptor.
 
 
                 \printSQLTablepage{26_procGNThread.sql}{gNThread}
-                    \lipsum[1-1]
+                    The stored procedure listed above deals with the \emph{generation of thread notifications}. It is automatically called by the \mintinline{sql}{trg_notifications_thread} trigger, which fires after the addition of new content to the system.
+
+                    The procedure takes the \emph{last added post id} and its \emph{parent thread id} as input parameters, and generates (if matching subscriptions exists) notification records for every subscriptor.
+
+                    The code makes use of \emph{complex MySQL features} like \emph{cursors}, \emph{variable declarations} and \emph{loops}.
+                    These features are required to efficiently traverse the subscription hierarchies and retrieve the necessary identifiers.
+
+                    To generate the notifications, the \mintinline{sql}{get_subscriptor} and \mintinline{sql}{mk_notification_thread} procedures are called inside the loop, for each matching subscriptor.
 
 
                 \printSQLTablepage{27_procGNTag.sql}{gNTag}
-                    \lipsum[1-1]
+                    The stored procedure listed above deals with the \emph{generation of tag notifications}. It is automatically called by the \mintinline{sql}{trg_notifications_tag} trigger, which fires after the addition of new content to the system.
+
+                    The procedure takes the \emph{last added content's tag id} and its \emph{content base id} as input parameters, and generates (if matching subscriptions exists) notification records for every subscriptor.
+
+                    The code makes use of \emph{complex MySQL features} like \emph{cursors}, \emph{variable declarations} and \emph{loops}.
+                    These features are required to efficiently traverse the subscription hierarchies and retrieve the necessary identifiers.
+
+                    To generate the notifications, the \mintinline{sql}{get_subscriptor} and \mintinline{sql}{mk_notification_tag} procedures are called inside the loop, for each matching subscriptor.
 
 
                 \printSQLTablepage{28_procCalcPrivs.sql}{calcPrivs}
-                    \lipsum[1-1]
+                    The \mintinline{sql}{calculate_final_privileges} stored procedure takes an \emph{user id} input parameter and traverses its \emph{user/group hierarchy} recursively, returning the final system-wide privilege bit set of the user.
+
+                    The bit set contains the following privileges:
+
+                    \begin{itemize}
+                        \item \mintinline{sql}{v_is_superadmin}: \mintinline{sql}{true} if the user is a super administrator.
+                        \item \mintinline{sql}{v_can_manage_sections}: \mintinline{sql}{true} if the user can manage (add/edit/remove) sections.
+                        \item \mintinline{sql}{v_can_manage_users}: \mintinline{sql}{true} if the user can manage (add/edit/remove) users.
+                        \item \mintinline{sql}{v_can_manage_groups}: \mintinline{sql}{true} if the user can manage (add/edit/remove) group hierarchies.
+                        \item \mintinline{sql}{v_can_manage_permissions}: \mintinline{sql}{true} if the user can manage (add/edit/remove) permission hierarchies.
+                    \end{itemize}
 
 
                 \printSQLTablepage{29_procCalcPerms.sql}{calcPerms}
-                    \lipsum[1-1]
+                    The \mintinline{sql}{calculate_final_permissions} stored procedure takes an \emph{user id} and a \emph{section id} as input parameters and traverses the user's \emph{user/group hierarchy} recursively, calculating and returning the final user permissions related to the passed section.
+
+                    The calculated permission set (a bit set) contains the following boolean values:
+
+                    \begin{itemize}
+                        \item \mintinline{sql}{v_can_view}: \mintinline{sql}{true} if the user can view/access the section.
+                        \item \mintinline{sql}{v_can_post}: \mintinline{sql}{true} if the user can post in threads existing in the section.
+                        \item \mintinline{sql}{v_can_create_thread}: \mintinline{sql}{true} if the user can create threads in the section.
+                        \item \mintinline{sql}{v_can_delete_post}: \mintinline{sql}{true} if the user can delete posts inside the section threads.
+                        \item \mintinline{sql}{v_can_delete_thread}: \mintinline{sql}{true} if the user can delete threads inside the section.
+                        \item \mintinline{sql}{v_can_delete_section}: \mintinline{sql}{true} if the user can delete the section and its subsections.
+                    \end{itemize}
 
             \newpage
             \section{Triggers}
@@ -774,7 +916,7 @@
                     \lipsum[1-1]
 
             \newpage
-            \section{Database inizialization}
+            \section{Database test data inizialization}
 
                 \printSQLTablepage{99_initialize.sql}{initialize}
                     \lipsum[1-1]
