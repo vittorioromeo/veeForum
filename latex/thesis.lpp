@@ -441,12 +441,6 @@
 
                     \newpage
 
-                \subsection{Data Flow Diagrams}
-                    aaa
-
-                \subsection{State-Transition Diagrams}
-                    aaa
-
     \part{Technical analysis}
         The following part of the thesis will cover all implementation choices and details for veeForum in depth.
 
