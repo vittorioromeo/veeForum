@@ -10,10 +10,6 @@
 \usepackage{minted}
 
 
-
-
-
-
 \graphicspath{ {res/} }
 \setcounter{secnumdepth}{4}
 \titleformat{\paragraph}
@@ -1543,21 +1539,283 @@
 
                 \subsection{tbl}
 
-                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+                    The \emph{tbl} submodule provides a complex and fully-featured database table wrapping and management system for the PHP backend.
 
+                    Every database table is defined in the PHP backend as a class deriving from \mintinline{php}{Tbl}. 
+
+                    \mintinline{php}{Tbl} is an extremely powerful abstraction that offers developers an huge amount of convenient functions to manage the records of a database table:
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class Tbl
+    {
+        // Constructs a `Tbl` instance with a specific name
+        // and a set of fields for value insertion
+        public function __construct($mTblName, ...$mInsertFields);
+
+        // Set the fields required to insert a new value
+        public function setInsertFields(...$mFields);
+
+        // Inserts a new record with the passed variadic values in
+        // the database
+        public function insert(...$mValues);
+
+        // Inserts a new record with the passed variadic values in
+        // the database (correctly escapes the passed arguments)
+        public function insertValues(...$mValues);
+
+        // Finds a record by ID and updates it
+        public function updateByID($mID, $mArray);
+
+        // Returns all records in an array
+        public function getAll();
+
+        // Returns all records matching a specific predicate in an array
+        public function getWhere($mX);
+
+        // Returns the first record
+        public function getFirst($mX);
+
+        // Returns the first record matching a specific predicate
+        public function getFirstWhere($mX);
+
+        // Deletes all records matching a specific predicate
+        public function deleteWhere($mX);
+
+        // Finds a record by ID and deletes it
+        public function deleteByID($mID);
+
+        // Finds a record by ID and deletes its hierarchy, if existing
+        public function deleteRecursiveByID($mID);
+        
+        // Finds and returns a record by ID
+        public function findByID($mID);
+
+        // Finds all children of a specific record by ID
+        public function findAllByIDParent($mIDParent);
+
+        // Returns true if any record matches the predicate
+        public function hasAnyWhere($mX);
+
+        // Returns true if a record with the passed ID exists
+        public function hasID($mID);
+
+        // Executes the passed function/lambda on every record
+        public function forRows($mFn);
+
+        // Executes the passed function/lambda on every record matching
+        // a specific predicate
+        public function forWhere($mFn, $mWhere);
+
+        // Executes the passed function/lambda on every child of a
+        // record
+        public function forChildren($mFn, $mIDParent = null, $mDepth = 0);
+
+        // Executes the passed function/lambda on every parent of a
+        // record
+        public function forParent($mFn, $mID, $mDepth = 0);
+    }
+
+    ?>
                     \end{minted}                
+
+                    Database tables can then be wrapped and instantiated in the following way:
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    // ...
+
+    TBS::$log = new TblLog('tbl_log',
+        'type', 'creation_timestamp', 'value');
+
+    TBS::$tag = new TblTag('tbl_tag',
+        'value');
+
+    TBS::$section = new TblSection('tbl_section',
+        'id_parent', 'name');
+
+    TBS::$cntBase = new Tbl('tbl_content_base');
+    TBS::$cntThread = new TblCntThread('tbl_content_thread');
+    TBS::$cntPost = new TblCntPost('tbl_content_post');
+    TBS::$cntAttachment = new TblCntAttachment('tbl_content_attachment');
+
+    // ...
+
+    ?>
+                    \end{minted}              
                 
                 \subsection{sprocs}
 
+                    The \emph{sprocs} submodule provides a powerful and convenient abstraction to manage and call MySQL stored procedures from the PHP backend.
+
+                    Every database stored procedure can be wrapped in a \mintinline{php}{SProc} instance.
+
+                    The user-friendly yet extremely useful \mintinline{php}{SProc} public interface is shown below:
+
                     \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
 
-                    \end{minted}                
+    class SProc
+    {
+        // Constructs a stored procedure with a specific name,
+        // and a number of in/out parameters
+        public function __construct($mProcedureName, 
+            $mInParamCount, $mOutParamCount);
 
-        \chapter{Installation}
-            aaa
+        // Forwards the variadic arguments to the stored procedure
+        // and calls it
+        public function call(...$mArgs);
 
-        \chapter{Web interface usage}
-            aaa
+        // Forwards the variadic arguments to the stored procedure
+        // and calls it, returning its out parameters in an array
+        public function callOut(&$mOutArray, ...$mArgs);
+    }
+
+    ?>
+                    \end{minted}      
+
+                    Stored procedures can then be instantiated and wrapped in the web application code like this:
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}          
+    <?php
+
+    // ...
+
+    SPRCS::$mkContentThread = new SProc('mk_content_thread', 3, 0);
+    SPRCS::$mkContentPost = new SProc('mk_content_post', 3, 0);
+    SPRCS::$mkContentAttachment = new SProc('mk_content_attachment', 3, 0);
+
+    SPRCS::$mkSubscriptionUser = new SProc('mk_subscription_user', 2, 0);
+    SPRCS::$mkSubscriptionThread = new SProc('mk_subscription_thread', 2, 0);
+    SPRCS::$mkSubscriptionTag = new SProc('mk_subscription_tag', 2, 0);
+
+    // ...
+
+    ?>
+                    \end{minted}      
+
+            \section{Core module}
+
+                The \emph{core PHP module} contains the implementation of the default \emph{veeForum web application}, which makes use of all the library module features described above.
+
+                Its folder structure is as follows:
+
+                \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{bash}
+    .
+    ├── body
+    │   ├── footer.php
+    │   ├── loginControls.php
+    │   ├── modalInfo.php
+    │   ├── modalNotifications.php
+    │   ├── navbarContents.php
+    │   ├── navbar.php
+    │   └── profileControls.php
+    ├── body.php
+    ├── content
+    │   ├── actions.php
+    │   ├── adminPanel
+    │   │   ├── modalGSPerms.php
+    │   │   ├── modalUserActions.php
+    │   │   ├── modalUserEdit.php
+    │   │   ├── panelDebug.php
+    │   │   ├── panelGroups.php
+    │   │   ├── panelGSPerms.php
+    │   │   ├── panelSections.php
+    │   │   ├── panelTags.php
+    │   │   └── panelUsers.php
+    │   ├── adminPanel.php
+    │   ├── forbidden.php
+    │   ├── register
+    │   │   └── modalRegister.php
+    │   ├── sections
+    │   │   ├── modalNewPost.php
+    │   │   └── modalNewThread.php
+    │   ├── sections.php
+    │   └── threadView.php
+    └── head.php
+                \end{minted}
+
+                The \mintinline{php}{body} folder contains the implementation of the main page's modules, such as information/error modals, the navigation bar, etc.
+
+                The \mintinline{php}{content} folder contains several subfolders:
+
+                \begin{itemize}
+                    \item \mintinline{php}{adminPanel}: implementation of the administration section and all its modules.
+                    \item \mintinline{php}{register}: implementation of the registration interface.
+                    \item \mintinline{php}{sections}: implementation of the \emph{new post} and \emph{new thread} interfaces.
+                \end{itemize}
+
+                Screenshots of the web interface will be shown in the following chapter, showing the end-result of the combination of the PHP modules.
+
+        \chapter{Web interface}
+            
+            \begin{figure}[!htb]
+            \caption{Main page - user not logged in.}
+            \centering
+            \includegraphics[width=1\textwidth]{u/0}
+            \end{figure}
+
+            \begin{figure}[!htb]
+            \caption{Registration modal.}
+            \centering
+            \includegraphics[width=1\textwidth]{u/1}
+            \end{figure}
+
+            \begin{figure}[!htb]
+            \caption{Main page - user logged in.}
+            \centering
+            \includegraphics[width=1\textwidth]{u/2}
+            \end{figure}
+
+            \begin{figure}[!htb]
+            \caption{New thread modal.}
+            \centering
+            \includegraphics[width=1\textwidth]{u/3}
+            \end{figure}
+
+            \begin{figure}[!htb]
+            \caption{Thread view page.}
+            \centering
+            \includegraphics[width=1\textwidth]{u/4}
+            \end{figure}
+
+            \begin{figure}[!htb]
+            \caption{New post modal.}
+            \centering
+            \includegraphics[width=1\textwidth]{u/5}
+            \end{figure}
+
+            \begin{figure}[!htb]
+            \caption{Thread view page - subscription.}
+            \centering
+            \includegraphics[width=1\textwidth]{u/6}
+            \end{figure}
+
+            \begin{figure}[!htb]
+            \caption{Notifications modal.}
+            \centering
+            \includegraphics[width=1\textwidth]{u/7}
+            \end{figure}
+
+            \begin{figure}[!htb]
+            \caption{Administration panel - 1.}
+            \centering
+            \includegraphics[width=1\textwidth]{u/8}
+            \end{figure}
+
+            \begin{figure}[!htb]
+            \caption{Administration panel - 2.}
+            \centering
+            \includegraphics[width=1\textwidth]{u/9}
+            \end{figure}
+
+            \begin{figure}[!htb]
+            \caption{Administration panel - 3.}
+            \centering
+            \includegraphics[width=1\textwidth]{u/10}
+            \end{figure}
 
 
     \part{Conclusion}
