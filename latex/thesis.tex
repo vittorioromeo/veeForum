@@ -30,8 +30,7 @@
 }
 
 \newcommand{\printSQLTablepage}[2]
-{
-    \newpage
+{    
     \subsection{#2}
     \subsubsection{Code}
     \printSQLtest{../sql/parts/#1}
@@ -458,10 +457,7 @@
                         The code layer will be carefully designed and organized to allow easy maintenance, bugfixing and feature addition.
 
                         To ensure maximum portability, the product will be designed to work on the most popular \emph{GNU/Linux} distributions and will be thoroughly tested on different platforms.
-
-                \subsection{Logical Database Requirements}
-                    aaa
-
+            
             \section{Analysis models}
                 \subsection{Activity Diagrams}
                     Activity diagrams are graphical representations of workflows of stepwise activities and actions with support for choice, iteration and concurrency. 
@@ -689,7 +685,7 @@
             \end{itemize}
 
         \chapter{Database design}
-            \section{ER diagram}
+            \section{Diagrams}
 
                 \begin{figure}[!htb]
                 \caption{Complete DB Entity-Relationship diagram.}
@@ -715,19 +711,16 @@
                 \includegraphics[width=0.7\textwidth]{erzm2}
                 \end{figure}
 
-                \newpage
-
-            \section{Logic diagram}
-
                 \begin{figure}[!htb]
                 \caption{Complete DB logic diagram.}
                 \centering
                 \includegraphics[width=1\textwidth]{logics}
                 \end{figure}
+                
+                \newpage
 
         \chapter{SQL}
 
-            \newpage
             \section{Database setup}
 
                 veeForum is supposed to be installed on a clean instance of MySQL server. The following script correctly initializes the required database and cleans any previous version of veeForum.
@@ -736,7 +729,8 @@
                     This script is meant to be run once to create and initialize from scratch the whole MySQL veeForum backend.
                     Therefore, we drop the database if exists and re-create it.
 
-            \newpage
+                \newpage
+
             \section{Tables}
 
                 A big amount of tables is required to make veeForum satisfy all requirements. Every table in the project is documented in the following section - the full \emph{DDL} commented code and an explanation is provided for every table.
@@ -744,8 +738,12 @@
                 \printSQLTablepage{01_tblLog.sql}{log}
                     The \emph{log} table is a simple non-relational list of log messages that can be used for debugging and security purposes.
 
+                \newpage
+
                 \printSQLTablepage{02_tblTag.sql}{tag}
                     The \emph{tag} table is a simple non-relational list of unique tags that can be attached to user-created content.
+
+                \newpage
 
                 \printSQLTablepage{03_tblGroup.sql}{group}
                     The \emph{group} table defines the groups users can belong to. Every row defines a different group and assigns forum-wide permissions to them.
@@ -757,6 +755,8 @@
                     \includegraphics[width=0.5\textwidth]{td/03group}
                     \end{figure}
 
+                \newpage
+
                 \printSQLTablepage{04_tblUser.sql}{user}
                     The \emph{group} table contains the users registered to the forum system. Every user \emph{needs} to belong to a group, whose id is stored in \mintinline{sql}{id_group}.
                     Every row stores user credentials data and personal info.
@@ -767,6 +767,8 @@
                     \includegraphics[width=0.5\textwidth]{td/04user}
                     \end{figure}
 
+                \newpage
+
                 \printSQLTablepage{05_tblSection.sql}{section}
                     The \emph{section} table contains all forum sections, defining the base hierarchy for content. Sections have a name and can inherit from each other thanks to the \mintinline{sql}{id_parent} field, which is the id of the parent section and can be \mintinline{sql}{NULL}.
 
@@ -776,8 +778,12 @@
                     \includegraphics[width=0.5\textwidth]{td/05section}
                     \end{figure}
 
+                \newpage
+
                 \printSQLTablepage{06_tblFileData.sql}{fileData}
                     The \emph{fileData} table stores binary data and a filename for attachments. It makes use of the \mintinline{sql}{blob} MySQL data type to directly store binary data in the database backend.
+
+                \newpage
 
                 \printSQLTablepage{07_tblContentBase.sql}{contentBase}
                     The \emph{contentBase} table defines the base entity of the content inheritance tree. Derived content types are: \emph{threads}, \emph{posts} and \emph{attachments}.
@@ -789,19 +795,25 @@
                     \includegraphics[width=0.5\textwidth]{td/07contentbase}
                     \end{figure}
 
+                \newpage
+
                 \printSQLTablepage{08_tblContentThread.sql}{contentThread}
                     Content specialization for \emph{threads}. A thread belongs to a section (identified by \mintinline{sql}{id_section}) and has a \mintinline{sql}{title}.
                     The base content instance is identified by \mintinline{sql}{id_base}.
 
+                \newpage
 
                 \printSQLTablepage{09_tblContentPost.sql}{contentPost}
                     Content specialization for \emph{posts}. A post belongs to a thread (identified by \mintinline{sql}{id_thread}) and has text \mintinline{sql}{contents}.
                     The base content instance is identified by \mintinline{sql}{id_base}.
 
+                \newpage
+
                 \printSQLTablepage{10_tblContentAttachment.sql}{contentAttachment}
                     Content specialization for \emph{attachments}. An attachment belongs to a post (identified by \mintinline{sql}{id_post}) and points to a specific file data instance \mintinline{sql}{id_file_data}.
                     The base content instance is identified by \mintinline{sql}{id_base}.
 
+                \newpage
 
                 \printSQLTablepage{11_tblSubscriptionBase.sql}{subscriptionBase}
                     The \emph{subscriptionBase} table defines the base entity of the subscription inheritance tree. Derived subscription types are: \emph{thread subscriptions}, \emph{user subscriptions} and \emph{tag subscriptions}.
@@ -813,21 +825,25 @@
                     \includegraphics[width=0.5\textwidth]{td/11subscriptionbase}
                     \end{figure}
 
+                \newpage
 
                 \printSQLTablepage{12_tblSubscriptionThread.sql}{subscriptionThread}
                     Subscription specialization for \emph{thread subscriptions}. Allows to track a thread (identified by \mintinline{sql}{id_thread}) for new content additions.
                     The base subscription instance is identified by \mintinline{sql}{id_base}.
 
+                \newpage
 
                 \printSQLTablepage{13_tblSubscriptionUser.sql}{subscriptionUser}
                     Subscription specialization for \emph{user subscriptions}. Allows to track an user (identified by \mintinline{sql}{id_user}) for new content additions.
                     The base subscription instance is identified by \mintinline{sql}{id_base}.
 
+                \newpage
 
                 \printSQLTablepage{14_tblSubscriptionTag.sql}{subscriptionTag}
                     Subscription specialization for \emph{tag subscriptions}. Allows to track a tag (identified by \mintinline{sql}{id_tag}) for new content additions.
                     The base subscription instance is identified by \mintinline{sql}{id_base}.
 
+                \newpage
 
                 \printSQLTablepage{15_tblNotificationBase.sql}{notificationBase}
                     The \emph{notificationBase} table defines the base entity of the notification inheritance tree. Derived notification types are: \emph{thread notifications}, \emph{user notifications} and \emph{tag notifications}.
@@ -841,18 +857,25 @@
                     \includegraphics[width=0.5\textwidth]{td/15notificationbase}
                     \end{figure}
 
+                \newpage
 
                 \printSQLTablepage{16_tblNotificationUser.sql}{notificationUser}
                     Notification specialization for \emph{user notifications}. Generated when a tracked user creates new content. Points to the subscription that generated the notification (identified by \mintinline{sql}{id_subscription_user}) and to the created content (identified by \mintinline{sql}{id_content}).
                     The base notification instance is identified by \mintinline{sql}{id_base}.
 
+                \newpage    
+
                 \printSQLTablepage{17_tblNotificationThread.sql}{notificationThread}
                     Notification specialization for \emph{thread notifications}. Generated when new content is added to a tracked thread. Points to the subscription that generated the notification (identified by \mintinline{sql}{id_subscription_thread}) and to the created content (identified by \mintinline{sql}{id_content}).
                     The base notification instance is identified by \mintinline{sql}{id_base}.
 
+                \newpage
+
                 \printSQLTablepage{18_tblNotificationTag.sql}{notificationTag}
                     Notification specialization for \emph{tag notifications}. Generated when new content is labeled with the tracked tag. Points to the subscription that generated the notification (identified by \mintinline{sql}{id_subscription_tag}) and to the created content (identified by \mintinline{sql}{id_content}).
                     The base notification instance is identified by \mintinline{sql}{id_base}.
+
+                \newpage
 
                 \printSQLTablepage{19_tblTagContent.sql}{tagContent}
                     The \emph{tagContent} table labels content to tags.
@@ -864,12 +887,14 @@
                     \includegraphics[width=0.5\textwidth]{td/19tagcontent}
                     \end{figure}
 
+                \newpage
 
                 \printSQLTablepage{20_tblGroupSectionPermission.sql}{groupSectionPermission}
                     The \emph{groupSectionPermission} table links groups to sections, giving users belonging to the selected group a set of permissions for the selected section.
                     It is a \emph{N to N} relationship table.
 
-            \newpage
+                \newpage
+
             \section{Stored procedures}
 
                 To ensure \emph{maximum performance} and to \emph{minimize coupling} with the PHP backend, the logic of the forum system is, where possible, implemented with SQL \emph{stored procedures}.
@@ -889,6 +914,7 @@
                         Takes the author id and id of the parent post as input parameters.
                     \end{itemize}
 
+                \newpage
 
                 \printSQLTablepage{22_procsMkSubscription.sql}{mkSubscription}
                     The procedures in the code listed above deal with the creation of subscriptions. To create subscriptions, it is necessary to instantiate both a \mintinline{sql}{subscription_base} row and a specialization data row.
@@ -904,6 +930,7 @@
                         Takes the subscriptor id and id of the tag as input parameters.
                     \end{itemize}
 
+                \newpage
 
                 \printSQLTablepage{23_procsMkNotification.sql}{mkNotification}
                      The procedures in the code listed above deal with the creation of notifications. To create notifications, it is necessary to instantiate both a \mintinline{sql}{notification_base} row and a specialization data row.
@@ -919,6 +946,7 @@
                         Takes the notification receiver id, the tag subscription id and id of the new content as input parameters.
                     \end{itemize}
 
+                \newpage
 
                 \printSQLTablepage{24_procsUtils.sql}{utils}
                     The code listed above is composed of several utility stored procedures.
@@ -930,6 +958,8 @@
                         \item \mintinline{sql}{check_notification_unseen_existance_tag}: takes a \emph{subscriptor id} and a \emph{target subscribed tag id} as input parameters and returns \mintinline{sql}{true} if an unseen tag notification with the passed parameters exists.                        
                     \end{itemize}
 
+                \newpage
+
                 \printSQLTablepage{25_procGNUser.sql}{gNUser}
                     The stored procedure listed above deals with the \emph{generation of user notifications}. It is automatically called by the \mintinline{sql}{trg_notifications_user} trigger, which fires after the addition of new content to the system.
 
@@ -940,6 +970,7 @@
 
                     To generate the notifications, the \mintinline{sql}{get_subscriptor} and \mintinline{sql}{mk_notification_user} procedures are called inside the loop, for each matching subscriptor.
 
+                \newpage
 
                 \printSQLTablepage{26_procGNThread.sql}{gNThread}
                     The stored procedure listed above deals with the \emph{generation of thread notifications}. It is automatically called by the \mintinline{sql}{trg_notifications_thread} trigger, which fires after the addition of new content to the system.
@@ -951,6 +982,7 @@
 
                     To generate the notifications, the \mintinline{sql}{get_subscriptor} and \mintinline{sql}{mk_notification_thread} procedures are called inside the loop, for each matching subscriptor.
 
+                \newpage
 
                 \printSQLTablepage{27_procGNTag.sql}{gNTag}
                     The stored procedure listed above deals with the \emph{generation of tag notifications}. It is automatically called by the \mintinline{sql}{trg_notifications_tag} trigger, which fires after the addition of new content to the system.
@@ -962,6 +994,7 @@
 
                     To generate the notifications, the \mintinline{sql}{get_subscriptor} and \mintinline{sql}{mk_notification_tag} procedures are called inside the loop, for each matching subscriptor.
 
+                \newpage
 
                 \printSQLTablepage{28_procCalcPrivs.sql}{calcPrivs}
                     The \mintinline{sql}{calculate_final_privileges} stored procedure takes an \emph{user id} input parameter and traverses its \emph{user/group hierarchy} recursively, returning the final system-wide privilege bit set of the user.
@@ -976,6 +1009,7 @@
                         \item \mintinline{sql}{v_can_manage_permissions}: \mintinline{sql}{true} if the user can manage (add/edit/remove) permission hierarchies.
                     \end{itemize}
 
+                \newpage
 
                 \printSQLTablepage{29_procCalcPerms.sql}{calcPerms}
                     The \mintinline{sql}{calculate_final_permissions} stored procedure takes an \emph{user id} and a \emph{section id} as input parameters and traverses the user's \emph{user/group hierarchy} recursively, calculating and returning the final user permissions related to the passed section.
@@ -991,57 +1025,68 @@
                         \item \mintinline{sql}{v_can_delete_section}: \mintinline{sql}{true} if the user can delete the section and its subsections.
                     \end{itemize}
 
-            \newpage
+                \newpage
+
             \section{Triggers}
 
                 \printSQLTablepage{90_trgNotifications.sql}{notifications}
-                    \lipsum[1-1]
+                    These triggers deal with \emph{notification generation}.
 
+                    \begin{itemize}
+                        \item \mintinline{sql}{trg_notifications_user}: generates a notification when a tracked user creates content.
+                        \item \mintinline{sql}{trg_notifications_thread}: generates a notification when a post is added to a tracked thread.
+                        \item \mintinline{sql}{trg_notifications_tag}: generates a notification when content with the tracked tag is created.
+                    \end{itemize}
+
+                \newpage
 
                 \printSQLTablepage{91_trgDelContentBase.sql}{contentBase}
-                    \lipsum[1-1]
+                    These triggers deal with content deletion and cleanup.
 
+                    The \mintinline{sql}{trg_del_content_base_thread}, \mintinline{sql}{trg_del_content_base_post}, and \mintinline{sql}{trg_del_content_base_attachment} triggers automatically delete the content base instance upon derived content instance deletion.
+
+                    The \mintinline{sql}{trg_del_ntf_user_on_post_del} and \mintinline{sql}{trg_del_ntf_thread_on_post_del} triggers delete notifications pointing to content that is about to get deleted.
+
+                \newpage
 
                 \printSQLTablepage{92_trgDelSubscriptionBase.sql}{subscriptionBase}
-                    \lipsum[1-1]
+                    These triggers deal with subscription base instance automatic deletion upon derived instance deletion.
 
+                \newpage
 
                 \printSQLTablepage{93_trgDelNotificationBase.sql}{notificationBase}
-                    \lipsum[1-1]
+                     These triggers deal with notification base instance automatic deletion upon derived instance deletion.
 
+                \newpage
 
                 \printSQLTablepage{94_trgDelSubscriptionNtf.sql}{subscriptionNtf}
-                    \lipsum[1-1]
+                    These triggers delete all notification belonging to a subscription that's about to be deleted.
 
+                \newpage
 
                 \printSQLTablepage{95_trgDelSubCnt.sql}{delSubCnt}
-                    \lipsum[1-1]
+                    These triggers delete all subscriptions pointing to content that's about to be deleted.
 
-            \newpage
+                \newpage
+
             \section{Database test data inizialization}
 
                 \printSQLTablepage{99_initialize.sql}{initialize}
-                    \lipsum[1-1]
+                    The \mintinline{sql}{initialize} script generates initial data to allow administrator login and forum system testing.
 
+                    The test data consists of two test users and an empty section.
+
+                    One of the users subscribes to the other one, in order to quickly test the notification system.
+
+                \newpage
 
 
         \chapter{Installation}
             aaa
 
-        \chapter{Conceptual model}
-            aaa
-
-        \chapter{Logical model}
-            aaa
-
-        \chapter{Table details}
-            aaa
-
         \chapter{Web interface}
             aaa
 
-        \chapter{Sample queries}
-            aaa
 
     \part{Conclusion}
         aaa

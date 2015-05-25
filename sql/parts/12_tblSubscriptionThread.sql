@@ -19,7 +19,7 @@ create table tbl_subscription_thread
 	foreign key (id_base)
 		references tbl_subscription_base(id)
 		on update cascade
-		on delete cascade, # TODO: use a trigger
+		on delete cascade,
 
 	foreign key (id_thread)
 		references tbl_content_thread(id)

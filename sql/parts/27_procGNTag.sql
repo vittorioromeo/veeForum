@@ -5,7 +5,7 @@
 #########################################################################################
 create procedure generate_notifications_tag
 (
-	in v_last_tc_tag int, # TODO: use
+	in v_last_tc_tag int,
 	in v_last_tc_content int
 )
 begin

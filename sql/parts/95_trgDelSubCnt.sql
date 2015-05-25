@@ -1,6 +1,6 @@
 #########################################################################################
 # TRIGGER
-# * TODO
+# * Delete subscriptions pointing to threads about to be deleted.
 #########################################################################################
 create trigger trg_del_subscription_cnt_thread
 	before delete on tbl_content_thread
@@ -14,7 +14,7 @@ end$
 
 #########################################################################################
 # TRIGGER
-# * TODO
+# * Delete subscriptions pointing to users about to be deleted.
 #########################################################################################
 create trigger trg_del_subscription_cnt_user
 	before delete on tbl_user
@@ -29,7 +29,7 @@ end$
 
 #########################################################################################
 # TRIGGER
-# * TODO
+# * Delete subscriptions pointing to tags about to be deleted.
 #########################################################################################
 create trigger trg_del_subscription_cnt_tag
 	before delete on tbl_tag

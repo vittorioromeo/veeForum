@@ -32,6 +32,6 @@ create table tbl_notification_user
 	foreign key (id_content)
 		references tbl_content_base(id)
 		on update cascade
-		on delete no action # TODO Triggers do not get fired with 'cascade'
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################

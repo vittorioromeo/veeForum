@@ -52,7 +52,7 @@ end$
 
 #########################################################################################
 # TRIGGER
-# * TODO
+# * Delete notifications pointing to content that's about to be deleted.
 #########################################################################################
 create trigger trg_del_ntf_user_on_post_del
 	before delete on tbl_content_base
@@ -66,7 +66,7 @@ end$
 
 #########################################################################################
 # TRIGGER
-# * TODO
+# * Delete notifications pointing to content that's about to be deleted.
 #########################################################################################
 create trigger trg_del_ntf_thread_on_post_del
 	before delete on tbl_content_post

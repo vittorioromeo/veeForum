@@ -288,7 +288,7 @@ create table tbl_content_attachment
 	foreign key (id_base)
 		references tbl_content_base(id)
 		on update cascade
-		on delete cascade, # TODO: use a trigger
+		on delete cascade, 
 
 	foreign key (id_post)
 		references tbl_content_post(id)
@@ -359,7 +359,7 @@ create table tbl_subscription_thread
 	foreign key (id_base)
 		references tbl_subscription_base(id)
 		on update cascade
-		on delete cascade, # TODO: use a trigger
+		on delete cascade,
 
 	foreign key (id_thread)
 		references tbl_content_thread(id)
@@ -392,7 +392,7 @@ create table tbl_subscription_user
 	foreign key (id_base)
 		references tbl_subscription_base(id)
 		on update cascade
-		on delete cascade, # TODO: use a trigger
+		on delete cascade,
 
 	foreign key (id_user)
 		references tbl_user(id)
@@ -503,7 +503,7 @@ create table tbl_notification_user
 	foreign key (id_content)
 		references tbl_content_base(id)
 		on update cascade
-		on delete no action # TODO Triggers do not get fired with 'cascade'
+		on delete no action # Triggers do not get fired with 'cascade'
 )$
 #########################################################################################
 
@@ -1079,7 +1079,7 @@ end$
 #########################################################################################
 create procedure generate_notifications_tag
 (
-	in v_last_tc_tag int, # TODO: use
+	in v_last_tc_tag int,
 	in v_last_tc_content int
 )
 begin
@@ -1327,7 +1327,7 @@ end$
 
 #########################################################################################
 # TRIGGER
-# * TODO
+# * Delete notifications pointing to content that's about to be deleted.
 #########################################################################################
 create trigger trg_del_ntf_user_on_post_del
 	before delete on tbl_content_base
@@ -1341,7 +1341,7 @@ end$
 
 #########################################################################################
 # TRIGGER
-# * TODO
+# * Delete notifications pointing to content that's about to be deleted.
 #########################################################################################
 create trigger trg_del_ntf_thread_on_post_del
 	before delete on tbl_content_post
@@ -1491,7 +1491,7 @@ end$
 
 #########################################################################################
 # TRIGGER
-# * TODO
+# * Delete subscriptions pointing to threads about to be deleted.
 #########################################################################################
 create trigger trg_del_subscription_cnt_thread
 	before delete on tbl_content_thread
@@ -1505,7 +1505,7 @@ end$
 
 #########################################################################################
 # TRIGGER
-# * TODO
+# * Delete subscriptions pointing to users about to be deleted.
 #########################################################################################
 create trigger trg_del_subscription_cnt_user
 	before delete on tbl_user
@@ -1520,7 +1520,7 @@ end$
 
 #########################################################################################
 # TRIGGER
-# * TODO
+# * Delete subscriptions pointing to tags about to be deleted.
 #########################################################################################
 create trigger trg_del_subscription_cnt_tag
 	before delete on tbl_tag

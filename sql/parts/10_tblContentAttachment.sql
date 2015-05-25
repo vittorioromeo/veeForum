@@ -22,7 +22,7 @@ create table tbl_content_attachment
 	foreign key (id_base)
 		references tbl_content_base(id)
 		on update cascade
-		on delete cascade, # TODO: use a trigger
+		on delete cascade, 
 
 	foreign key (id_post)
 		references tbl_content_post(id)
