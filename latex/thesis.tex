@@ -13,6 +13,7 @@
 
 
 
+
 \graphicspath{ {res/} }
 \setcounter{secnumdepth}{4}
 \titleformat{\paragraph}
@@ -27,6 +28,16 @@
 \newcommand{\printSQLtest}[1]
 {
     \inputminted[linenos, breaklines, breakbytoken, tabsize=4, fontsize=\footnotesize]{mysql}{#1}
+}
+
+\newcommand{\printPHPImpl}[1]
+{
+    \inputminted[linenos, breaklines, breakbytoken, tabsize=4, fontsize=\footnotesize]{php}{#1}
+}
+
+\newcommand{\printPHP}[1]
+{
+    \printPHP{../www/php/#1}
 }
 
 \newcommand{\printSQLTablepage}[2]
@@ -581,7 +592,7 @@
 
                     Preprocessing and compiling a \LaTeX{} document using LatexPP is simple and can be automated using a simple \emph{bash} script.
 
-\begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm]{bash}
+\begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{bash}
     #!/bin/bash
 
     latexpp ./thesis.lpp > ./thesis.tex
@@ -1080,11 +1091,472 @@
 
                 \newpage
 
+        \chapter{PHP}
+
+            \emph{Object-oriented design} will be used as much as possible in the PHP5 backend code. The web application will be divided in two major modules: \emph{library} and \emph{core}.
+
+            The library module will contain functions and classes used throughout the whole application.
+            
+            The web module will contain the actual web pages, divided in individual self-contained modules. 
+
+            \section{Library module}
+
+                The \emph{library PHP module} interfaces with the database, provides HTML-generation function and has additional utilities used in the core web application implementation.
+
+                \emph{Session-stored variables} will be managed through a static \mintinline{php}{Session} class, using statically-stored keys, creating a safe interface and making debugging easier.
+
+                \emph{Debugging} will be handled through a static \mintinline{php}{Debug} class. Logging of errors and query information can be enabled and disabled from administrators, and will be automatically displayed using AJAX.
+
+                The \emph{database connection} will be managed using the \mintinline{php}{mysqli} PHP5 module. Every global database operation such as queries and connection will be wrapped in a safe interface that allows easy debugging and prevents security breaches.
+
+                \emph{Privileges and permissions} will be loaded/saved from/to the database using bitset-like class instances that support all basic bitset operations. Their underlying implementation is separated from their API – this allows developers to optimize or modify the bit storage without affecting code in the web module.
+
+                AJAX and shortcut functions for HTML generation will be handled through the \mintinline{php}{Gen} static class and the \mintinline{php}{Actions} static class.
+
+                AJAX requests will directly call functions (if valid) from the Actions class, which return HTML, JSON, or plain text. Gen functions will be used from the web module to make the page structure more modular and avoid markup duplication.
+
+                Signing in and out and current user data will be managed from the \mintinline{php}{Credentials} static class. It will contain easy-to-use functions to check privileges and permissions, and also to handle login/logout.
+
+                Last, but not least, \emph{database table interaction} will be handled by a very developer-friendly object-oriented interface. Every table in the database will have a corresponding class, derived from a generic Table class.
+
+                The \mintinline{php}{Table} class provides an object-oriented interface for common queries and \emph{CRUD operations}. It also provides some very convenient methods to perform an action on every row matching a specific predicate or every row that’s part of a hierarchy.
+
+                Their usage, combined with \emph{PHP5 lambda functions}, will make usually complex hierarchy-traversing operations easy to write and debug. These functions are available for every table in the database. The classes derived from \mintinline{php}{Table} will implement functionality that is unique for specific database entities. Insertion and edit fields will be specified in the constructor of these classes, allowing the developer to use a very convenient and clean syntax for the insertion/editing of table rows.
+
+                \subsection{settings}
+
+                    The \emph{settings} submodule uses an intermediate server JSON storage to load and save system-wide settings.
+
+                    The JSON file contains two properties:
+
+                    \begin{itemize}
+                        \item \mintinline{php}{forumName}: name of the forum, displayed in the navigation bar and HTML \mintinline{html}{<head>} tag.
+                        \item \mintinline{php}{defaultGroup}: id of the group newly registered users are inserted into.
+                    \end{itemize}
+
+                    The properties mentioned above are accessible through the following PHP interface:
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class Settings
+    {
+        // Initialize settings
+        public static function init();
+
+        // Load/save settings from/to JSON
+        public static function loadFromFile();
+        public static function saveToFile();
+
+        // Get/set settings
+        public static function setForumName($mX);
+        public static function setDefaultGroup($mX);
+        public static function getForumName();
+        public static function getDefaultGroup();
+    }
+
+    ?>
+                    \end{minted}
+
+                \subsection{session}
+
+                    The \emph{session} submodule provides useful functions to manage session-stored variables in a convenient and type-safe way.
+
+                    An enumeration-like class is defined for session key-value pairs keys:
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class SK
+    {
+        // Example keys
+        public static $userID = "A1";
+        public static $debugLog = "A2";
+        public static $debugEnabled = "A3";
+        public static $pageID = "pageid";
+        public static $threadID = "threadid";
+    }
+
+    ?>
+                    \end{minted}
+
+                    Accessing session variables is then done through the following PHP static interface:
+
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class Session
+    {
+        // Initialize session
+        public static function init();
+
+        // Get/set session variables
+        public static function get($mX);
+        public static function set($mX, $mVal);
+    }
+
+    ?>
+                    \end{minted}
+
+                \subsection{debug}
+
+                    The \emph{debug} submodule gives the developer a convenient interface to toggle debugging features and access the debug log.
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class Debug
+    {
+        // Toggle debug mode
+        public static function setEnabled($mX);
+        public static function isEnabled();
+
+        // Clear log
+        public static function clear();
+
+        // Logging functions
+        public static function lo($mX);
+        public static function loLn();
+        public static function echoLo();
+    }
+
+    ?>
+                        \end{minted}
+
+
+                \subsection{db}
+
+                     The \emph{db} submodule provides a friendly interface to the database backend, abstracting most common queries and correctly handling quoted or null arguments.
+                     Its public interface is shown below:
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class DB
+    {
+        // Connects to the database
+        public static function connect();
+
+        // Executes a query and returns its result
+        public static function query($mX);
+
+        // Returns the last inserted ID in the database
+        public static function getInsertedID();
+
+        // Returns a correctly escaped version of a string
+        public static function esc($mX);
+
+        // Returns a correctly quoted version of a value
+        public static function v($mX);
+    }
+
+    ?>
+                    \end{minted}
+
+
+                \subsection{privs}
+
+                    The \emph{privs} submodule deals with system-wide privileges. Privileges are handled as bitsets.
+
+                    The \mintinline{php}{Privs} static enumeration-like class assigns an unique integer to every privilege bit:
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class Privs
+    {
+        const count = 5;
+
+        const isSuperAdmin = 0;
+        const canManageSections = 1;
+        const canManageUsers = 2;
+        const canManageGroups = 3;
+        const canManagePermissions = 4;
+    }
+
+    ?>
+                    \end{minted}
+
+                    Privilege bitsets are \mintinline{php}{PrivSet} instances. They provide functions available in most bitset implementations.
+
+                    The public interface is shown below:
+ 
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class PrivSet
+    {
+        // Variadic constructor - constructs an
+        // instance of `PrivSet` with the passed privileges
+        public function __construct(...$mPrivs);
+
+        // Instantiates a `PrivSet` from a string
+        public static function fromStr($mX);
+
+        // Instantiates a `PrivSet` from a group
+        public static function fromGroup($mX);
+
+        // Returns a string representing the current `PrivSet`
+        public function toStr();
+
+        // Add/delete a privilege
+        public function add($mX);
+        public function del($mX);
+
+        // Check availability of a privilege
+        public function has($mX);
+
+        // Returns true if this `PrivSet` is equal to another one
+        public function isEqualTo($mX);
+
+        // Returns the logical or between two `PrivSet` instances
+        public function getOrWith($mX);
+
+        // Returns the logical and between two `PrivSet` instances
+        public function getAndWith($mX);
+    }
+
+    ?>                        
+                    \end{minted}
+
+                \subsection{pages}
+
+                    The \emph{pages} submodule provides a simple framework for web application paging.
+
+                    The \mintinline{php}{PK} static enumeration-like class assigns an unique integer to every page:
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class PK
+    {
+        public static $sections = 0;
+        public static $administration = 1;
+        public static $threadView = 2;
+    }
+
+    ?>
+                    \end{minted}
+
+                    Every page has its own \mintinline{php}{PageData} instance, which stores its URL and required access privileges.
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class PageData
+    {
+        // Variadic constructor - takes the URL of the page
+        // and any number of required privileges as parameters
+        public function __construct($mURL, ...$mPrivs);
+
+        // Returns the URL of the apge
+        public function getURL();
+
+        // Returns the required access privileges of the page
+        public function getPrivs();
+
+        // Returns true if the passed privileges are enough
+        // to access the page
+        public function canViewWithPrivs($mX);
+    }
+
+    ?>
+                    \end{minted}
+
+                    All \mintinline{php}{PageData} instances are stored in a static \mintinline{php}{Pages} class:
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class Pages
+    {
+        // Adds a page to the storage
+        // Forwards the variadic arguments to the `PageData` constructor
+        public static function add(...$mArgs);
+
+        // Gets a `PageData` by unique page id
+        public static function get($mX);
+
+        // Gets or sets the current page in session
+        public static function setCurrent($mX);
+        public static function getCurrent();
+    }
+
+    ?>
+                    \end{minted}
+
+                    Web application pages can then be added using the following syntax:
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    Pages::add("php/core/content/sections.php");
+    Pages::add("php/core/content/adminPanel.php", Privs::isSuperAdmin);
+    Pages::add("php/core/content/threadView.php");
+
+    ?>
+                    \end{minted}
+
+                \subsection{utils}
+
+                    Self-documenting static class containing various utility functions.
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class Utils
+    {
+        // Converts an array to a comma-separated-list
+        public static function getCSL($mArray);
+
+        // Calculates the hash for a password
+        public static function getPwdHash($mX);
+
+        // Returns false if the string is not valid, empty, or
+        // only whitespace
+        public static function checkEmptyStr($mX, &$mMsg);
+
+        // Returns the parent of the last inserted record in
+        // the database (can be null)
+        public static function getInsertParent(&$mTbl, $mIDParent);
+    }
+
+    ?>
+                    \end{minted}                
+
+                \subsection{gen}
+
+                    The \emph{gen} submodule provides a complex HTML generation system that builds a hierarchy of polymorphic PHP class instances.
+
+                    AJAX-enabled HTML can then be generated by traversing the hierarchy recursively.
+
+                    \mintinline{php}{ControlBase} is a class that represents a control hierarchy. Its functions can be used to access/edit the control hierarchy, to move around in the tree or to generate HTML.
+
+                    Shortcut functions starting in \mintinline{php}{in} go one level deeper in the hierarchy.
+                    Shortcut functions starting in \mintinline{php}{out} go one level above in the hierarchy.
+                    Shortcut functions starting in \mintinline{php}{for} execute a callable object while traversing the hierarchy.
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class ControlBase
+    {
+        // Add a child to this control
+        public function &add(&$mChild);
+
+        // Go one level above
+        public function &out();
+
+        // Go to the root of the hierarchy
+        public function &root();
+
+        // Parses and includes a PHP file as a child control
+        public function &file($mX);
+
+        // Prints the entire hierarchy as HTML
+        public function printRoot();
+
+        // Executes the function/lambda for every children
+        public function forChildren($mFn);
+
+        // Executes the function/lambda for every children (recursively)
+        public function forChildrenRecursive($mFn);
+
+        // Executes the function/lambda for every parent (recursively)
+        public function forParentRecursive($mFn);
+
+        // Shortcuts for common HTML elements
+        public function &literal(...$mArgs);
+        public function &inDiv(...$mArgs);
+        public function &inSpan(...$mArgs);
+        public function &strong($mX);
+        public function &h($mHLevel, $mX);
+        public function &hr();
+        public function &br();
+        public function &inFooter(...$mArgs);
+        public function &inA(...$mArgs);
+        public function &label($mFor, $mCaption);
+
+        // Shortcuts for common Bootstrap elements
+        public function &bsIcon($mIcon);
+        public function &inBSLinkBtn($mID, $mClass = '');
+        public function &inBSLinkBtnActive($mID, $mOnClick, $mClass = '');
+        public function &inBSLinkBtnCloseModal();
+        public function &bsLinkBtnAddDismissModal();
+        public function &inBSModal($mID);
+        public function &inBSModalHeader($mTitle);
+        public function &inBSModalBody();
+        public function &inBSModalFooter();
+        public function &inBSBtnGroup($mClass);
+        public function &inBSPanelNoHeader($mClass = '');
+        public function &inBSPanelWithHeader($mHeader);
+        public function &inBSTable($mID);
+        public function &inBSNavbarTextbox($mID, $mCaption);
+        public function &bsNavbarTextbox($mID, $mCaption);
+        public function &inBSFormTextbox($mID, $mCaption);
+        public function &bsFormTextbox($mID, $mCaption);
+        public function &bsFormTextarea($mID, $mCaption, $mRows);
+    }
+
+    ?>
+                    \end{minted}            
+
+                    Complex elements that require additional stored data or special functions can be defined as classes that derive from \mintinline{php}{ControlBase}.
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    // Example derived controls
+    class Container extends ControlBase;
+    class Literal extends ControlBase;
+    class HTMLControl extends ControlBase;
+    class BSModal extends Container;
+
+    ?>
+                    \end{minted}               
+
+                    Here's an example usage of the HTML generation module:
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php 
+
+    (new Container())
+        ->h(1, 'Administration')
+        ->hr()
+        ->inDiv(['class' => 'row'])
+            ->file("$rootAP/panelDebug.php")
+            ->file("$rootAP/panelGroups.php")
+            ->out()
+        ->hr()
+        ->inDiv(['class' => 'row'])
+            ->file("$rootAP/panelGSPerms.php")
+            ->file("$rootAP/panelSections.php")
+            ->out()
+        ->hr()
+        ->inDiv(['class' => 'row'])
+            ->file("$rootAP/panelUsers.php")
+    ->printRoot();
+
+    ?>
+                    \end{minted}           
+
+                \subsection{tbl}
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+
+                    \end{minted}                
+                
+                \subsection{sprocs}
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+
+                    \end{minted}                
 
         \chapter{Installation}
             aaa
 
-        \chapter{Web interface}
+        \chapter{Web interface usage}
             aaa
 
 
