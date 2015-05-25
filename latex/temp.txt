@@ -1,0 +1,25 @@
+The term \emph{software engineering} goes back to the '60s, when more complex programs started to be developed by teams composed by experts.
+
+There was a radical transformation of software: from \emph{artisan product} to \emph{industrial product}.
+
+A software engineer needs to be a good programmer, an algorithm and data structures expert with good knowledge of one or more programming languages.
+
+He needs to know various design processes, must have the ability to convert generic requirements in well-detailed and accurate specifications, and needs to be able to communicate with the end-user in a language comprehensible to him comprehensible.
+
+Software engineering, is, however, a discipline that's still evolving. There still are no definitive standards for the software development process.
+
+Compared to traditional engineering, which is based upon mathematics and solid methods and where well-defined standards need to be followed, software engineering is greatly dependent on personal experience rather than mathematical tools.
+
+Here's a brief history of software engineering:
+
+\begin{itemize}
+	\item \emph{1950s}: Computers start to be used extensively in business applications.
+	\item \emph{1960s}: The first software product is marketed. 
+
+	IBM announces its \"unbundling\" in June 1969.
+	\item \emph{1970s}: Software products are now regularly bought by \"normal users\". 
+
+	The software development industry grows rapidly despite the lack of financing.
+
+	The first \"software houses\" begin to emerge.
+\end{itemize}
