@@ -1000,53 +1000,54 @@
             \section{Triggers}
 
                 \printSQLTablepage{90_trgNotifications.sql}{notifications}
-                    \lipsum[1-1]
+                    These triggers deal with \emph{notification generation}.
 
+                    \begin{itemize}
+                        \item \mintinline{sql}{trg_notifications_user}: generates a notification when a tracked user creates content.
+                        \item \mintinline{sql}{trg_notifications_thread}: generates a notification when a post is added to a tracked thread.
+                        \item \mintinline{sql}{trg_notifications_tag}: generates a notification when content with the tracked tag is created.
+                    \end{itemize}
 
                 \printSQLTablepage{91_trgDelContentBase.sql}{contentBase}
-                    \lipsum[1-1]
+                    These triggers deal with content deletion and cleanup.
 
+                    The \mintinline{sql}{trg_del_content_base_thread}, \mintinline{sql}{trg_del_content_base_post}, and \mintinline{sql}{trg_del_content_base_attachment} triggers automatically delete the content base instance upon derived content instance deletion.
+
+                    The \mintinline{sql}{trg_del_ntf_user_on_post_del} and \mintinline{sql}{trg_del_ntf_thread_on_post_del} triggers delete notifications pointing to content that is about to get deleted.
 
                 \printSQLTablepage{92_trgDelSubscriptionBase.sql}{subscriptionBase}
-                    \lipsum[1-1]
+                    These triggers deal with subscription base instance automatic deletion upon derived instance deletion.
 
 
                 \printSQLTablepage{93_trgDelNotificationBase.sql}{notificationBase}
-                    \lipsum[1-1]
+                     These triggers deal with notification base instance automatic deletion upon derived instance deletion.
 
 
                 \printSQLTablepage{94_trgDelSubscriptionNtf.sql}{subscriptionNtf}
-                    \lipsum[1-1]
+                    These triggers delete all notification belonging to a subscription that's about to be deleted.
 
 
                 \printSQLTablepage{95_trgDelSubCnt.sql}{delSubCnt}
-                    \lipsum[1-1]
+                    These triggers delete all subscriptions pointing to content that's about to be deleted.
 
             \newpage
             \section{Database test data inizialization}
 
                 \printSQLTablepage{99_initialize.sql}{initialize}
-                    \lipsum[1-1]
+                    The \mintinline{sql}{initialize} script generates initial data to allow administrator login and forum system testing.
+
+                    The test data consists of two test users and an empty section.
+
+                    One of the users subscribes to the other one, in order to quickly test the notification system.
 
 
 
         \chapter{Installation}
             aaa
-
-        \chapter{Conceptual model}
-            aaa
-
-        \chapter{Logical model}
-            aaa
-
-        \chapter{Table details}
-            aaa
-
+            
         \chapter{Web interface}
             aaa
 
-        \chapter{Sample queries}
-            aaa
 
     \part{Conclusion}
         aaa
