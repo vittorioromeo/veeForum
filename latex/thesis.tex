@@ -466,7 +466,7 @@
                         To ensure maximum portability, the product will be designed to work on the most popular \emph{GNU/Linux} distributions and will be thoroughly tested on different platforms.
             
             \section{Analysis models}
-                \subsection{Activity Diagrams}
+                \subsection{Activity diagrams}
                     Activity diagrams are graphical representations of workflows of stepwise activities and actions with support for choice, iteration and concurrency. 
                     In the Unified Modeling Language, activity diagrams are intended to model both computational and organisational processes (i.e. workflows). 
                     Activity diagrams show the overall flow of control.
@@ -493,7 +493,7 @@
 
                     \newpage
 
-                \subsection{Sequence Diagrams}
+                \subsection{Sequence diagrams}
                     
                     The following diagram shows the interaction between \emph{forum users}, the \emph{subscription broker} and the \emph{content management} systen in order to manage subscriptions and generate notifications.
 
@@ -504,6 +504,18 @@
                     \end{figure}
 
                     \newpage
+
+                \subsection{Deployment diagram}
+
+                    A \emph{deployment diagram} in the Unified Modeling Language models the physical deployment of artifacts on nodes.
+
+                    The nodes appear as boxes, and the artifacts allocated to each node appear as rectangles within the boxes. Nodes may have subnodes, which appear as nested boxes. Device nodes are physical computing resources with processing memory and services to execute software, such as typical computers or mobile phones. 
+
+                    \begin{figure}[!htb]
+                    \caption{Deployment diagram for veeForum.}
+                    \centering
+                    \includegraphics[width=1\textwidth]{deployment}
+                    \end{figure}
 
     \part{Technical analysis}
         The following part of the thesis will cover all implementation choices and details for veeForum in depth.
@@ -1536,6 +1548,56 @@
 
     ?>
                     \end{minted}           
+
+                \subsection{creds}
+
+                    The \emph{creds} submodule gives access to a static \mintinline{php}{Creds} class which deals with user authentication and credentials management.
+
+                    \begin{minted}[mathescape, linenos, numbersep=5pt, gobble=2, frame=lines, framesep=2mm, fontsize=\footnotesize]{php}
+    <?php
+
+    class Creds
+    {
+        // Returns true if the current session has an
+        // authenticated logged in user
+        public static function isLoggedIn();
+
+        // Tries to login with the passed username and
+        // password and returns true on success
+        public static function tryLogin($mUser, $mPass);
+
+        // Tries to logout the current user and returns
+        // true on success
+        public static function tryLogout();
+
+        // Returns the current user's unique ID
+        public static function getCUID();
+
+        // Returns the current user's database row
+        public static function getCURow();
+
+        // Returns the current user's privileges row
+        public static function getCUPrivRow();
+
+        // Returns the current user's permissions row
+        // related to the passed section ID
+        public static function getCUPermRow($mSID);
+
+        // Returns true if the current user has the correct
+        // permission to view the current page
+        public static function canCUViewCurrentPage();
+
+        // Returns true if the current user has the 
+        // passed privilege bit
+        public static function hasCUPriv($mX);
+
+        // Returns true if the current user has the passed
+        // permission bit related to the passed session
+        public static function hasCUPerm($mSID, $mX);
+    }
+
+    ?>                  
+                \end{minted}
 
                 \subsection{tbl}
 
