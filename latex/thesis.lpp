@@ -288,6 +288,43 @@
 
                     It is therefore required to have clear interfaces thar do not negatively affect the user experience by being either too complex or too simple (all features need to be exposed).
 
+            \section{Glossary}
+
+                \begin{itemize}
+                    \item \emph{User}: the system requires user registration and authentication to be used. An \emph{User} represents a person using the system. He/she needs to be registered to the system in order to sign in. An \emph{User} produces \emph{Content} and always belongs to a single \emph{Group}. \emph{Users} can subscribe to \emph{Content} using \emph{Subscriptions}, to receive \emph{Notifications}.
+                    \item \emph{Group}: a \emph{Group} is a collection of 0 or more \emph{Users}. It defines \emph{Privileges} for the \emph{Users} in the group and \emph{Permissions} related to every section.
+                    \item \emph{Privilege}: a \emph{Privilege} is a bit representing the permission to perform system-wide operation or access a system-related area. Possible values are: 
+
+                        \begin{itemize}
+                            \item \emph{Superadmin}: can access any area of the system. Overrides all \emph{Privileges} and \emph{Permissions}.
+                            \item \emph{Manage sections}: can create/remove \emph{Sections}.
+                            \item \emph{Manage users}: can create/edit/remove \emph{Users}.
+                            \item \emph{Manage groups}: can create/edit/remove \emph{Groups}.
+                            \item \emph{Manage permissions}: can create/edit/remove \emph{Permissions} from \emph{Groups}.
+                        \end{itemize}
+
+                    \item \emph{Permission}: a \emph{Permission} is a bit representing the permission to perform an action, and it is always related in context to a specific \emph{Section}. Possible values are:
+
+                        \begin{itemize}
+                            \item \emph{View}: the target \emph{Section} can be accessed in read-only mode.                        
+                            \item \emph{Post}: \emph{Posts} can be created in the target \emph{Section}.
+                            \item \emph{Create Thread}: \emph{Threads} can be created in the target \emph{Section}.
+                            \item \emph{Delete Post}: \emph{Posts} can be deleted in the target \emph{Section}.
+                            \item \emph{Delete Thread}: \emph{Threads} can be deleted in the target \emph{Section}.
+                            \item \emph{Delete Section}: the target \emph{Section} itself and subsections can be deleted.
+                        \end{itemize}
+
+                    \item \emph{Content}: represents any data created by \emph{Users}. It can be specialized in \emph{Attachments}, \emph{Threads} and \emph{Posts}. \emph{Content} can have zero or more \emph{Tags}.
+                    \item \emph{Tag}: a string that labels one or more \emph{Content} instances.
+                    \item \emph{Section}: a collection of zero or more \emph{Threads} and zero or more subsections. It represents the basic building block of the forum structure.
+                    \item \emph{Thread}: a collection of zero or more \emph{Posts}. 
+                    \item \emph{Post}: a container of textual content and zero or more \emph{Attachments}.
+                    \item \emph{Attachment}: a downloadable file. The internal data is stored in a \emph{File data}.
+                    \item \emph{File data}: binary storage for a file. 
+                    \item \emph{Subscription}: created by an \emph{User}, the subscriptor, who targets one of the following entities: \emph{User}, \emph{Thread} or \emph{Tag}. When \emph{Content} related to the targeted entities is created, \emph{Notifications} are generated.
+                    \item \emph{Notification}: represents an alert that new \emph{Content} related to an existing \emph{Subscription} has been created. Used to notify \emph{Users} of tracked content changes.
+                \end{itemize}
+
             \section{Specific requirements}
 
                 \subsection{External interface requirements}
@@ -480,7 +517,7 @@
 
                     The following diagram shows the steps that the \emph{forum management team} must take in order to setup and initialize a veeForum-enabled forum.
 
-                    \begin{figure}[!htb]
+                    \begin{figure}[H]
                     \caption{Forum setup and initialization activity diagram.}
                     \centering
                     \includegraphics[width=1\textwidth]{uc/a1}
@@ -490,7 +527,7 @@
 
                     The following diagram shows the steps that the \emph{forum users} must take in order to add content to the forum system.
 
-                    \begin{figure}[!htb]
+                    \begin{figure}[H]
                     \caption{Content creation activity diagram.}
                     \centering
                     \includegraphics[width=1\textwidth]{uc/a2}
@@ -498,16 +535,62 @@
 
                     \newpage
 
-                \subsection{Sequence diagrams}
+                    The following diagram shows the steps that the \emph{forum system} must take in order to validate a permission bitset for a specific action.
+
+                    \begin{figure}[H]
+                    \caption{Recursive permission validation algorithm.}
+                    \centering
+                    \includegraphics[width=1\textwidth]{dn/0}
+                    \end{figure}
+
+                    \newpage
+                    \newpage
+
+                \subsection{Class diagrams}
+
+                    \emph{Class diagrams} are created using UML.
+
+                    The \emph{Unified Modeling Language} (UML) is a general-purpose modeling language in the field of software engineering, which is designed to provide a standard way to visualize the design of a system.
                     
+                    It offers a way to visualize a system's architectural blueprints in a diagram, including elements such as:
+
+                    \begin{itemize}
+                        \item Any activities (jobs)
+                        \item Individual components of the system
+                        \item And how they can interact with other software components.
+                        \item How the system will run
+                        \item How entities interact with others (components and interfaces)
+                        \item External user interface
+                    \end{itemize}
+                    
+                    \begin{figure}[H]
+                    \caption{Database entities UML diagram.}
+                    \centering
+                    \includegraphics[width=1\textwidth]{uml/umldb}
+                    \end{figure}
+
+                    \newpage
+
+                    \begin{figure}[H]
+                    \caption{Server backend UML diagram.}
+                    \centering
+                    \includegraphics[width=1\textwidth]{uml/umlphp}
+                    \end{figure}
+
+                    \newpage
+                    \newpage
+
+                \subsection{Sequence diagrams}                    
+
                     The following diagram shows the interaction between \emph{forum users}, the \emph{subscription broker} and the \emph{content management} systen in order to manage subscriptions and generate notifications.
 
-                    \begin{figure}[!htb]
+                    \begin{figure}[H]
                     \caption{Subscription/notification system sequence diagram.}
                     \centering
                     \includegraphics[width=1\textwidth]{uc/s1}
                     \end{figure}
 
+                    \newpage
                     \newpage
 
                 \subsection{Deployment diagram}
@@ -516,7 +599,7 @@
 
                     The nodes appear as boxes, and the artifacts allocated to each node appear as rectangles within the boxes. Nodes may have subnodes, which appear as nested boxes. Device nodes are physical computing resources with processing memory and services to execute software, such as typical computers or mobile phones. 
 
-                    \begin{figure}[!htb]
+                    \begin{figure}[H]
                     \caption{Deployment diagram for veeForum.}
                     \centering
                     \includegraphics[width=1\textwidth]{deployment}
