@@ -54,4 +54,13 @@
 *.aux
 *.tmp
 *.toc
-*.mintedcmd
+*.mintedcmd/latex/res/di/Diagram_Create_Content(Post).dia~
+/latex/res/di/Diagram_EditPost.dia~
+/latex/res/di/Diagram_Login.dia~
+/latex/res/di/Diagram_Registration.dia~
+/latex/res/di/Diagram_SubscriptionAndNotification.dia~
+/latex/res/di/Diagram_UploadAttachment.dia~
+/latex/res/di/Sequence_Diagram_DatabaseInterface.dia~
+/latex/res/di/Sequence_Diagram_Login.dia~
+/latex/res/di/Sequence_Diagram_StoredProcedure.dia~
+/latex/res/di/Diagram_Create_Content(Post).dia~

@@ -286,7 +286,7 @@
 
                     User-friendliness is essential for every target, but all the required functionality is effectively exposed to different user groups.
 
-                    It is therefore required to have clear interfaces thar do not negatively affect the user experience by being either too complex or too simple (all features need to be exposed).
+                    It is therefore required to have clear interfaces that do not negatively affect the user experience by being either too complex or too simple (all features need to be exposed).
 
             \section{Glossary}
 
@@ -336,7 +336,7 @@
 
                         \begin{itemize}
                             \item \emph{Web interface}: it is required to provide a modern responsive web interface, compatible and tested with the most popular browsers (Internet Explorer 10+, Google Chrome, Mozilla Firefox). The web interface will give forum access to users and moderators, and administrator access to forum management staff.
-                            \item \emph{Mobile interface}: is is required to provide a modern mobile application for the major platforms (Android, iOS, Windows Phone). The mobile application will allow browsing and content management of forums created with the product.
+                            \item \emph{Mobile interface}: it is required to provide a modern mobile application for the major platforms (Android, iOS, Windows Phone). The mobile application will allow browsing and content management of forums created with the product.
                         \end{itemize}
 
                     \subsubsection{Software interfaces}
@@ -381,7 +381,7 @@
 
                       \subsubsection{Content tracking system}
                         \begin{itemize}
-                            \item \emph{Creation data}: user-created content (posts, threads,attachments, etc) will have some data specific to its creation can be extended by forum administrators. Basic predefined data will consist of creation date and time. It will be possible to run statistical queries on content creation data.
+                            \item \emph{Creation data}: user-created content (posts, threads,attachments, etc) will have some data specific to its creation that can be extended by forum administrators. Basic predefined data will consist of creation date and time. It will be possible to run statistical queries on content creation data.
                             \item \emph{Subscriptions}: users and moderators will be able to subscribe to specific sections, threads or user to track their contents. They will receive real-time notifications upon addition/editing of tracked content.
                         \end{itemize}
 
@@ -555,12 +555,12 @@
                     It offers a way to visualize a system's architectural blueprints in a diagram, including elements such as:
 
                     \begin{itemize}
-                        \item Any activities (jobs)
-                        \item Individual components of the system
+                        \item Any activities (jobs).
+                        \item Individual components of the system.
                         \item And how they can interact with other software components.
-                        \item How the system will run
-                        \item How entities interact with others (components and interfaces)
-                        \item External user interface
+                        \item How the system will run.
+                        \item How entities interact with others (components and interfaces).
+                        \item External user interface.
                     \end{itemize}
                     
                     \begin{figure}[H]
@@ -793,31 +793,45 @@
             \end{itemize}
 
         \chapter{Database design}
-            \section{Diagrams}
+            \section{Entity-relationship diagram}
 
-                \begin{figure}[!htb]
-                \caption{Complete DB Entity-Relationship diagram.}
+                The development of the \emph{entity-relationship diagram} began by designing the content hierarchy:
+
+                \begin{figure}[H]
+                \caption{ER diagram evolution - 0: Content hierarchy}
                 \centering
-                \includegraphics[width=1\textwidth]{erdiag}
+                \includegraphics[width=1\textwidth]{ernew/0}
                 \end{figure}
 
-                \begin{figure}[!htb]
-                \caption{ER diagram zoom: content hierarchy}
+                Afterwards, the user/group system was designed:
+
+                \begin{figure}[H]
+                \caption{ER diagram evolution - 1: User/group system}
                 \centering
-                \includegraphics[width=1\textwidth]{erzm0}
+                \includegraphics[width=1\textwidth]{ernew/1}
                 \end{figure}
 
-                \begin{figure}[!htb]
-                \caption{ER diagram zoom: section hierarchy}
+                Lastly, the subscription/notification system was designed as an independent module: 
+
+                \begin{figure}[H]
+                \caption{ER diagram evolution - 2: Subscription/notification system}
                 \centering
-                \includegraphics[width=1\textwidth]{erzm1}
+                \includegraphics[width=0.5\textwidth]{ernew/2}
                 \end{figure}
 
-                \begin{figure}[!htb]
-                \caption{ER diagram zoom: content subscription/notification system}
+                The complete ER diagram, connecting the modules displayed above, is as follows:
+
+                Afterwards, the user/group system was designed:
+
+                \begin{figure}[H]
+                \caption{ER diagram - complete}
                 \centering
-                \includegraphics[width=0.7\textwidth]{erzm2}
+                \includegraphics[width=1\textwidth]{ernew/full}
                 \end{figure}
+
+
+                \newpage
+            \section{Logic diagram}
 
                 \begin{figure}[!htb]
                 \caption{Complete DB logic diagram.}
