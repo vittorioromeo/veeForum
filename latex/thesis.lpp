@@ -56,7 +56,7 @@
 
         \textsc{\LARGE Universita' degli Studi di Messina}\\[0.1cm]
         \textsc{\Large Dipartimento di Matematica e Informatica}\\[0.5cm]
-        \textsc{\Large Software engineering project}\\[0.5cm]
+        \textsc{\Large Database course project}\\[0.5cm]
 
         \HRule \\[0.4cm]
         { \huge \bfseries veeForum}\\[0.1cm]
@@ -67,17 +67,14 @@
         \begin{minipage}{0.4\textwidth}
         \begin{flushleft} \large
         \emph{Authors:}\\
-        Vittorio \textsc{Romeo} \\
-        Davide \textsc{Iuffrida}
+        Vittorio \textsc{Romeo}
         \end{flushleft}
         \end{minipage}
         ~
         \begin{minipage}{0.4\textwidth}
         \begin{flushright} \large
-        \emph{Professors:} \\
-        Antonio \textsc{Puliafito} \\
-        Antonino \textsc{Longo}
-
+        \emph{Professor:} \\
+        Massimo \textsc{Villari}
 
         \end{flushright}
         \end{minipage}\\[4cm]
@@ -2025,7 +2022,31 @@
                 Screenshots of the web interface will be shown in the following chapter, showing the end-result of the combination of the PHP modules.
 
         \chapter{Web interface}
+
+            \section{Frontend}
+
+                The frontend was developed using \emph{HTML5}, \emph{CSS3} and \emph{EcmaScript 5}. Good practices and popular guidelines have been followed to make sure the web pages work on all major browsers and devices without issues.
+
+                \subsection{Bootstrap}
+
+                    The graphical interface of the web application uses the \emph{Bootstrap} frontend library, developed by Twitter.
+
+                    Bootstrap is a convenient and powerful \emph{CSS3}/\emph{Javascript} library that is easy to integrate in dynamic web applications. 
+
+                    Its flexible grid system ensures responsiveness on every modern browser and device. The design of the web pages automatically adapts to the size of the browser viewport.
+
+                    Its JavaScript-enabled features, such as \emph{modals} and \emph{navigation bars}, gratly improve the browsing experience for the user.
+
+                \subsection{JQuery}
+
+                    \emph{JQuery} is a very famous and popular JavaScript library that is nowadays found in most modern web pages and web applications.
+
+                    It provides very convenient syntax for \emph{DOM manipulation} to the developer, and also offers many advanced features to improve the look and the functionality of the frontend.
+
+                    JQuery also provides advanced \emph{AJAX-enabled} functions that load pages and sub-pages without having to refresh the web application. This feature was used extensively, alongside JQuery's animation module, to make the veeForum frontend dynamic and aesthetically pleasing.
             
+            \section{Screenshots}
+
             \begin{figure}[!htb]
             \caption{Main page - user not logged in.}
             \centering
