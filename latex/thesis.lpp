@@ -61,7 +61,7 @@
         \HRule \\[0.4cm]
         { \huge \bfseries veeForum}\\[0.1cm]
 
-        {\large 29 May 2015}
+        {\large 11 June 2015}
         \HRule \\[1.5cm]
 
         \begin{minipage}{0.4\textwidth}
@@ -92,7 +92,7 @@
                     \center
                     \includegraphics[width=2cm, height=2cm]{logovee}
 
-                    http://vittorioromeo.info
+                    \url{http://vittorioromeo.info}
                 \end{figure}
             \end{minipage}
             \hspace{0.27\linewidth}
@@ -101,7 +101,7 @@
                     \center
                     \includegraphics[width=2cm, height=2cm]{logounime}
 
-                    http://unime.it
+                    \url{http://unime.it}
                 \end{figure}
             \end{minipage}
         \end{minipage}\\[3cm]
@@ -1245,7 +1245,7 @@
 
             \section{Triggers}
 
-                \subsection{MySQL bug #61555}
+                \subsection{MySQL bug n°61555}
                     Some triggers had to be defined to work around this well-known MySQL bug, reported in 2011: \url{https://bugs.mysql.com/bug.php?id=61555}.
 
                     The bug incorrectly prevents triggers with \mintinline{sql}{AFTER DELETE} from being called after an \mintinline{sql}{ON DELETE CASCADE} foreign key constraint.

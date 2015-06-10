@@ -51,30 +51,34 @@
 
         \textsc{\LARGE Universita' degli Studi di Messina}\\[0.1cm]
         \textsc{\Large Dipartimento di Matematica e Informatica}\\[0.5cm]
-        \textsc{\Large Database course project}\\[0.5cm]
+        \textsc{\Large Software engineering project}\\[0.5cm]
 
         \HRule \\[0.4cm]
         { \huge \bfseries veeForum}\\[0.1cm]
 
-        {\large 29 May 2015}
+        {\large 11 June 2015}
         \HRule \\[1.5cm]
 
         \begin{minipage}{0.4\textwidth}
         \begin{flushleft} \large
         \emph{Authors:}\\
-        Vittorio \textsc{Romeo}
+        Vittorio \textsc{Romeo} \\
+        Davide \textsc{Iuffrida}
         \end{flushleft}
         \end{minipage}
         ~
         \begin{minipage}{0.4\textwidth}
         \begin{flushright} \large
-        \emph{Professor:} \\
-        Massimo \textsc{Villari}
+        \emph{Professors:} \\
+        Antonio \textsc{Puliafito} \\
+        Antonino \textsc{Longo}
+
 
         \end{flushright}
         \end{minipage}\\[4cm]
 
         \vfill
+
 
         \begin{minipage}{\linewidth}
             \centering
@@ -83,7 +87,7 @@
                     \center
                     \includegraphics[width=2cm, height=2cm]{logovee}
 
-                    http://vittorioromeo.info
+                    \url{http://vittorioromeo.info}
                 \end{figure}
             \end{minipage}
             \hspace{0.27\linewidth}
@@ -92,7 +96,7 @@
                     \center
                     \includegraphics[width=2cm, height=2cm]{logounime}
 
-                    http://unime.it
+                    \url{http://unime.it}
                 \end{figure}
             \end{minipage}
         \end{minipage}\\[3cm]
@@ -749,6 +753,10 @@
 
                     MariaDB is fully compliant with the MySQL standard and language, but it is more performant and has additional features. It is the default DBMS in the Arch Linux distribution.
 
+                    By default, MariaDB uses the \emph{XtraDB} storage engine, a performance enhanced fork of the InnoDB storage engine.
+
+                    Percona XtraDB includes all of InnoDB's robust, reliable ACID-compliant design and advanced MVCC architecture, and builds on that solid foundation with more features, more tunability, more metrics, and more scalability. In particular, it is designed to scale better on many cores, to use memory more efficiently, and to be more convenient and useful. 
+
                     \item \emph{P}: PHP5, the server backend language. 
 
                     HTML5, PHP5 and JavaScript conformant to the 5.1 ECMAScript specification (along with the JQuery library) are used for the development of the web application. 
@@ -1230,6 +1238,13 @@
                 \newpage
 
             \section{Triggers}
+
+                \subsection{MySQL bug n°61555}
+                    Some triggers had to be defined to work around this well-known MySQL bug, reported in 2011: \url{https://bugs.mysql.com/bug.php?id=61555}.
+
+                    The bug incorrectly prevents triggers with \mintinline{sql}{AFTER DELETE} from being called after an \mintinline{sql}{ON DELETE CASCADE} foreign key constraint.
+
+                    The workaround was manually implementing triggers that reproduce the \mintinline{sql}{ON DELETE CASCADE} functionality.
 
                 \printSQLTablepage{90_trgNotifications.sql}{notifications}
                     These triggers deal with \emph{notification generation}.
