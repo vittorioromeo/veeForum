@@ -1,6 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
-  \PYGdefault{c}{\PYGdefaultZsh{}!/bin/bash}
-
-  latexpp ./thesis.lpp \PYGdefaultZgt{} ./thesis.tex
-  pdflatex \PYGdefaultZhy{}shell\PYGdefaultZhy{}escape ./thesis.tex \PYGdefault{o}{\PYGdefaultZam{}\PYGdefaultZam{}} chromium ./thesis.pdf
-\end{Verbatim}
